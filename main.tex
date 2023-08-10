@@ -1,0 +1,500 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Masters/Doctoral Thesis 
+% LaTeX Template
+% Version 2.5 (27/8/17)
+%
+% This template was downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Version 2.x major modifications by:
+% Vel (vel@latextemplates.com)
+%
+% This template is based on a template by:
+% Steve Gunn (http://users.ecs.soton.ac.uk/srg/softwaretools/document/templates/)
+% Sunil Patel (http://www.sunilpatel.co.uk/thesis-template/)
+%
+% Template license:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+\documentclass[
+12pt, % The default document font size, options: 10pt, 11pt, 12pt
+%oneside, % Two side (alternating margins) for binding by default, uncomment to switch to one side
+english, % ngerman for German
+%doublespacing, %singlespacing, % Single line spacing, alternatives: onehalfspacing or doublespacing
+%draft, % Uncomment to enable draft mode (no pictures, no links, overfull hboxes indicated)
+%nolistspacing, % If the document is onehalfspacing or doublespacing, uncomment this to set spacing in lists to single
+%liststotoc, % Uncomment to add the list of figures/tables/etc to the table of contents
+%toctotoc, % Uncomment to add the main table of contents to the table of contents
+%parskip, % Uncomment to add space between paragraphs
+nohyperref, % Uncomment to not load the hyperref package
+headsepline, % Uncomment to get a line under the header
+%chapterinoneline, % Uncomment to place the chapter title next to the number on one line
+%consistentlayout, % Uncomment to change the layout of the declaration, abstract and acknowledgements pages to match the default layout
+]{MastersDoctoralThesis} % The class file specifying the document structure
+
+\usepackage{setspace}
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+
+\usepackage{multirow}
+
+\usepackage{float} %figures
+
+%\usepackage[colorlinks=false]{hyperref} %href and url
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=false,
+%    linkcolor=blue,
+%    filecolor=magenta,      
+%    urlcolor=cyan,
+}
+
+\usepackage{mathpazo} % Use the Palatino font by default
+
+\usepackage{hyphenat}
+
+
+%\usepackage[backend=bibtex,style=authoryear,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
+%\usepackage{natbib} %Bibliography package
+%\usepackage{apacite}
+\usepackage[backend=bibtex,style=authoryear,giveninits=true,dashed=false,natbib=true]{biblatex} 
+\DeclareNameAlias{sortname}{last-first}
+%\bibliographystyle{apacite}
+%\bibliography{MPhil_Thesis.bib} 
+\addbibresource{MPhil_Thesis.bib} % The filename of the bibliography
+%\addbibresource{extraBibliography.bib} % The filename of the bibliography
+
+%\bibliography{MPhil_Thesis} 
+
+\setcounter{secnumdepth}{3} %numbering subsubsections!!
+
+\usepackage[linesnumbered,lined,boxed,commentsnumbered]{algorithm2e} %para escribir pseudocodigo
+\SetKwRepeat{Do}{do}{while}
+
+\usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography
+
+% For rotating figures, tables, etc.
+%  including their captions
+\usepackage[figuresleft]{rotating}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{proposition}{Proposition}[section]
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+\newtheorem{example}{Example}
+
+
+%----------------------------------------------------------------------------------------
+%	MARGIN SETTINGS
+%----------------------------------------------------------------------------------------
+
+\geometry{
+	paper=a4paper, % Change to letterpaper for US letter
+	inner=2.5cm, % Inner margin
+	outer=3.8cm, % Outer margin
+	bindingoffset=2cm, % Binding offset
+	top=1.5cm, % Top margin
+	bottom=1.5cm, % Bottom margin
+	%showframe, % Uncomment to show how the type block is set on the page
+}
+
+%----------------------------------------------------------------------------------------
+%	THESIS INFORMATION
+%----------------------------------------------------------------------------------------
+
+\thesistitle{Learning theory \& Gaussian Process Regression for surrogate modeling, and a novel framework for Design Optimization under uncertainty. Application to an early-stage aircraft wing design.}
+%\thesistitle{Design Optimization Under Uncertainty: The Forward And The Inverse Problems. Application To An Early-Stage Aircraft Wing Design.}
+%\thesistitle{Multidisciplinary Robust Optimization Of Early-Stage Aircraft 
+%             Wing Design Under Uncertainty} % Your thesis title, this is used in the title and abstract, print it elsewhere with \ttitle
+\supervisor{Dr. Abhishek \textsc{Kundu} \\Prof. David \textsc{Kennedy}} % Your supervisor's name, this is used in the title page, print it elsewhere with \supname
+\examiner{} % Your examiner's name, this is not currently used anywhere in the template, print it elsewhere with \examname
+\degree{Master of Philosophy} % Your degree name, this is used in the title page and abstract, print it elsewhere with \degreename
+\author{Jos\'e-Luis \textsc{Dorado-Ladera}} % Your name, this is used in the title page and abstract, print it elsewhere with \authorname
+\addresses{} % Your address, this is not currently used anywhere in the template, print it elsewhere with \addressname
+
+\subject{Uncertainty quantification} 
+         % Your subject area, this is not currently used anywhere in the template, print it elsewhere with \subjectname
+\keywords{} % Keywords for your thesis, this is not currently used anywhere in the template, print it elsewhere with \keywordnames
+%\university{\href{https://www.cardiff.ac.uk/}{Cardiff University}} % Your university's name and URL, this is used in the title page and abstract, print it elsewhere with \univname
+\university{Cardiff University} % Your university's name and URL, this is used in the title page and abstract, print it elsewhere with \univname
+\department{School of Engineering} 
+      % Your department's name and URL, this is used in the title page and abstract, print it elsewhere with \deptname
+\group{} % Your research group's name and URL, this is used in the title page, print it elsewhere with \groupname
+\faculty{} % Your faculty's name and URL, this is used in the title page and abstract, print it elsewhere with \facname
+
+\AtBeginDocument{
+\hypersetup{pdftitle=\ttitle} % Set the PDF's title to your title
+\hypersetup{pdfauthor=\authorname} % Set the PDF's author to your name
+\hypersetup{pdfkeywords=\keywordnames} % Set the PDF's keywords to your keywords
+}
+
+\begin{document}
+
+%\nocite{*} % to include all elements in .bib file ALSO the ones that are not cited in the text
+
+\frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the pre-content pages
+
+\pagestyle{plain} % Default to the plain heading style until the thesis style is called for the body content
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\begin{titlepage}
+\begin{center}
+
+\vspace*{.02\textheight}
+%{\scshape\LARGE \univname\par}\vspace{1.5cm} % University name
+\includegraphics[width=0.20\textwidth]{CUlogo}\par\vspace{1cm}
+
+\textsc{\Large M.Phil Thesis}\\[0.5cm] % Thesis type
+
+\HRule \\[0.4cm] % Horizontal line
+{\huge \bfseries \ttitle\par}\vspace{0.4cm} % Thesis title
+\HRule \\[1.5cm] % Horizontal line
+
+\begin{center} \large
+%\begin{minipage}[t]{0.5\textwidth}
+%\begin{flushleft} \large
+%\emph{Author:}\\
+{\authorname} % Author name - remove the \href bracket to remove the link
+%\end{flushleft}
+%\end{minipage}
+\end{center}
+%\begin{minipage}[t]{0.4\textwidth}
+%\begin{flushright} \large
+%\emph{SupeDvisors:} \\
+%{\supname} % Supervisor name - remove the \href bracket to remove the link  
+%\end{flushright}
+%\end{minipage}\\[3cm]
+ 
+\vfill
+
+\large \textit{A thesis submitted in fulfillment of the requirements\\ for the degree of \degreename}\\[0.3cm] % University requirement text
+\textit{in the}\\[0.4cm]
+\deptname\\[1cm] % department name
+ 
+\vfill
+
+%{\large \today}\\[2cm] % Date
+{\large May 6, 2021}\\[2cm] % Date
+%\includegraphics{Logo} % University/department logo - uncomment to place it
+ 
+\vfill
+\end{center}
+\end{titlepage}
+
+%----------------------------------------------------------------------------------------
+%	DECLARATION PAGE
+%----------------------------------------------------------------------------------------
+
+%\begin{declaration}
+%\addchaptertocentry{\authorshipname} % Add the declaration to the table of contents
+%\noindent I, \authorname, declare that this thesis titled, \enquote{\ttitle} and the work presented in it are my own. I confirm that:
+%
+%\begin{itemize} 
+%\item This work was done wholly or mainly while in candidature for a research degree at this University.
+%\item Where any part of this thesis has previously been submitted for a degree or any other qualification at this University or any other institution, this has been clearly stated.
+%\item Where I have consulted the published work of others, this is always clearly attributed.
+%\item Where I have quoted from the work of others, the source is always given. With the exception of such quotations, this thesis is entirely my own work.
+%\item I have acknowledged all main sources of help.
+%\item Where the thesis is based on work done by myself jointly with others, I have made clear exactly what was done by others and what I have contributed myself.\\
+%\end{itemize}
+% 
+%\noindent Signed:\\
+%\rule[0.5em]{25em}{0.5pt} % This prints a line for the signature
+% 
+%\noindent Date:\\
+%\rule[0.5em]{25em}{0.5pt} % This prints a line to write the date
+%\end{declaration}
+
+\cleardoublepage
+
+%----------------------------------------------------------------------------------------
+%	QUOTATION PAGE
+%----------------------------------------------------------------------------------------
+
+\vspace*{0.2\textheight}
+
+\noindent\enquote{\itshape
+If I were again beginning my studies, I would follow the advice of Plato and start with mathematics. 
+}\bigbreak
+
+\hfill Galileo Galilei
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT PAGE
+%----------------------------------------------------------------------------------------
+
+\begin{abstract}
+\addchaptertocentry{\abstractname} % Add the abstract to the table of contents
+The aim of this thesis is to study the problem of regression for surrogate modeling, to develop a novel framework for design optimization that makes no assumptions on the model, and to give guidelines to apply the aforementioned theory to an early-stage aircraft wing design.
+The first part provides a summary of the mathematical foundations of learning theory for regression. The theory of Reproducing Kernel Hilbert Spaces is broadly covered. In addition, Gaussian Process regression is explained in detail. The second part introduces a novel framework for design optimization. Sampling from a probability distribution is at the core of this framework. Therefore, algorithms for simulating different distributions are described in detail. Furthermore, rejection sampling, the theory of Markov chains, and Metropolis-Hasting are explained as methods for simulating arbitrary distributions. The framework aims to optimize the parameters of a Probability Density Function in the input space of a surrogate model in order to satisfy prescribed performance in the output. Stochastic Optimization is suggested as the optimization process and a description of Simulated Annealing is included. This MPhil is part of a project in collaboration with Airbus. They provided a dataset with the goal of optimizing the jig twist of an aircraft wing. The last part analyzes this data and provides future researchers in the project with guidelines to train a Gaussian Process and apply the novel framework mentioned above to tackle the optimization problem.
+%\ldots
+\end{abstract}
+
+%----------------------------------------------------------------------------------------
+%	ACKNOWLEDGEMENTS
+%----------------------------------------------------------------------------------------
+
+\begin{acknowledgements}
+\addchaptertocentry{\acknowledgementname} % Add the acknowledgements to the table of contents
+\onehalfspacing
+
+I would like to extend my gratitude to Airbus and EPSRC for making this project available and supplying the funding that has made it possible for me to do this MPhil.
+
+lI would like to express my gratitude to my supervisors Dr. Abhishek Kundu and Prof. David Kennedy for giving me the opportunity to study this MPhil at Cardiff University and for their advice.% during my studies.
+
+I would like to offer my special thanks to Dr. Esther Dorado and Dr. Bertrand Gauthier for their selfless contributions to this thesis. Conversations with Dr. Gauthier improved the quality this work. I owe him the usage of Maximum Mean Discrepancy as a distance between distributions .
+
+I am deeply grateful to the friends I made in Cardiff, especially Dr. Julian Herbert. They made the process of adaptation to a new country and another language much easier for me.
+
+Finally, I would like to thank my family and my closer friends. They are always there to support me, even when there are hundreds of miles between us.
+
+\end{acknowledgements}
+
+%----------------------------------------------------------------------------------------
+%	LIST OF CONTENTS/FIGURES/TABLES PAGES
+%----------------------------------------------------------------------------------------
+
+\tableofcontents % Prints the main table of contents
+
+\listoffigures % Prints the list of figures
+
+\listofalgorithms
+%\addtocontents{loa}{\def\string\figurename{Algorithm}}
+
+%\listoftables % Prints the list of tables
+
+%----------------------------------------------------------------------------------------
+%	ABBREVIATIONS
+%----------------------------------------------------------------------------------------
+
+\begin{abbreviations}{ll} % Include a list of abbreviations (a table of two columns)
+
+FEM & Finite Element Method. \\
+EI & Bending Stiffness. \\
+GJ & Torsional Stiffness. \\
+SMT & External loads. Shear, Moment and Torque. \\
+DOE & Design Of Experiments. \\
+OLHS & Optimized Latin Hypercube Sampling. \\
+SFD & Space Filling Design. \\
+CFD & Computational Fluid Dynamics. \\
+CSM & Computational Structural Mechanics. \\
+Cl & Coefficient of Lift. \\
+L/D & Lift over Drag ratio. \\
+IQ & Interesting Quantities. \\
+ML & Machine Learning. \\
+GP & Gaussian Process. \\
+PDF & Probability Density Function. \\
+i.i.d. & Independent and identically distributed. \\
+PDS & Positive Definite Symmetric. \\
+RKHS & Reproducing Kernel Hilbert Spaces. \\
+MAP & Maximum a posteriori. \\
+SVD & Singular Value Decomposition. \\
+MCMC & Markov Chain Monte Carlo. \\
+M-H & Metropolis-Hastings. \\
+HMC & Hamiltonian Monte Carlo. \\
+SA & Simulated Annealing. \\
+MMD & Maximum Mean Discrepancy. \\
+NN & Neural Networks. \\
+%\textbf{LAH} & \textbf{L}ist \textbf{A}bbreviations \textbf{H}ere\\
+%\textbf{WSF} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or\\
+
+\end{abbreviations}
+
+
+%----------------------------------------------------------------------------------------
+%	PHYSICAL CONSTANTS/OTHER DEFINITIONS
+%----------------------------------------------------------------------------------------
+
+%\begin{constants}{lr@{${}={}$}l} % The list of physical constants is a three column table
+
+% The \SI{}{} command is provided by the siunitx package, see its documentation for instructions on how to use it
+
+%Speed of Light & $c_{0}$ & \SI{2.99792458e8}{\meter\per\second} (exact)\\
+%Constant Name & $Symbol$ & $Constant Value$ with units\\
+
+%\end{constants}
+
+%----------------------------------------------------------------------------------------
+%	SYMBOLS
+%----------------------------------------------------------------------------------------
+
+\begin{symbols}{lll} % Include a list of Symbols (a three column table)
+
+$\propto$ & Proportional to. \\
+%          & For example, $a \propto b$ means ``$a$ is proportional to $b$''. \\
+$\mathcal{O}$ & big O notation. \\
+$\mathbb{R}^N$ & $N$-dimensional Euclidean space. \\
+$\mathcal{C}(\mathcal{X})$ & Banach space of continuous functions on $\mathcal{X}$ \\ 
+      &with the infinity norm. \\
+$\Theta$ & Parameters space. \\
+$\theta$ & Parameters variable. \\
+$I_{k \times k}$ & $k \times k$ identity matrix. \\
+$\mathcal{X}$ & Input space in a regression/surrogate model. Usually a  \\
+  &subset of $\mathbb{R}^N$. \\
+$\mathcal{Y}$ & Output space in a regression/surrogate model. Usually a  \\
+  &subset of $\mathbb{R}^M$. \\
+$\mathcal{Z}$ & Joined $\mathcal{Z}=\mathcal{X} \times \mathcal{Y}$ input-output space. \\ 
+$n$ & Number of samples. \\
+$\nu$ & Borel measure on Euclidean Spaces. \\
+$\mathcal{B}(\mathcal{X})$ & Borel $\sigma$-algebra on $\mathcal{X}$. \\
+$\mathbb{P}(A)$ & Probability that event $A$ occurs. See section \ref{sec_probMeasuresNotation}. \\
+$p(x)$ & Probability density at the point or element $x$. See section \ref{sec_probMeasuresNotation}. \\
+$\mathbb{E}[X]$ & Expected value of $X$. \\
+$\textup{Var}(X)$ & Variance of $X$. \\
+$\textup{Cov}(X,X')$ & Covariance between $X$ and $X'$. \\ 
+$\mathcal{N}(\mu,\sigma^2)$ & Normal distribution with mean $\mu$ and variance $\sigma^2$. \\
+  & This notation will be use in the sense of either a \\
+  & random variable distribution, $\mathcal{X} \sim \mathcal{N}(\mu,\sigma^2)$, or \\
+  & probability density, $p(x) \sim \mathcal{N}(\mu,\sigma^2)$. \\ 
+  & The terminology Gaussian distribution may be used. \\
+  & The same notation will be used for the multivariate normal  \\
+  & distribution $\mathcal{N}(\mu,\Sigma)$. \\
+%  & If this is the case then $\Sigma$ will be the covariance matrix.  \\
+$\rho$ & Probability measure governing the  \\
+  &samples $\pmb{z} = ((x_1,y_1),\dots,(x_n,y_n)) \in \mathcal{Z}^n$. \\
+$\rho(y|x)$ & Conditional probability on $\mathcal{Y}$ with respect to $x \in \mathcal{X}$. \\
+$\rho_{\mathcal{X}}(x)$ & Marginal probability on $\mathcal{X}$. \\
+$\langle f,g \rangle_{\mathcal{H}}$ & Inner product in the Hilbert space $\mathcal{H}$. \\
+$\|f\|_{\mathcal{H}}$ & Norm in the Banach space $\mathcal{H}$. \\
+$f_\rho$ & Regression function of $\rho$. \\
+$\sigma^2$ & Usually the variance of a normal distribution. \\
+           & In GP regression, the variance of the  \\ 
+           & likelihood $p(y | x,w) = \mathcal{N}(w^T x, \sigma^2)$ \\
+           & or $p(y | x,w) = \mathcal{N}(w^T \Phi(x), \sigma^2)$. \\
+$\sigma^2(x)$ & Variance of $y \in \mathcal{Y}$ according to $\rho(y|x)$. \\
+$\sigma_{\rho}^2$ & $\mathcal{E}_{\rho}(f_\rho)$. Expected value of $\sigma^2(x)$ according to $\rho_{\mathcal{X}}$. \\
+$\Sigma_w$ & Covariance matrix of the weights prior in GP regression. \\
+$\mathcal{E}_{\rho}(f)$ & The least squares error of $f$ w.r.t $\rho$. \\
+$\pmb{z}$ & %$\pmb{z} = ((x_1,y_1),\dots,(x_n,y_n)) \in \mathcal{Z}^n$. 
+            Independent and identically distributed samples according to $\rho$. \\
+$\mathcal{E}_{\pmb{z}}(f)$ & The empirical error of $f$ with respect to the sample $\pmb{z}$. \\
+%$\mathcal{C}(\mathcal{X})$ & The space of continuous functions on $\mathcal{X}$ with the infinity norm. \\
+$\mathcal{H}$ & Hypothesis space. \\
+              & RKHS. \\
+$\mathcal{E}_{\pmb{z},\gamma}(f)$ & The regularized empirical error of $f$ w.r.t. the sample $\pmb{z}$. \\
+$f_{\mathcal{H}}$ & Target function. A function minimizing the  \\
+  &least square error in $\mathcal{H}$. \\
+$f_{\pmb{z}}$ & Empirical target function. A function minimizing  \\
+  &the empirical error w.r.t. $\pmb{z}$. \\
+$f_{\pmb{z},\gamma}$ & Empirical target function. A function minimizing $\mathcal{E}_{\pmb{z},\gamma}$. \\
+$\mathcal{L}^2_{\nu}(\mathcal{X})$ & The Hilbert space of square integrable functions on $\mathcal{X}$. \\
+$K$ & Kernel function $K: \mathcal{X} \times \mathcal{X} \to \mathbb{R}$. \\
+    & Transition matrix in the MCMC context. \\
+    & Transition kernel function on $\Omega \times \mathcal{\Omega}$ in the MCMC context. \\
+%$K[\pmb{x}]$ & Matrix whose $(i,j)$ entries are $K(x_i,x_j)$ where $\pmb{x}=(x_1,\dots,x_s) \in \mathcal{X}^s$. \\
+$K[\pmb{t}]$ & $K[\pmb{t}] = \left( K(t_i,t_j) \right)_{\substack{1 \leq i \leq s \\ 1 \leq j \leq s}} \in \mathbb{R}^{s \times s}$ where $t \in \mathcal{X}^s$. \\
+$K[\pmb{t},\pmb{t'}]$ & $K[\pmb{t},\pmb{t'}] = \left( K(t_i,t'_j) \right)_{\substack{1 \leq i \leq s \\ 1 \leq j \leq r}} \in \mathbb{R}^{s \times r}$ where $t \in \mathcal{X}^s$ and $t' \in \mathcal{X}^r$. \\
+%$f_{\pmb{x}}$ & $(f_{x_1}, \dots, f_{x_s})$ where $\pmb{x}=(x_1,\dots,x_s) \in \mathcal{X}^s$. \\
+$L_{K}$ & Linear operator associated with the kernel $K$. \\
+$\lambda_k$ & $k$th eigenvalue of a Linear operator. \\
+$\Phi(x)$ & Feature map. \\
+$\phi(x)$ & $k$th component of a feature map. $k$th eigenfunction of a  \\
+  &Linear operator. \\
+$\pmb{x}$ & $\pmb{x} = \{x_1,\dots,x_n\}$ where $x_i \in \mathcal{X}$ are the inputs in the training set. \\
+          & $\pmb{x} = \{x_1,\dots,x_n\}$ where $x_i \in \mathcal{X}$, set of samples in \\
+          & the input space of a surrogate model. \\ 
+$\pmb{y}$ & $\pmb{y} = (y_1,\dots,y_n)^T$ where $y_i \in \mathcal{Y}$ are the outputs in the training set. \\
+          & $\pmb{y} = (y_1,\dots,y_n)^T$ where $y_i \in \mathcal{Y}$, set of samples in \\
+          & the output space of a surrogate model. \\ 
+$\pmb{y_x}$ & Set of samples in the output space of a surrogate model \\
+            & propagated from the set of samples $\pmb{x}$ in the input space. \\  
+$\pmb{X}$ & Design matrix $\pmb{X} = [x_1 \hdots x_n] \in \mathbb{R}^{N \times n}$ in GP regression. \\
+$\Phi_{\pmb{X}}$ & Proyection of the Design matrix into a feature  \\
+  &space $\Phi_{\pmb{X}} = [\Phi(x_1) \hdots \Phi(x_n)]$. \\
+$w$ & Vector of weights in GP regression. \\
+$\bar{w}$ & Weights MAP estimate. \\
+$w_{\mathcal{E}_{\pmb{z}}}$ & Vector of weights minimizing the empirical error $\mathcal{E}_{\pmb{z}}$. \\
+$w_{\mathcal{E}_{\pmb{z},\gamma}}$ & Vector of weights minimizing the regularized empirical error $\mathcal{E}_{\pmb{z},\gamma}$. \\
+$A$ & In GP regression, matrix defined in (\ref{eq_matrixA}). \\
+$A_{\Phi}$ & In GP regression, matrix defined in (\ref{eq_matrixAPHI}). \\
+$\Omega$ & Sample space. \\
+$\mathcal{F}$ & Parameteric family of density functions in the input \\
+              & space of a surrogate model. \\
+$\mu_{\mathbb{P}}$ & Kernel mean embedding of the probability distribution $\mathbb{P}$. \\
+%$\mathcal{F}$ & Parametric family of probability distributions. \\
+$\lambda$ & In section \ref{sec_inverseDesign}, parameters of a probability distributions. \\
+$S(\lambda)$ & Space of parameters $\lambda$. \\
+$f_T$ & Target PDF in the output space of a surrogate model. \\
+$f_{\lambda}$ & PDF in $\mathcal{F}$ with parameters $\lambda$. \\
+$f_{\mu,\Sigma}$ & PDF in the space of gaussian densities with mean $\mu$ and  \\
+  &covariance matrix $\Sigma$. \\
+$H$ & Objective function in an optimization problem. \\
+
+%$a$ & distance & \si{\meter} \\
+%$P$ & power & \si{\watt} (\si{\joule\per\second}) \\
+%Symbol & Name & Unit \\
+
+%\addlinespace % Gap to separate the Roman symbols from the Greek
+
+%$\omega$ & angular frequency & \si{\radian} \\
+
+\end{symbols}
+
+%----------------------------------------------------------------------------------------
+%	DEDICATION
+%----------------------------------------------------------------------------------------
+
+\dedicatory{Dedicated to Esther, my sister, Manuela, my mother and Arya, my love.} 
+
+%----------------------------------------------------------------------------------------
+%	THESIS CONTENT - CHAPTERS
+%----------------------------------------------------------------------------------------
+
+\mainmatter % Begin numeric (1,2,3...) page numbering
+
+\pagestyle{thesis} % Return the page headers back to the "thesis" style
+%\addtokomafont{pagehead}{\normalsize}
+\onehalfspacing
+
+% Include the chapters of the thesis as separate files from the Chapters folder
+% Uncomment the lines as you write the chapters
+
+\include{Chapters/chapterIntroduction}
+\include{Chapters/chapterForwardProblem}
+\include{Chapters/chapterInverseProblem}
+\include{Chapters/chapterAirBusData} 
+\include{Chapters/chapterConclusions}
+%\include{Chapters/Chapter3}
+%\include{Chapters/Chapter4} 
+%\include{Chapters/Chapter5} 
+
+%----------------------------------------------------------------------------------------
+%	THESIS CONTENT - APPENDICES
+%----------------------------------------------------------------------------------------
+
+%\appendix % Cue to tell LaTeX that the following "chapters" are Appendices
+
+% Include the appendices of the thesis as separate files from the Appendices folder
+% Uncomment the lines as you write the Appendices
+
+%\include{Appendices/AppendixA}
+%\include{Appendices/AppendixB}
+%\include{Appendices/AppendixC}
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+
+%\bibliographystyle{apalike}
+%\bibliography{Quellen}
+\renewcommand{\bibname}{References}
+\printbibliography[heading=bibintoc]
+
+%----------------------------------------------------------------------------------------
+
+\end{document}  

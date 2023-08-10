@@ -1,0 +1,176 @@
+\chapter{Introduction} \label{chapter_introduction} 
+
+%----------------------------------------------------------------------------------------
+%	SECTION 
+%----------------------------------------------------------------------------------------
+
+The motivation of this work is the optimization of the design parameters of a aircraft wing using data collected from simulations. 
+Nevertheless, this thesis has been written considering an arbitrary design problem. It is divided into two theoretical Chapters (Chapters \ref{chapter_forwardProblem} and \ref{chapter_inverseProblem}) and a Chapter that provides guidelines to apply that theory to a particular dataset (Chapter \ref{chapter_AirBusData}) related to the aforementioned aircraft wing case.
+
+The goal of Chapter \ref{chapter_forwardProblem} is to study the problem of regression for surrogate modeling.
+%The goal of Chapter \ref{chapter_forwardProblem} is to provide information about building a surrogate model from input-output data. 
+In order to do so, the learning theory approach is adopted.
+
+Chapter \ref{chapter_inverseProblem} introduces a novel framework for design optimization.
+
+It is assumed that the reader has basic mathematical knowledge in algebra, analysis, probability and measure theory, and Bayesian analysis. Notation clarifications are provided in section \ref{sec_probMeasuresNotation}.
+
+\section{Forward problem}
+
+Chapter \ref{chapter_forwardProblem} is a summary of the mathematical foundations of learning theory and the theory of Gaussian Process (GP) regression.
+Sections \ref{sec_regressionFunction}, \ref{sec_generalizationError}, \ref{sec_hypothesisSpaces} and \ref{sec_sampleApproximationErrors} set the basic concepts and notations of learning theory.
+
+GP is the regression algorithm adopted in this thesis. 
+Reproducing Kernel Hilbert Spaces (RKHS) are a family of Hypothesis Spaces broadly used in Machine Learning (ML) and strong connections between GP and RKHS theory are given.
+
+Section \ref{sec_RKHS} explains the RKHS theory. 
+Sections \ref{sec_operatorsKernel} and \ref{sec_spectralTheorem} define a linear operator $L_K$ given by a kernel function $K$ and its spectral decomposition. 
+Section \ref{sec_mercer} shows that a kernel $K$ that is symmetric and positive-definite can be decomposed in a summation involving the eigenfunctions of the linear operator $L_K$ (theorem \ref{theorem_mercer}). 
+Section \ref{sec_featureSpaceKernelTrick} uses this result to state and prove ``the kernel trick'' (theorem \ref{theorem_kernelTrick}). 
+The kernel trick is a widely used technique in the ML community to ``kernelize'' algorithms. 
+This is the case of GP regression where the kernel trick allows the linear model to work with infinite-dimensional feature spaces.% number of basis functions.
+
+Section \ref{sec_characterizationRKHS} characterizes RKHS spaces and their inner product. 
+Section \ref{sec_representerTheorem} proves the celebrated Representer theorem (theorem \ref{theorem_representer}).
+Finally, section \ref{sec_GP} explains GP regression theory.% and its connection to  make the strong connections mentioned above between it and the Representer theorem. 
+Full justification of the mathematical steps needed to build a GP for regression are given.%, including, e.g., the justification of the kernel trick when it is applied to define the covariance matrix in the GP prior (see (\ref{eq_specifyingGP}) and (\ref{eq_specifyingGPkernels})).
+
+\section{Inverse problem}
+
+Chapter \ref{chapter_inverseProblem} introduces a novel framework for design optimization.% based on sampling theory.
+The aim is to find a probability distribution in the input space of a surrogate model that satisfies a prescribed performance in the output when uncertainties are propagated.
+
+Sampling from a distribution is at the core of this framework.
+Section \ref{sec_sampling} provides algorithms for sampling from a given Probability Density Function (PDF).
+
+Sections \ref{sec_pseudorandomNumberGenerator} and \ref{sec_uniformDistribution} describe how a computer generates uniform random samples from $(0,1)$, which is the basic tool for any other sampling algorithm.
+
+Section \ref{sec_inverseTransformSampling} explains the inverse transform sampling method, which is used in section \ref{sec_samplingGaussian} to give two algorithms (algorithms \ref{alg_randomNormal} and \ref{alg_randomNormalImprovement}) for sampling from a standard normal distribution.
+%Section \ref{sec_nonstandardnormal} extends those algorithms for sampling from any univariate normal distribution.
+
+In order to apply the framework introduced in this thesis, it is needed to set a family of probability distributions $\mathcal{F}$ in the input space of the surrogate model.
+One of the families proposed in this work is the multivariate normal distribution, and efficient methods for sampling from it are required.
+Section \ref{sec_multivariateNormal} uses algorithms \ref{alg_randomNormal} or \ref{alg_randomNormalImprovement} to design a method for sampling from any multivariate normal distribution.
+
+Section \ref{sec_samplingArbitraryPDF} presents two methods for sampling from an arbitrary distribution with known PDF: Rejection sampling and Metropolis Hasting (M-H), and
+%Furthermore, it gives 
+some notion of Markov chain theory, which is required to understand M-H.  
+
+The main novel ideas of this thesis are given in sections \ref{sec_samplingWithVariablesConstraints} and \ref{sec_inverseDesign}.
+
+Section \ref{sec_samplingWithVariablesConstraints} illustrates a method to use the sampling algorithms explained in the Chapter (or any other sampling algorithm) in constrained spaces.
+This method would be relevant to satisfy constraints in the input variables of the surrogate model, or if there are constraints in the parameters of the parametric family $\mathcal{F}$. For instance, the weights of mixture distributions described in section \ref{sec_mixtures}.
+
+Section \ref{sec_inverseDesign} introduces the aforementioned novel framework for design optimization.% mentioned above.
+%The aim is to find a d satisfy some requirements in the output space of a surrogate model.
+A parametric family of distributions $\mathcal{F}$ is set in the input space of the surrogate model and its parameters are optimized to satisfy the prescribed performance in the outputs.
+Different approaches could be adopted for the optimization process.
+Section \ref{sec_StochasticOptimization} suggests stochastic optimization. 
+Simulated Annealing (SA), which is based in M-H, is described in section \ref{sec_SimulatedAnnealing}.
+
+Different objective functions are proposed according to different requirements in the output space.
+Section \ref{sec_targetPDFapproximation} provides an objective function for the particular case of a given target PDF, which is explained in detail.
+
+Section \ref{sec_parametricFamilies} suggests multivariate normals and mixture distributions as parametric families $\mathcal{F}$.
+
+An important trait of this framework is that it makes no assumptions in the surrogate model.
+However, section \ref{sec_gradientBasedOptimization} makes an interesting suggestion if differentiability is provable.
+
+\section{Airbus project}
+
+The research conducted during this MPhil was part of a project in collaboration with Airbus.
+They provided a dataset with the goal of optimizing the jig twist of an aircraft wing.
+
+The aim of Chapter \ref{chapter_AirBusData} is to provide future researchers in the project with a methodology to tackle this problem.
+This methodology is based on Chapters \ref{chapter_forwardProblem} and \ref{chapter_inverseProblem}.
+
+%It is suggested the use of GP regression, which is explained in detail in Chapter XXXX, to create a surrogate model from the dataset.
+Sections \ref{sec_parametrization} and \ref{sec_simulations} analyze the data in detail. 
+Experiments were conducted in the dataset to make recommendations about training a GP.
+Section \ref{sec_designOptimizationGuidelines} provides guidelines to apply the design optimization framework introduced in Chapter \ref{chapter_inverseProblem} in this particular problem.
+
+\section{Probability measures and notation} \label{sec_probMeasuresNotation}
+
+The Borel $\sigma$-algebra on an arbitrary topological space $\mathcal{Z}$ will be denoted by $\mathcal{B}(\mathcal{Z})$. On a sample space $\mathcal{Z}$, if the $\sigma$-algebra of the probability space is not specified, then it will be $\mathcal{B}(\mathcal{Z})$.
+
+Let $Z$ be a random variable that takes values on a topological space $\mathcal{Z}$. Let $\rho$ be a probability measure on $\mathcal{B}(\mathcal{Z})$ and consider the probability space $(\mathcal{Z},\mathcal{B}(\mathcal{Z}),\rho)$. In some cases, the probability density of $z \in \mathcal{Z}$ with respect to the Lebesgue measure on $(\mathcal{Z},\mathcal{B}(\mathcal{Z}))$ will be denoted by $p(z)$ and defined as the Radon-Nikodym derivative,
+\begin{equation*}
+  p(z) = \frac{d\rho(z)}{dz}.
+\end{equation*}
+
+Rigorously, a PDF $f_Z$ of the random variable $Z$ should be defined. However, for the sake of simplicity, $p$ will be used to refer to probability density with no distinction between random variables. Therefore, if $Z'$ is another random variable in a measurable space $(\mathcal{Z}',\mathcal{B}(\mathcal{Z}'),\rho')$ with PDF $f_{Z'}$ then,
+\begin{equation*}
+    p(z)  = f_Z(z), \ \forall z \in \mathcal{Z},
+\end{equation*}
+and,
+\begin{equation*}
+    p(z') = f_{Z'}(z'), \ \forall z' \in \mathcal{Z}'.
+\end{equation*}
+%\begin{equation*}
+%  \begin{aligned}
+%    p(z)  &= f_Z(z), \ \forall z \in \mathcal{Z}  \ \text{ and } \\
+%    p(z') &= f_{Z'}(z'), \ \forall z' \in \mathcal{Z}'.
+%  \end{aligned}
+%\end{equation*}
+
+Analogously, if $\mathcal{Z} = \mathcal{X} \times \mathcal{Y}$ and $Z = (X,Y)$, then the conditional probability density of $y \in \mathcal{Y}$ given $x \in \mathcal{X}$ will be,
+\begin{equation*}
+  p(y|x) = \frac{d\rho(y|x)}{dy},
+\end{equation*}
+and the marginal probability density of $x \in \mathcal{X}$ will be,
+\begin{equation*}
+  p(x) = \frac{d\rho_{\mathcal{X}}(x)}{dx}.
+\end{equation*}
+Therefore, if $A \in \mathcal{B}(\mathcal{X})$, $B \in \mathcal{B}(\mathcal{Y})$, $C \in \mathcal{B}(\mathcal{Z})$ and $x \in \mathcal{X}$ then,
+\begin{equation*}
+  \begin{array}{r c c c l}
+    \mathbb{P}(X \in A)         &= &\int_{A} d\rho_{\mathcal{X}}(x) &= &\int_{A} p(x)dx, \\
+    \mathbb{P}(Y \in B \ | \ x) &= &\int_{B} d\rho(y|x)             &= &\int_{B} p(y|x)dy, \\
+    \mathbb{P}(Z \in C)         &= &\int_{C} d\rho(z)               &= &\int_{C} p(z)dz,
+  \end{array}
+\end{equation*}
+where $\mathbb{P}$ is used for denoting the probability that an event occurs.
+
+Not only the definition of the PDF can be avoided but also the random variable itself, and the measurable space will be known by the context. For example, expressions such as,
+\begin{equation*}
+  \text{For } \ x \in \mathcal{X} \ \text{ and } \ y \in \mathcal{Y}, \ 
+  p(y | x) = \frac{1}{\sigma\sqrt{2 \pi}}\exp \left( \frac{-(y-x)^2}{2\sigma^2} \right)
+  = \mathcal{N}(x,\sigma^2),
+\end{equation*}
+will be common.
+Hence, there will be abuses of notation,
+$$
+ \begin{aligned}
+  x &\sim \mathcal{N}(0,1) \\
+  p(x) &= \frac{1}{\sigma\sqrt{2 \pi}}\exp \left( -\frac{x^2}{2\sigma^2} \right), \\
+ \end{aligned}
+$$ 
+where there is no distinction between the random variable and the PDF variable.
+
+Following the usual Bayesian inference procedure, conditional probability notation will be used with no rigorous definitions with a variety of objects such as PDF parameters or data points. For instance, expressions such as,
+\begin{equation*}
+  p(y | x,\sigma^2) = \mathcal{N}(x,\sigma^2),
+\end{equation*}
+will be common.
+
+However, in some situations where a more rigorous notation is essential to avoid ambiguity, PDFs or random variables will be specifically defined, especially in Chapter \ref{chapter_inverseProblem}. 
+
+Symbol $\sim$ will be used to designate that a random variable follows a particular probability distribution, or to indicate that a random variable follows a distribution given by a particular PDF. 
+For example, notations such as,
+$$
+  x \sim \mathcal{N}(0,1)
+$$
+and
+$$
+  X \sim f(x) = \frac{1}{\sigma\sqrt{2 \pi}}\exp \left( -\frac{x^2}{2\sigma^2} \right),
+$$
+or even
+$$
+  x \sim f(x) = \frac{1}{\sigma\sqrt{2 \pi}}\exp \left( -\frac{x^2}{2\sigma^2} \right),
+$$
+will be used.
+
+%EXPLAIN SYMBOL $\sim$. WITH RANDOM VARIABLES $X \sim$, WITH DENSITIES $p(x) \sim$ AND (MAYBE) $f \sim$.
+
+These abuses of notation are adopted in order to simplify the exposition and to aid understanding.
+

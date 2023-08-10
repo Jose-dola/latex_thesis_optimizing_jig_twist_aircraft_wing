@@ -1,0 +1,3770 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.0 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\datalist[entry]{nyt/global//global/global}
+  \entry{alvarez2012}{article}{}
+    \name{author}{3}{}{%
+      {{hash=AMA}{%
+         family={Alvarez},
+         familyi={A\bibinitperiod},
+         given={Mauricio\bibnamedelima A.},
+         giveni={M\bibinitperiod\bibinitdelim A\bibinitperiod},
+      }}%
+      {{hash=RL}{%
+         family={Rosasco},
+         familyi={R\bibinitperiod},
+         given={Lorenzo},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=LND}{%
+         family={Lawrence},
+         familyi={L\bibinitperiod},
+         given={Neil\bibnamedelima D.},
+         giveni={N\bibinitperiod\bibinitdelim D\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \keyw{Computer Science - Artificial Intelligence,Mathematics - Statistics
+  Theory,Statistics - Machine Learning}
+    \strng{namehash}{AMARLLND1}
+    \strng{fullhash}{AMARLLND1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{shorttitle}
+    \field{labelyear}{2012}
+    \field{labeldatesource}{year}
+    \field{sortinit}{A}
+    \field{sortinithash}{A}
+    \field{abstract}{%
+    Kernel methods are among the most popular techniques in machine learning.
+  From a regularization perspective they play a central role in regularization
+  theory as they provide a natural choice for the hypotheses space and the
+  regularization functional through the notion of reproducing kernel Hilbert
+  spaces. From a probabilistic perspective they are the key in the context of
+  Gaussian processes, where the kernel function is known as the covariance
+  function. Traditionally, kernel methods have been used in supervised learning
+  problem with scalar outputs and indeed there has been a considerable amount
+  of work devoted to designing and learning kernels. More recently there has
+  been an increasing interest in methods that deal with multiple outputs,
+  motivated partly by frameworks like multitask learning. In this paper, we
+  review different methods to design or learn valid kernel functions for
+  multiple outputs, paying particular attention to the connection between
+  probabilistic and functional methods.%
+    }
+    \verb{eprint}
+    \verb 1106.6251
+    \endverb
+    \field{shorttitle}{Kernels for {{Vector}}-{{Valued Functions}}}
+    \field{title}{Kernels for {{Vector}}-{{Valued Functions}}: A {{Review}}}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/JDVI2CSZ/Alva
+    \verb rez et al. - 2012 - Kernels for Vector-Valued Functions a Review.pdf
+    \endverb
+    \field{journaltitle}{arXiv:1106.6251 [cs, math, stat]}
+    \field{eprinttype}{arxiv}
+    \field{eprintclass}{cs, math, stat}
+    \field{month}{04}
+    \field{year}{2012}
+    \warn{\item Can't use 'eprinttype' + 'archiveprefix'}
+  \endentry
+
+  \entry{anderson2003}{book}{}
+    \name{author}{1}{}{%
+      {{hash=ATW}{%
+         family={Anderson},
+         familyi={A\bibinitperiod},
+         given={Theodore\bibnamedelima Wilbur.},
+         giveni={T\bibinitperiod\bibinitdelim W\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {English}%
+    }
+    \list{publisher}{1}{%
+      {{Wiley-Interscience}}%
+    }
+    \strng{namehash}{ATW1}
+    \strng{fullhash}{ATW1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2003}
+    \field{labeldatesource}{year}
+    \field{sortinit}{A}
+    \field{sortinithash}{A}
+    \field{isbn}{0-471-36091-0 978-0-471-36091-9}
+    \field{title}{An Introduction to Multivariate Statistical Analysis}
+    \list{location}{1}{%
+      {{Hoboken N.J}}%
+    }
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/ZVT62H27/An I
+    \verb ntroduction to Multivariate Statistical Analysis (Wiley Series in Pro
+    \verb bability and Statistics) - 3rd edition by T. W. Anderson (z-lib.org).
+    \verb djvu
+    \endverb
+    \field{year}{2003}
+  \endentry
+
+  \entry{antunes2017}{incollection}{}
+    \name{author}{4}{}{%
+      {{hash=AF}{%
+         family={Antunes},
+         familyi={A\bibinitperiod},
+         given={Francisco},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=OA}{%
+         family={O'Sullivan},
+         familyi={O\bibinitperiod},
+         given={Aidan},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=RF}{%
+         family={Rodrigues},
+         familyi={R\bibinitperiod},
+         given={Filipe},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=PF}{%
+         family={Pereira},
+         familyi={P\bibinitperiod},
+         given={Francisco},
+         giveni={F\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{AF+1}
+    \strng{fullhash}{AFOARFPF1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2017}
+    \field{labeldatesource}{year}
+    \field{sortinit}{A}
+    \field{sortinithash}{A}
+    \field{booktitle}{Springer {{Geography}}}
+    \field{isbn}{978-3-319-40900-9}
+    \field{pages}{141\bibrangedash 160}
+    \field{title}{A Review of Heteroscedasticity Treatment with Gaussian
+  Processes and Quantile Regression Meta-Models}
+    \field{month}{10}
+    \field{year}{2017}
+  \endentry
+
+  \entry{aronszajn1950a}{article}{}
+    \name{author}{1}{}{%
+      {{hash=AN}{%
+         family={Aronszajn},
+         familyi={A\bibinitperiod},
+         given={N.},
+         giveni={N\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \strng{namehash}{AN1}
+    \strng{fullhash}{AN1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1950}
+    \field{labeldatesource}{year}
+    \field{sortinit}{A}
+    \field{sortinithash}{A}
+    \verb{doi}
+    \verb 10.1090/S0002-9947-1950-0051437-7
+    \endverb
+    \field{issn}{0002-9947}
+    \field{number}{3}
+    \field{pages}{337\bibrangedash 337}
+    \field{title}{Theory of Reproducing Kernels}
+    \field{volume}{68}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/KZPJEC6T/Aron
+    \verb szajn - 1950 - Theory of reproducing kernels.pdf
+    \endverb
+    \field{journaltitle}{Transactions of the American Mathematical Society}
+    \field{month}{03}
+    \field{year}{1950}
+  \endentry
+
+  \entry{bell1968}{article}{}
+    \name{author}{1}{}{%
+      {{hash=BJR}{%
+         family={Bell},
+         familyi={B\bibinitperiod},
+         given={James\bibnamedelima R.},
+         giveni={J\bibinitperiod\bibinitdelim R\bibinitperiod},
+      }}%
+    }
+    \keyw{frequency distribution,normal deviates,normal
+  distribution,probability distribution,random,random number,random number
+  generator,simulation}
+    \strng{namehash}{BJR1}
+    \strng{fullhash}{BJR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1968}
+    \field{labeldatesource}{year}
+    \field{sortinit}{B}
+    \field{sortinithash}{B}
+    \verb{doi}
+    \verb 10.1145/363397.363547
+    \endverb
+    \field{issn}{0001-0782}
+    \field{number}{7}
+    \field{pages}{498}
+    \field{title}{Algorithm 334: {{Normal}} Random Deviates}
+    \field{volume}{11}
+    \field{journaltitle}{Communications of the ACM}
+    \field{month}{07}
+    \field{year}{1968}
+  \endentry
+
+  \entry{betancourt2018}{article}{}
+    \name{author}{1}{}{%
+      {{hash=BM}{%
+         family={Betancourt},
+         familyi={B\bibinitperiod},
+         given={Michael},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \keyw{Statistics - Methodology}
+    \strng{namehash}{BM1}
+    \strng{fullhash}{BM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2018}
+    \field{labeldatesource}{year}
+    \field{sortinit}{B}
+    \field{sortinithash}{B}
+    \field{abstract}{%
+    Hamiltonian Monte Carlo has proven a remarkable empirical success, but only
+  recently have we begun to develop a rigorous understanding of why it performs
+  so well on difficult problems and how it is best applied in practice.
+  Unfortunately, that understanding is confined within the mathematics of
+  differential geometry which has limited its dissemination, especially to the
+  applied communities for which it is particularly important.%
+    }
+    \verb{eprint}
+    \verb 1701.02434
+    \endverb
+    \field{title}{A {{Conceptual Introduction}} to {{Hamiltonian Monte Carlo}}}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/8QLI7Q5W/Beta
+    \verb ncourt - 2018 - A Conceptual Introduction to Hamiltonian Monte Car.pd
+    \verb f
+    \endverb
+    \field{journaltitle}{arXiv:1701.02434 [stat]}
+    \field{eprinttype}{arxiv}
+    \field{eprintclass}{stat}
+    \field{month}{07}
+    \field{year}{2018}
+    \warn{\item Can't use 'eprinttype' + 'archiveprefix'}
+  \endentry
+
+  \entry{bilionis2013}{article}{}
+    \name{author}{4}{}{%
+      {{hash=BI}{%
+         family={Bilionis},
+         familyi={B\bibinitperiod},
+         given={Ilias},
+         giveni={I\bibinitperiod},
+      }}%
+      {{hash=ZN}{%
+         family={Zabaras},
+         familyi={Z\bibinitperiod},
+         given={Nicholas},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=KB}{%
+         family={Konomi},
+         familyi={K\bibinitperiod},
+         given={Bledar},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=LG}{%
+         family={Lin},
+         familyi={L\bibinitperiod},
+         given={Guang},
+         giveni={G\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{BI+1}
+    \strng{fullhash}{BIZNKBLG1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2013}
+    \field{labeldatesource}{year}
+    \field{sortinit}{B}
+    \field{sortinithash}{B}
+    \verb{doi}
+    \verb 10.1016/j.jcp.2013.01.011
+    \endverb
+    \field{pages}{212\bibrangedash 239}
+    \field{title}{Multi-Output Separable {{Gaussian}} Process: {{Towards}} an
+  Efficient, Fully {{Bayesian}} Paradigm for Uncertainty Quantification}
+    \field{volume}{241}
+    \field{journaltitle}{Journal of Computational Physics}
+    \field{month}{05}
+    \field{year}{2013}
+  \endentry
+
+  \entry{blum2001}{article}{}
+    \name{author}{2}{}{%
+      {{hash=BC}{%
+         family={Blum},
+         familyi={B\bibinitperiod},
+         given={Christian},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=RA}{%
+         family={Roli},
+         familyi={R\bibinitperiod},
+         given={Andrea},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{BCRA1}
+    \strng{fullhash}{BCRA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2001}
+    \field{labeldatesource}{year}
+    \field{sortinit}{B}
+    \field{sortinithash}{B}
+    \verb{doi}
+    \verb 10.1145/937503.937505
+    \endverb
+    \field{pages}{268\bibrangedash 308}
+    \field{title}{Metaheuristics in Combinatorial Optimization: {{Overview}}
+  and Conceptual Comparison}
+    \field{volume}{35}
+    \field{journaltitle}{ACM Computing Surveys}
+    \field{month}{01}
+    \field{year}{2001}
+  \endentry
+
+  \entry{bobrowski2005}{book}{}
+    \name{author}{1}{}{%
+      {{hash=BA}{%
+         family={Bobrowski},
+         familyi={B\bibinitperiod},
+         given={Adam.},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {English}%
+    }
+    \list{publisher}{1}{%
+      {{Cambridge Univ. Press}}%
+    }
+    \strng{namehash}{BA1}
+    \strng{fullhash}{BA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2005}
+    \field{labeldatesource}{year}
+    \field{sortinit}{B}
+    \field{sortinithash}{B}
+    \field{isbn}{0-521-53937-4 0-521-83166-0 978-0-521-83166-6
+  978-0-521-53937-1}
+    \field{title}{Functional Analysis for Probability and Stochastic Processes
+  : An Introduction}
+    \list{location}{1}{%
+      {{Cambridge}}%
+    }
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/LPJB4WZA/2006
+    \verb  - Functional analysis for probability and stochastic.pdf
+    \endverb
+    \field{year}{2005}
+  \endentry
+
+  \entry{box1958}{article}{}
+    \name{author}{2}{}{%
+      {{hash=BGEP}{%
+         family={Box},
+         familyi={B\bibinitperiod},
+         given={G.\bibnamedelima E.\bibnamedelima P.},
+         giveni={G\bibinitperiod\bibinitdelim E\bibinitperiod\bibinitdelim
+  P\bibinitperiod},
+      }}%
+      {{hash=MME}{%
+         family={Muller},
+         familyi={M\bibinitperiod},
+         given={Mervin\bibnamedelima E.},
+         giveni={M\bibinitperiod\bibinitdelim E\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \list{publisher}{1}{%
+      {{The Institute of Mathematical Statistics}}%
+    }
+    \strng{namehash}{BGEPMME1}
+    \strng{fullhash}{BGEPMME1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1958}
+    \field{labeldatesource}{year}
+    \field{sortinit}{B}
+    \field{sortinithash}{B}
+    \verb{doi}
+    \verb 10.1214/aoms/1177706645
+    \endverb
+    \field{issn}{0003-4851}
+    \field{number}{2}
+    \field{pages}{610\bibrangedash 611}
+    \field{title}{A {{Note}} on the {{Generation}} of {{Random Normal
+  Deviates}}}
+    \field{volume}{29}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/IRNCAC9M/Box
+    \verb y Muller - 1958 - A Note on the Generation of Random Normal Deviates.
+    \verb pdf
+    \endverb
+    \field{journaltitle}{Ann. Math. Statist.}
+    \field{month}{06}
+    \field{year}{1958}
+  \endentry
+
+  \entry{brooks2011}{book}{}
+    \name{author}{1}{}{%
+      {{hash=BS}{%
+         family={Brooks},
+         familyi={B\bibinitperiod},
+         given={Steve},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {English}%
+    }
+    \list{publisher}{1}{%
+      {{Taylor \& Francis}}%
+    }
+    \strng{namehash}{BS1}
+    \strng{fullhash}{BS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2011}
+    \field{labeldatesource}{year}
+    \field{sortinit}{B}
+    \field{sortinithash}{B}
+    \field{isbn}{978-1-4200-7941-8 1-4200-7941-7}
+    \field{title}{Handbook for {{Markov}} Chain {{Monte Carlo}}}
+    \list{location}{1}{%
+      {{Boca Raton}}%
+    }
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/TJI4MA6Z/Broo
+    \verb ks - 2011 - Handbook for Markov chain Monte Carlo.pdf
+    \endverb
+    \field{year}{2011}
+  \endentry
+
+  \entry{carmeli2006}{article}{}
+    \name{author}{3}{}{%
+      {{hash=CC}{%
+         family={Carmeli},
+         familyi={C\bibinitperiod},
+         given={Claudio},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=DVE}{%
+         family={De\bibnamedelima Vito},
+         familyi={D\bibinitperiod\bibinitdelim V\bibinitperiod},
+         given={Ernesto},
+         giveni={E\bibinitperiod},
+      }}%
+      {{hash=TA}{%
+         family={Toigo},
+         familyi={T\bibinitperiod},
+         given={Alessandro},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \strng{namehash}{CCDVETA1}
+    \strng{fullhash}{CCDVETA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2006}
+    \field{labeldatesource}{year}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{abstract}{%
+    We characterize the reproducing kernel Hilbert spaces whose elements are
+  p-integrable functions in terms of the boundedness of the integral operator
+  whose kernel is the reproducing kernel. Moreover, for p = 2, we show that the
+  spectral decomposition of this integral operator gives a complete description
+  of the reproducing kernel, extending the Mercer theorem.%
+    }
+    \verb{doi}
+    \verb 10.1142/S0219530506000838
+    \endverb
+    \field{issn}{0219-5305, 1793-6861}
+    \field{number}{04}
+    \field{pages}{377\bibrangedash 408}
+    \field{title}{Vector Valued {{Reproducing Kernel Hilbert Spaces}} of
+  Integrable Functions and {{Mercer}} Theorem}
+    \field{volume}{04}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/MXD8935L/Carm
+    \verb eli et al. - 2006 - VECTOR VALUED REPRODUCING KERNEL HILBERT SPACES O
+    \verb F.pdf
+    \endverb
+    \field{journaltitle}{Analysis and Applications}
+    \field{month}{10}
+    \field{year}{2006}
+  \endentry
+
+  \entry{casella1992}{article}{}
+    \name{author}{2}{}{%
+      {{hash=CG}{%
+         family={Casella},
+         familyi={C\bibinitperiod},
+         given={George},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=GEI}{%
+         family={George},
+         familyi={G\bibinitperiod},
+         given={Edward\bibnamedelima I.},
+         giveni={E\bibinitperiod\bibinitdelim I\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{CGGEI1}
+    \strng{fullhash}{CGGEI1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1992}
+    \field{labeldatesource}{year}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{abstract}{%
+    Computer-intensive algorithms, such as the Gibbs sampler, have become
+  increasingly popular statistical tools, both in applied and theoretical work.
+  The properties of such algorithms, however, may sometimes not be obvious.
+  Here we give a simple explanation of how and why the Gibbs sampler works. We
+  analytically establish its properties in a simple case and provide insight
+  for more complicated cases. There are also a number of examples.%
+    }
+    \field{issn}{00031305}
+    \field{number}{3}
+    \field{pages}{167\bibrangedash 174}
+    \field{title}{Explaining the Gibbs Sampler}
+    \field{volume}{46}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/W73LAAM5/Case
+    \verb lla y George - Explaining the Gibbs Sampler.pdf
+    \endverb
+    \field{journaltitle}{The American Statistician}
+    \field{year}{1992}
+  \endentry
+
+  \entry{chib1995}{article}{}
+    \name{author}{2}{}{%
+      {{hash=CS}{%
+         family={Chib},
+         familyi={C\bibinitperiod},
+         given={Siddhartha},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=GE}{%
+         family={Greenberg},
+         familyi={G\bibinitperiod},
+         given={Edward},
+         giveni={E\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{CSGE1}
+    \strng{fullhash}{CSGE1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1995}
+    \field{labeldatesource}{year}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \verb{doi}
+    \verb 10.1080/00031305.1995.10476177
+    \endverb
+    \field{pages}{327\bibrangedash 335}
+    \field{title}{Understanding the Metropolis-Hastings Algorithm}
+    \field{volume}{49}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/5CFZZXCL/Gree
+    \verb nberg - Understanding the Metropolis-Hastings Algorithm.pdf
+    \endverb
+    \field{journaltitle}{American Statistician}
+    \field{month}{11}
+    \field{year}{1995}
+  \endentry
+
+  \entry{cucker2001}{article}{}
+    \name{author}{2}{}{%
+      {{hash=CF}{%
+         family={Cucker},
+         familyi={C\bibinitperiod},
+         given={F.},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=SS}{%
+         family={Smale},
+         familyi={S\bibinitperiod},
+         given={S.},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \strng{namehash}{CFSS1}
+    \strng{fullhash}{CFSS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2001}
+    \field{labeldatesource}{year}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \verb{doi}
+    \verb 10.1090/S0273-0979-01-00923-5
+    \endverb
+    \field{issn}{0273-0979}
+    \field{number}{01}
+    \field{pages}{1\bibrangedash 50}
+    \field{title}{On the Mathematical Foundations of Learning}
+    \field{volume}{39}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/84MLBZF7/Cuck
+    \verb er y Smale - 2001 - On the mathematical foundations of learning.pdf
+    \endverb
+    \field{journaltitle}{Bulletin of the American Mathematical Society}
+    \field{month}{10}
+    \field{year}{2001}
+  \endentry
+
+  \entry{cucker2007}{book}{}
+    \name{author}{2}{}{%
+      {{hash=CF}{%
+         family={Cucker},
+         familyi={C\bibinitperiod},
+         given={F.},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=ZD}{%
+         family={Zhou},
+         familyi={Z\bibinitperiod},
+         given={D.},
+         giveni={D\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \list{publisher}{1}{%
+      {{Cambridge University Press}}%
+    }
+    \strng{namehash}{CFZD1}
+    \strng{fullhash}{CFZD1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2007}
+    \field{labeldatesource}{year}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{isbn}{978-0-511-27551-7}
+    \field{title}{Learning {{Theory}} : {{An Approximation Theory Viewpoint}}}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/DAUDRJ5V/Cuck
+    \verb er y Zhou - Learning Theory An Approximation Theory Viewpoin.pdf
+    \endverb
+    \field{year}{2007}
+  \endentry
+
+  \entry{damblin2013}{article}{}
+    \name{author}{3}{}{%
+      {{hash=DG}{%
+         family={Damblin},
+         familyi={D\bibinitperiod},
+         given={G.},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=CM}{%
+         family={Couplet},
+         familyi={C\bibinitperiod},
+         given={M.},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=IB}{%
+         family={Iooss},
+         familyi={I\bibinitperiod},
+         given={B.},
+         giveni={B\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \keyw{Mathematics - Statistics Theory}
+    \strng{namehash}{DGCMIB1}
+    \strng{fullhash}{DGCMIB1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{shorttitle}
+    \field{labelyear}{2013}
+    \field{labeldatesource}{year}
+    \field{sortinit}{D}
+    \field{sortinithash}{D}
+    \field{abstract}{%
+    Quantitative assessment of the uncertainties tainting the results of
+  computer simulations is nowadays a major topic of interest in both industrial
+  and scientific communities. One of the key issues in such studies is to get
+  information about the output when the numerical simulations are expensive to
+  run. This paper considers the problem of exploring the whole space of
+  variations of the computer model input variables in the context of a large
+  dimensional exploration space. Various properties of space filling designs
+  are justified: interpoint-distance, discrepancy, minimum spanning tree
+  criteria. A specific class of design, the optimized Latin Hypercube Sample,
+  is considered. Several optimization algorithms, coming from the literature,
+  are studied in terms of convergence speed, robustness to subprojection and
+  space filling properties of the resulting design. Some recommendations for
+  building such designs are given. Finally, another contribution of this paper
+  is the deep analysis of the space filling properties of the design
+  2D-subprojections.%
+    }
+    \verb{eprint}
+    \verb 1307.6835
+    \endverb
+    \field{shorttitle}{Numerical Studies of Space Filling Designs}
+    \field{title}{Numerical Studies of Space Filling Designs: Optimization of
+  {{Latin Hypercube Samples}} and Subprojection Properties}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/C5PFUQEI/Damb
+    \verb lin et al. - 2013 - Numerical studies of space filling designs optimi
+    \verb .pdf
+    \endverb
+    \field{journaltitle}{arXiv:1307.6835 [math, stat]}
+    \field{eprinttype}{arxiv}
+    \field{eprintclass}{math, stat}
+    \field{month}{07}
+    \field{year}{2013}
+    \warn{\item Can't use 'eprinttype' + 'archiveprefix'}
+  \endentry
+
+  \entry{debnath1990}{book}{}
+    \name{author}{2}{}{%
+      {{hash=DL}{%
+         family={Debnath},
+         familyi={D\bibinitperiod},
+         given={L.},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=MP}{%
+         family={Mikusinski},
+         familyi={M\bibinitperiod},
+         given={P.},
+         giveni={P\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {English}%
+    }
+    \list{publisher}{1}{%
+      {{Boston, Mass. : Academic Press, Harcourt Brace Janovich.}}%
+    }
+    \strng{namehash}{DLMP1}
+    \strng{fullhash}{DLMP1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1990}
+    \field{labeldatesource}{year}
+    \field{sortinit}{D}
+    \field{sortinithash}{D}
+    \field{isbn}{0-12-208435-7 978-0-12-208435-5}
+    \field{title}{Introduction to {{Hilbert}} Spaces with Applications}
+    \list{location}{1}{%
+      {{Boston, Mass.}}%
+    }
+    \field{year}{1990}
+  \endentry
+
+  \entry{dekking2005}{book}{}
+    \name{editor}{1}{}{%
+      {{hash=DM}{%
+         family={Dekking},
+         familyi={D\bibinitperiod},
+         given={Michel},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \list{publisher}{1}{%
+      {{Springer}}%
+    }
+    \keyw{Mathematical statistics,Probabilities,Textbooks}
+    \strng{namehash}{DM1}
+    \strng{fullhash}{DM1}
+    \field{labelnamesource}{editor}
+    \field{labeltitlesource}{shorttitle}
+    \field{labelyear}{2005}
+    \field{labeldatesource}{year}
+    \field{sortinit}{D}
+    \field{sortinithash}{D}
+    \field{isbn}{978-1-85233-896-1}
+    \field{series}{Springer Texts in Statistics}
+    \field{shorttitle}{A Modern Introduction to Probability and Statistics}
+    \field{title}{A Modern Introduction to Probability and Statistics:
+  Understanding Why and How}
+    \list{location}{1}{%
+      {{London}}%
+    }
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/GD9Y67KD/Dekk
+    \verb ing - 2005 - A modern introduction to probability and statistic.pdf
+    \endverb
+    \field{year}{2005}
+  \endentry
+
+  \entry{demmel1997}{book}{}
+    \name{author}{1}{}{%
+      {{hash=DJW}{%
+         family={Demmel},
+         familyi={D\bibinitperiod},
+         given={James\bibnamedelima W.},
+         giveni={J\bibinitperiod\bibinitdelim W\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {English}%
+    }
+    \list{publisher}{1}{%
+      {{SIAM, Soc. for Industrial and Applied Mathematics}}%
+    }
+    \strng{namehash}{DJW1}
+    \strng{fullhash}{DJW1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1997}
+    \field{labeldatesource}{year}
+    \field{sortinit}{D}
+    \field{sortinithash}{D}
+    \field{isbn}{0-89871-389-7 978-0-89871-389-3}
+    \field{title}{Applied Numerical Linear Algebra}
+    \list{location}{1}{%
+      {{Philadelphia}}%
+    }
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/WQPHSJ29/Demm
+    \verb el.pdf
+    \endverb
+    \field{year}{1997}
+  \endentry
+
+  \entry{dueck1990}{article}{}
+    \name{author}{2}{}{%
+      {{hash=DG}{%
+         family={Dueck},
+         familyi={D\bibinitperiod},
+         given={Gunter},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=ST}{%
+         family={Scheuer},
+         familyi={S\bibinitperiod},
+         given={Tobias},
+         giveni={T\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{DGST1}
+    \strng{fullhash}{DGST1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1990}
+    \field{labeldatesource}{year}
+    \field{sortinit}{D}
+    \field{sortinithash}{D}
+    \field{abstract}{%
+    A new general purpose algorithm for the solution of combinatorial
+  optimization problems is presented. The new threshold accepting method is
+  even simpler structured than the wellknown simulated annealing approach. The
+  power of the new algorithm is demonstrated by computational results
+  concerning the traveling salesman problem and the problem of the construction
+  of error-correcting codes. Moreover, deterministic (!) versions of the new
+  heuristic turn out to perform nearly equally well, consuming only a fraction
+  of the computing time of the stochastic versions. As an example, the
+  deterministic threshold accepting method yields very-near-to-optimum tours
+  for the famous 442-cities traveling salesman problem of Gr\"otschel within 1
+  to 2 s of CPU time.%
+    }
+    \verb{doi}
+    \verb 10.1016/0021-9991(90)90201-B
+    \endverb
+    \field{issn}{0021-9991}
+    \field{number}{1}
+    \field{pages}{161\bibrangedash 175}
+    \field{title}{Threshold Accepting: {{A}} General Purpose Optimization
+  Algorithm Appearing Superior to Simulated Annealing}
+    \field{volume}{90}
+    \field{journaltitle}{Journal of Computational Physics}
+    \field{year}{1990}
+  \endentry
+
+  \entry{dulikravich2000}{book}{}
+    \name{author}{2}{}{%
+      {{hash=DGS}{%
+         family={Dulikravich},
+         familyi={D\bibinitperiod},
+         given={G.\bibnamedelima S.},
+         giveni={G\bibinitperiod\bibinitdelim S\bibinitperiod},
+      }}%
+      {{hash=TM}{%
+         family={Tanaka},
+         familyi={T\bibinitperiod},
+         given={Mana},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \list{publisher}{1}{%
+      {{Elsevier}}%
+    }
+    \keyw{Technology \& Engineering / Mechanical}
+    \strng{namehash}{DGSTM1}
+    \strng{fullhash}{DGSTM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2000}
+    \field{labeldatesource}{year}
+    \field{sortinit}{D}
+    \field{sortinithash}{D}
+    \field{abstract}{%
+    Inverse Problems are found in many areas of engineering mechanics and there
+  are many successful applications e.g. in non-destructive testing and
+  characterization of material properties by ultrasonic or X-ray techniques,
+  thermography, etc. Generally speaking, inverse problems are concerned with
+  the determination of the input and the characteristics of a system, given
+  certain aspects of its output. Mathematically, such problems are ill-posed
+  and have to be overcome through development of new computational schemes,
+  regularization techniques, objective functionals, and experimental
+  procedures. Following the IUTAM Symposium on these topics, held in May 1992
+  in Tokyo, another in November 1994 in Paris, and also the more recent ISIP'98
+  in March 1998 in Nagano, it was concluded that it would be fruitful to gather
+  regularly with researchers and engineers for an exchange of the newest
+  research ideas. The most recent Symposium of this series "International
+  Symposium on Inverse Problems in Engineering Mechanics (ISIP2000)" was held
+  in March of 2000 in Nagano, Japan, where recent developments in inverse
+  problems in engineering mechanics and related topics were discussed.The
+  following general areas in inverse problems in engineering mechanics were the
+  subjects of ISIP2000: mathematical and computational aspects of inverse
+  problems, parameter or system identification, shape determination,
+  sensitivity analysis, optimization, material property characterization,
+  ultrasonic non-destructive testing, elastodynamic inverse problems, thermal
+  inverse problems, and other engineering applications. The papers in these
+  proceedings provide a state-of-the-art review of the research on inverse
+  problems in engineering mechanics and it is hoped that some breakthrough in
+  the research can be made and that technology transfer will be stimulated and
+  accelerated due to their publication.%
+    }
+    \field{isbn}{978-0-08-053515-9}
+    \field{title}{Inverse {{Problems}} in {{Engineering Mechanics II}}}
+    \field{month}{12}
+    \field{year}{2000}
+  \endentry
+
+  \entry{dulikravich2001}{book}{}
+    \name{author}{2}{}{%
+      {{hash=DGS}{%
+         family={Dulikravich},
+         familyi={D\bibinitperiod},
+         given={G.\bibnamedelima S.},
+         giveni={G\bibinitperiod\bibinitdelim S\bibinitperiod},
+      }}%
+      {{hash=TM}{%
+         family={Tanaka},
+         familyi={T\bibinitperiod},
+         given={Mana},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \list{publisher}{1}{%
+      {{Elsevier}}%
+    }
+    \keyw{Computers / Computer Engineering,Computers / Computer Science,Science
+  / Mechanics / Thermodynamics,Technology \& Engineering / Mechanical}
+    \strng{namehash}{DGSTM1}
+    \strng{fullhash}{DGSTM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2001}
+    \field{labeldatesource}{year}
+    \field{sortinit}{D}
+    \field{sortinithash}{D}
+    \field{abstract}{%
+    Inverse Problems are found in many areas of engineering mechanics and there
+  are many successful applications e.g. in non-destructive testing and
+  characterization of material properties by ultrasonic or X-ray techniques,
+  thermography, etc. Generally speaking, inverse problems are concerned with
+  the determination of the input and the characteristics of a system, given
+  certain aspects of its output. Mathematically, such problems are ill-posed
+  and have to be overcome through development of new computational schemes,
+  regularization techniques, objective functionals, and experimental
+  procedures. This volume contains a selection of peer-reviewed papers
+  presented at the International Symposium on Inverse Problems in Engineering
+  Mechanics (ISIP2001), held in February of 2001 in Nagano, Japan, where recent
+  development in inverse problems in engineering mechanics and related topics
+  were discussed. The following general areas in inverse problems in
+  engineering mechanics were the subjects of the ISIP2001: mathematical and
+  computational aspects of inverse problems, parameter or system
+  identification, shape determination, sensitivity analysis, optimization,
+  material property characterization, ultrasonic non-destructive testing,
+  elastodynamic inverse problems, thermal inverse problems, and other
+  engineering applications. These papers can provide a state-of-the-art review
+  of the research on inverse problems in engineering mechanics.%
+    }
+    \field{isbn}{978-0-08-053514-2}
+    \field{title}{Inverse {{Problems}} in {{Engineering Mechanics III}}}
+    \field{month}{11}
+    \field{year}{2001}
+  \endentry
+
+  \entry{forrester2008}{book}{}
+    \name{author}{3}{}{%
+      {{hash=FAIJ}{%
+         family={Forrester},
+         familyi={F\bibinitperiod},
+         given={Alexander I.\bibnamedelima J.},
+         giveni={A\bibinitperiod\bibinitdelim I\bibinitperiod\bibinitdelim
+  J\bibinitperiod},
+      }}%
+      {{hash=SA}{%
+         family={S{\'o}bester},
+         familyi={S\bibinitperiod},
+         given={Andr{\'a}s},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=KAJ}{%
+         family={Keane},
+         familyi={K\bibinitperiod},
+         given={Andy\bibnamedelima J.},
+         giveni={A\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \list{publisher}{1}{%
+      {{Wiley}}%
+    }
+    \strng{namehash}{FAIJSAKAJ1}
+    \strng{fullhash}{FAIJSAKAJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{shorttitle}
+    \field{labelyear}{2008}
+    \field{labeldatesource}{year}
+    \field{sortinit}{F}
+    \field{sortinithash}{F}
+    \verb{doi}
+    \verb 10.1002/9780470770801
+    \endverb
+    \field{edition}{First}
+    \field{isbn}{978-0-470-06068-1 978-0-470-77080-1}
+    \field{shorttitle}{Engineering {{Design}} via {{Surrogate Modelling}}}
+    \field{title}{Engineering {{Design}} via {{Surrogate Modelling}}: {{A
+  Practical Guide}}}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/UP6NU7LZ/Forr
+    \verb ester et al. - 2008 - Engineering Design via Surrogate Modelling A Pr
+    \verb ac.pdf
+    \endverb
+    \field{month}{07}
+    \field{year}{2008}
+  \endentry
+
+  \entry{franz2001}{article}{}
+    \name{author}{3}{}{%
+      {{hash=FA}{%
+         family={Franz},
+         familyi={F\bibinitperiod},
+         given={Astrid},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=HK}{%
+         family={Hoffmann},
+         familyi={H\bibinitperiod},
+         given={Karl},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=SP}{%
+         family={Salamon},
+         familyi={S\bibinitperiod},
+         given={Peter},
+         giveni={P\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{FAHKSP1}
+    \strng{fullhash}{FAHKSP1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2001}
+    \field{labeldatesource}{year}
+    \field{sortinit}{F}
+    \field{sortinithash}{F}
+    \verb{doi}
+    \verb 10.1103/PhysRevLett.86.5219
+    \endverb
+    \field{title}{Best Possible Strategy for Finding Ground States}
+    \field{volume}{86}
+    \field{journaltitle}{Physical Review Letters}
+    \field{month}{07}
+    \field{year}{2001}
+  \endentry
+
+  \entry{gal2014}{article}{}
+    \name{author}{3}{}{%
+      {{hash=GY}{%
+         family={Gal},
+         familyi={G\bibinitperiod},
+         given={Yarin},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=vM}{%
+         family={{van der Wilk}},
+         familyi={v\bibinitperiod},
+         given={Mark},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=RCE}{%
+         family={Rasmussen},
+         familyi={R\bibinitperiod},
+         given={Carl\bibnamedelima E.},
+         giveni={C\bibinitperiod\bibinitdelim E\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \keyw{Computer Science - Machine Learning,Statistics - Machine Learning}
+    \strng{namehash}{GYvMRCE1}
+    \strng{fullhash}{GYvMRCE1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2014}
+    \field{labeldatesource}{year}
+    \field{sortinit}{G}
+    \field{sortinithash}{G}
+    \field{abstract}{%
+    Gaussian processes (GPs) are a powerful tool for probabilistic inference
+  over functions. They have been applied to both regression and non-linear
+  dimensionality reduction, and offer desirable properties such as uncertainty
+  estimates, robustness to over-fitting, and principled ways for tuning
+  hyper-parameters. However the scalability of these models to big datasets
+  remains an active topic of research. We introduce a novel re-parametrisation
+  of variational inference for sparse GP regression and latent variable models
+  that allows for an efficient distributed algorithm. This is done by
+  exploiting the decoupling of the data given the inducing points to
+  re-formulate the evidence lower bound in a Map-Reduce setting. We show that
+  the inference scales well with data and computational resources, while
+  preserving a balanced distribution of the load among the nodes. We further
+  demonstrate the utility in scaling Gaussian processes to big data. We show
+  that GP performance improves with increasing amounts of data in regression
+  (on flight data with 2 million records) and latent variable modelling (on
+  MNIST). The results show that GPs perform better than many common models
+  often used for big data.%
+    }
+    \verb{eprint}
+    \verb 1402.1389
+    \endverb
+    \field{title}{Distributed {{Variational Inference}} in {{Sparse Gaussian
+  Process Regression}} and {{Latent Variable Models}}}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/QDQGA62U/Gal
+    \verb et al. - 2014 - Distributed Variational Inference in Sparse Gaussi.pd
+    \verb f
+    \endverb
+    \field{journaltitle}{arXiv:1402.1389 [cs, stat]}
+    \field{eprinttype}{arxiv}
+    \field{eprintclass}{cs, stat}
+    \field{month}{09}
+    \field{year}{2014}
+    \warn{\item Can't use 'eprinttype' + 'archiveprefix'}
+  \endentry
+
+  \entry{geman1992}{article}{}
+    \name{author}{3}{}{%
+      {{hash=GS}{%
+         family={Geman},
+         familyi={G\bibinitperiod},
+         given={S.},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=BE}{%
+         family={Bienenstock},
+         familyi={B\bibinitperiod},
+         given={E.},
+         giveni={E\bibinitperiod},
+      }}%
+      {{hash=DR}{%
+         family={Doursat},
+         familyi={D\bibinitperiod},
+         given={R.},
+         giveni={R\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {{MIT Press}}%
+    }
+    \keyw{learning theory}
+    \strng{namehash}{GSBEDR1}
+    \strng{fullhash}{GSBEDR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1992}
+    \field{labeldatesource}{year}
+    \field{sortinit}{G}
+    \field{sortinithash}{G}
+    \field{number}{1}
+    \field{pages}{1\bibrangedash 58}
+    \field{title}{Neural {{Networks}} and the {{Bias}}/{{Variance Dilemma}}}
+    \field{volume}{4}
+    \list{location}{1}{%
+      {{Cambridge, MA, USA}}%
+    }
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/64E4UMCH/Neur
+    \verb al_Networks_and_the_BiasVariance_Dilemma_Geman.pdf
+    \endverb
+    \field{journaltitle}{Neural Computation}
+    \field{year}{1992}
+  \endentry
+
+  \entry{golub1979}{article}{}
+    \name{author}{3}{}{%
+      {{hash=GG}{%
+         family={Golub},
+         familyi={G\bibinitperiod},
+         given={Gene},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=HM}{%
+         family={Heath},
+         familyi={H\bibinitperiod},
+         given={Michael},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=WG}{%
+         family={Wahba},
+         familyi={W\bibinitperiod},
+         given={Grace},
+         giveni={G\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{GGHMWG1}
+    \strng{fullhash}{GGHMWG1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1979}
+    \field{labeldatesource}{year}
+    \field{sortinit}{G}
+    \field{sortinithash}{G}
+    \field{abstract}{%
+    Consider the ridge estimate ({$\lambda$}) for {$\beta$} in the model
+  unknown, ({$\lambda$}) = (XX + n{$\lambda$}I) Xy. We study the method of
+  generalized cross-validation (GCV) for choosing a good value for {$\lambda$}
+  from the data. The estimate is the minimizer of V({$\lambda$}) given bywhere
+  A({$\lambda$}) = X(XX + n{$\lambda$}I) X . This estimate is a
+  rotation-invariant version of Allen's PRESS, or ordinary cross-validation.
+  This estimate behaves like a risk improvement estimator, but does not require
+  an estimate of {$\sigma$}, so can be used when n - p is small, or even if p
+  {$\geq$} 2 n in certain cases. The GCV method can also be used in subset
+  selection and singular value truncation methods for regression, and even to
+  choose from among mixtures of these methods.%
+    }
+    \verb{doi}
+    \verb 10.1080/00401706.1979.10489751
+    \endverb
+    \field{pages}{215\bibrangedash 223}
+    \field{title}{Generalized {{Cross}}-{{Validation}} as a {{Method}} for
+  {{Choosing}} a {{Good Ridge Parameter}}}
+    \field{volume}{21}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/RSZZ2XXP/Golu
+    \verb b et al. - 1979 - Generalized Cross-Validation as a Method for Choos.
+    \verb pdf
+    \endverb
+    \field{journaltitle}{Technometrics}
+    \field{month}{05}
+    \field{year}{1979}
+  \endentry
+
+  \entry{golub2013}{book}{}
+    \name{author}{2}{}{%
+      {{hash=GGH}{%
+         family={Golub},
+         familyi={G\bibinitperiod},
+         given={Gene\bibnamedelima H.},
+         giveni={G\bibinitperiod\bibinitdelim H\bibinitperiod},
+      }}%
+      {{hash=VLCF}{%
+         family={Van\bibnamedelima Loan},
+         familyi={V\bibinitperiod\bibinitdelim L\bibinitperiod},
+         given={Charles\bibnamedelima F.},
+         giveni={C\bibinitperiod\bibinitdelim F\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \list{publisher}{1}{%
+      {{The Johns Hopkins University Press}}%
+    }
+    \keyw{Data processing,Matrices}
+    \strng{namehash}{GGHVLCF1}
+    \strng{fullhash}{GGHVLCF1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2013}
+    \field{labeldatesource}{year}
+    \field{sortinit}{G}
+    \field{sortinithash}{G}
+    \field{edition}{Fourth edition}
+    \field{isbn}{978-1-4214-0794-4}
+    \field{series}{Johns {{Hopkins}} Studies in the Mathematical Sciences}
+    \field{title}{Matrix Computations}
+    \list{location}{1}{%
+      {{Baltimore}}%
+    }
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/FSLE3FKP/Golu
+    \verb b y Van Loan - 2013 - Matrix computations.pdf
+    \endverb
+    \field{annotation}{%
+    OCLC: ocn824733531%
+    }
+    \field{year}{2013}
+  \endentry
+
+  \entry{haario2001}{article}{}
+    \name{author}{3}{}{%
+      {{hash=HH}{%
+         family={Haario},
+         familyi={H\bibinitperiod},
+         given={Heikki},
+         giveni={H\bibinitperiod},
+      }}%
+      {{hash=SE}{%
+         family={Saksman},
+         familyi={S\bibinitperiod},
+         given={Eero},
+         giveni={E\bibinitperiod},
+      }}%
+      {{hash=TJ}{%
+         family={Tamminen},
+         familyi={T\bibinitperiod},
+         given={Johanna},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \strng{namehash}{HHSETJ1}
+    \strng{fullhash}{HHSETJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2001}
+    \field{labeldatesource}{year}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \verb{doi}
+    \verb 10.2307/3318737
+    \endverb
+    \field{issn}{13507265}
+    \field{number}{2}
+    \field{pages}{223}
+    \field{title}{An {{Adaptive Metropolis Algorithm}}}
+    \field{volume}{7}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/8KNY5M9F/Haar
+    \verb io et al. - 2001 - An Adaptive Metropolis Algorithm.pdf
+    \endverb
+    \field{journaltitle}{Bernoulli}
+    \field{month}{04}
+    \field{year}{2001}
+  \endentry
+
+  \entry{henderson2003}{incollection}{}
+    \name{author}{3}{}{%
+      {{hash=HD}{%
+         family={Henderson},
+         familyi={H\bibinitperiod},
+         given={Darrall},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=JSH}{%
+         family={Jacobson},
+         familyi={J\bibinitperiod},
+         given={Sheldon\bibnamedelima H.},
+         giveni={S\bibinitperiod\bibinitdelim H\bibinitperiod},
+      }}%
+      {{hash=JAW}{%
+         family={Johnson},
+         familyi={J\bibinitperiod},
+         given={Alan\bibnamedelima W.},
+         giveni={A\bibinitperiod\bibinitdelim W\bibinitperiod},
+      }}%
+    }
+    \name{editor}{2}{}{%
+      {{hash=GF}{%
+         family={Glover},
+         familyi={G\bibinitperiod},
+         given={Fred},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=KGA}{%
+         family={Kochenberger},
+         familyi={K\bibinitperiod},
+         given={Gary\bibnamedelima A.},
+         giveni={G\bibinitperiod\bibinitdelim A\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \list{publisher}{1}{%
+      {{Kluwer Academic Publishers}}%
+    }
+    \strng{namehash}{HDJSHJAW1}
+    \strng{fullhash}{HDJSHJAW1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2003}
+    \field{labeldatesource}{year}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{abstract}{%
+    Simulated annealing is a popular local search meta-heuristic used to
+  address discrete and, to a lesser extent, continuous optimization problems.
+  The key feature of simulated annealing is that it provides a means to escape
+  local optima by allowing hill-climbing moves (i.e., moves which worsen the
+  objective function value) in hopes of finding a global optimum. A brief
+  history of simulated annealing is presented, including a review of its
+  application to discrete and continuous optimization problems. Convergence
+  theory for simulated annealing is reviewed, as well as recent advances in the
+  analysis of finite time performance. Other local search algorithms are
+  discussed in terms of their relationship to simulated annealing. The chapter
+  also presents practical guidelines for the implementation of simulated
+  annealing in terms of cooling schedules, neighborhood functions, and
+  appropriate applications.%
+    }
+    \field{booktitle}{Handbook of {{Metaheuristics}}}
+    \verb{doi}
+    \verb 10.1007/0-306-48056-5_10
+    \endverb
+    \field{isbn}{978-1-4020-7263-5}
+    \field{pages}{287\bibrangedash 319}
+    \field{title}{The {{Theory}} and {{Practice}} of {{Simulated Annealing}}}
+    \field{volume}{57}
+    \list{location}{1}{%
+      {{Boston}}%
+    }
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/YITWMN4V/Hend
+    \verb erson et al. - 2003 - The Theory and Practice of Simulated Annealing.
+    \verb pdf
+    \endverb
+    \field{year}{2003}
+  \endentry
+
+  \entry{hensman2013}{article}{}
+    \name{author}{3}{}{%
+      {{hash=HJ}{%
+         family={Hensman},
+         familyi={H\bibinitperiod},
+         given={James},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=FN}{%
+         family={Fusi},
+         familyi={F\bibinitperiod},
+         given={Nicolo},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=LN}{%
+         family={Lawrence},
+         familyi={L\bibinitperiod},
+         given={Neil},
+         giveni={N\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{HJFNLN1}
+    \strng{fullhash}{HJFNLN1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2013}
+    \field{labeldatesource}{year}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{title}{Gaussian Processes for Big Data}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/3TSCK2A8/Hens
+    \verb man et al. - Gaussian Processes for Big Data.pdf
+    \endverb
+    \field{journaltitle}{Uncertainty in Artificial Intelligence - Proceedings
+  of the 29th Conference, UAI 2013}
+    \field{month}{09}
+    \field{year}{2013}
+  \endentry
+
+  \entry{hochstadt1989}{book}{}
+    \name{author}{1}{}{%
+      {{hash=HH}{%
+         family={Hochstadt},
+         familyi={H\bibinitperiod},
+         given={Harry.},
+         giveni={H\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {English}%
+    }
+    \list{publisher}{1}{%
+      {{Wiley}}%
+    }
+    \strng{namehash}{HH1}
+    \strng{fullhash}{HH1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1989}
+    \field{labeldatesource}{year}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{title}{Integral Equations}
+    \list{location}{1}{%
+      {{New York}}%
+    }
+    \field{year}{1989}
+  \endentry
+
+  \entry{hoerl1970}{article}{}
+    \name{author}{2}{}{%
+      {{hash=HAE}{%
+         family={Hoerl},
+         familyi={H\bibinitperiod},
+         given={Arthur\bibnamedelima E.},
+         giveni={A\bibinitperiod\bibinitdelim E\bibinitperiod},
+      }}%
+      {{hash=KRW}{%
+         family={Kennard},
+         familyi={K\bibinitperiod},
+         given={Robert\bibnamedelima W.},
+         giveni={R\bibinitperiod\bibinitdelim W\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \strng{namehash}{HAEKRW1}
+    \strng{fullhash}{HAEKRW1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{shorttitle}
+    \field{labelyear}{1970}
+    \field{labeldatesource}{year}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \verb{doi}
+    \verb 10.1080/00401706.1970.10488634
+    \endverb
+    \field{issn}{0040-1706, 1537-2723}
+    \field{number}{1}
+    \field{pages}{55\bibrangedash 67}
+    \field{shorttitle}{Ridge {{Regression}}}
+    \field{title}{Ridge {{Regression}}: {{Biased Estimation}} for
+  {{Nonorthogonal Problems}}}
+    \field{volume}{12}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/ZSH4AWMA/Hoer
+    \verb l y Kennard - 1970 - Ridge Regression Biased Estimation for Nonorthog
+    \verb o.pdf
+    \endverb
+    \field{journaltitle}{Technometrics}
+    \field{month}{02}
+    \field{year}{1970}
+  \endentry
+
+  \entry{hofmann2008}{article}{}
+    \name{author}{3}{}{%
+      {{hash=HT}{%
+         family={Hofmann},
+         familyi={H\bibinitperiod},
+         given={Thomas},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=SB}{%
+         family={Sch{\"o}lkopf},
+         familyi={S\bibinitperiod},
+         given={Bernhard},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=SAJ}{%
+         family={Smola},
+         familyi={S\bibinitperiod},
+         given={Alexander\bibnamedelima J.},
+         giveni={A\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \keyw{30C40 (Primary) 68T05 (Secondary),Mathematics -
+  Probability,Mathematics - Statistics Theory}
+    \strng{namehash}{HTSBSAJ1}
+    \strng{fullhash}{HTSBSAJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2008}
+    \field{labeldatesource}{year}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{abstract}{%
+    We review machine learning methods employing positive definite kernels.
+  These methods formulate learning and estimation problems in a reproducing
+  kernel Hilbert space (RKHS) of functions defined on the data domain, expanded
+  in terms of a kernel. Working in linear spaces of function has the benefit of
+  facilitating the construction and analysis of learning algorithms while at
+  the same time allowing large classes of functions. The latter include
+  nonlinear functions as well as functions defined on nonvectorial data. We
+  cover a wide range of methods, ranging from binary classifiers to
+  sophisticated methods for estimation with structured data.%
+    }
+    \verb{doi}
+    \verb 10.1214/009053607000000677
+    \endverb
+    \verb{eprint}
+    \verb math/0701907
+    \endverb
+    \field{issn}{0090-5364}
+    \field{number}{3}
+    \field{pages}{1171\bibrangedash 1220}
+    \field{title}{Kernel Methods in Machine Learning}
+    \field{volume}{36}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/T369ZKTH/Hofm
+    \verb ann et al. - 2008 - Kernel methods in machine learning.pdf
+    \endverb
+    \field{journaltitle}{The Annals of Statistics}
+    \field{eprinttype}{arxiv}
+    \field{month}{06}
+    \field{year}{2008}
+    \warn{\item Can't use 'eprinttype' + 'archiveprefix'}
+  \endentry
+
+  \entry{ingber1989}{article}{}
+    \name{author}{1}{}{%
+      {{hash=IL}{%
+         family={Ingber},
+         familyi={I\bibinitperiod},
+         given={L.},
+         giveni={L\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \strng{namehash}{IL1}
+    \strng{fullhash}{IL1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1989}
+    \field{labeldatesource}{year}
+    \field{sortinit}{I}
+    \field{sortinithash}{I}
+    \verb{doi}
+    \verb 10.1016/0895-7177(89)90202-1
+    \endverb
+    \field{issn}{08957177}
+    \field{number}{8}
+    \field{pages}{967\bibrangedash 973}
+    \field{title}{Very Fast Simulated Re-Annealing}
+    \field{volume}{12}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/6P5WMGAQ/Ingb
+    \verb er - 1989 - Very fast simulated re-annealing.pdf
+    \endverb
+    \field{journaltitle}{Mathematical and Computer Modelling}
+    \field{year}{1989}
+  \endentry
+
+  \entry{ingber2000}{article}{}
+    \name{author}{1}{}{%
+      {{hash=IL}{%
+         family={Ingber},
+         familyi={I\bibinitperiod},
+         given={Lester},
+         giveni={L\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \keyw{Computer Science - Computational Engineering; Finance; and
+  Science,Computer Science - Mathematical Software,G.1.6}
+    \strng{namehash}{IL2}
+    \strng{fullhash}{IL2}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{shorttitle}
+    \field{labelyear}{2000}
+    \field{labeldatesource}{year}
+    \field{sortinit}{I}
+    \field{sortinithash}{I}
+    \field{abstract}{%
+    Adaptive simulated annealing (ASA) is a global optimization algorithm based
+  on an associated proof that the parameter space can be sampled much more
+  efficiently than by using other previous simulated annealing algorithms. The
+  author's ASA code has been publicly available for over two years. During this
+  time the author has volunteered to help people via e-mail, and the feedback
+  obtained has been used to further develop the code. Some lessons learned, in
+  particular some which are relevant to other simulated annealing algorithms,
+  are described.%
+    }
+    \verb{eprint}
+    \verb cs.MS/0001018
+    \endverb
+    \field{shorttitle}{Adaptive Simulated Annealing ({{ASA}})}
+    \field{title}{Adaptive Simulated Annealing ({{ASA}}): {{Lessons}} Learned}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/98FS7PK7/Ingb
+    \verb er - 2000 - Adaptive simulated annealing (ASA) Lessons learne.pdf
+    \endverb
+    \field{journaltitle}{arXiv:cs.MS/0001018}
+    \field{eprinttype}{arxiv}
+    \field{month}{01}
+    \field{year}{2000}
+    \warn{\item Can't use 'eprinttype' + 'archiveprefix'}
+  \endentry
+
+  \entry{kimeldorf1971}{article}{}
+    \name{author}{2}{}{%
+      {{hash=KG}{%
+         family={Kimeldorf},
+         familyi={K\bibinitperiod},
+         given={George},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=WG}{%
+         family={Wahba},
+         familyi={W\bibinitperiod},
+         given={Grace},
+         giveni={G\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \strng{namehash}{KGWG1}
+    \strng{fullhash}{KGWG1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1971}
+    \field{labeldatesource}{year}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \field{abstract}{%
+    This report derives explicit solutions to problems involving Tchebycheffian
+  spline functions. We use a reproducing kernel Hilbert space which depends on
+  the smoothness criterion, but not on the form of the data, to solve
+  explicitly Hermite-Birkhoff interpolation and smoothing problems. Sard's best
+  approximation to linear functionals and smoothing with respect to linear
+  inequality constraints are also discussed. Some of the results are used to
+  show that spline interpolation and smoothing is equivalent to prediction and
+  filtering on realizations of certain stochastic processes.%
+    }
+    \verb{doi}
+    \verb 10.1016/0022-247X(71)90184-3
+    \endverb
+    \field{issn}{0022-247X}
+    \field{number}{1}
+    \field{pages}{82\bibrangedash 95}
+    \field{title}{Some Results on {{Tchebycheffian}} Spline Functions}
+    \field{volume}{33}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/2SNMDRPA/Kime
+    \verb ldorf y Wahba - 1971 - Some results on Tchebycheffian spline function
+    \verb s.pdf;/home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/EYYM86N
+    \verb A/0022247X71901843.html
+    \endverb
+    \field{journaltitle}{Journal of Mathematical Analysis and Applications}
+    \field{month}{01}
+    \field{year}{1971}
+  \endentry
+
+  \entry{knuth1969}{book}{}
+    \name{author}{1}{}{%
+      {{hash=KDE}{%
+         family={Knuth},
+         familyi={K\bibinitperiod},
+         given={Donald\bibnamedelima E.},
+         giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {English}%
+    }
+    \list{publisher}{1}{%
+      {{Addison-Wesley}}%
+    }
+    \strng{namehash}{KDE1}
+    \strng{fullhash}{KDE1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1969}
+    \field{labeldatesource}{year}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \field{title}{The Art of Computer Programming. {{Volume}} 2.}
+    \list{location}{1}{%
+      {{Reading, Mass}}%
+    }
+    \field{year}{1969}
+  \endentry
+
+  \entry{konig1986}{book}{}
+    \name{author}{1}{}{%
+      {{hash=KH}{%
+         family={K{\"o}nig},
+         familyi={K\bibinitperiod},
+         given={H.},
+         giveni={H\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {English}%
+    }
+    \list{publisher}{1}{%
+      {{Birkh\"auser Verlag}}%
+    }
+    \strng{namehash}{KH1}
+    \strng{fullhash}{KH1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1986}
+    \field{labeldatesource}{year}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \field{isbn}{3-7643-1755-8 978-3-7643-1755-3}
+    \field{title}{Eigenvalue Distribution of Compact Operators}
+    \list{location}{1}{%
+      {{Basel; Boston}}%
+    }
+    \field{year}{1986}
+  \endentry
+
+  \entry{krauth2006}{book}{}
+    \name{author}{1}{}{%
+      {{hash=KW}{%
+         family={Krauth},
+         familyi={K\bibinitperiod},
+         given={Werner},
+         giveni={W\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \list{publisher}{1}{%
+      {{Oxford Univ. Press}}%
+    }
+    \strng{namehash}{KW1}
+    \strng{fullhash}{KW1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{shorttitle}
+    \field{labelyear}{2006}
+    \field{labeldatesource}{year}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \field{isbn}{978-0-19-851535-7 978-0-19-851536-4}
+    \field{number}{13}
+    \field{series}{Oxford Master Series in Physics {{Statistical}},
+  Computational, and Theoretical Physics}
+    \field{shorttitle}{Statistical Mechanics}
+    \field{title}{Statistical Mechanics: Algorithms and Computations}
+    \list{location}{1}{%
+      {{Oxford}}%
+    }
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/7EEDXRG4/Krau
+    \verb th - 2006 - Statistical mechanics algorithms and computations.pdf
+    \endverb
+    \field{annotation}{%
+    OCLC: 254061236%
+    }
+    \field{year}{2006}
+  \endentry
+
+  \entry{lazaro-gredilla2011}{inproceedings}{}
+    \name{author}{2}{}{%
+      {{hash=LM}{%
+         family={{L{\'a}zaro-Gredilla}},
+         familyi={L\bibinitperiod},
+         given={Miguel},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=TM}{%
+         family={Titsias},
+         familyi={T\bibinitperiod},
+         given={Michalis},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{LMTM1}
+    \strng{fullhash}{LMTM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2011}
+    \field{labeldatesource}{year}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+    \field{pages}{841\bibrangedash 848}
+    \field{series}{Proceedings of the 28th {{International Conference}} on
+  {{Machine Learning}}, {{ICML}} 2011}
+    \field{title}{Variational Heteroscedastic Gaussian Process Regression.}
+    \field{month}{01}
+    \field{year}{2011}
+  \endentry
+
+  \entry{li2017}{article}{}
+    \name{author}{4}{}{%
+      {{hash=LW}{%
+         family={Li},
+         familyi={L\bibinitperiod},
+         given={W.},
+         giveni={W\bibinitperiod},
+      }}%
+      {{hash=LL}{%
+         family={Lu},
+         familyi={L\bibinitperiod},
+         given={L.},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=XX}{%
+         family={Xie},
+         familyi={X\bibinitperiod},
+         given={X.},
+         giveni={X\bibinitperiod},
+      }}%
+      {{hash=YM}{%
+         family={Yang},
+         familyi={Y\bibinitperiod},
+         given={M.},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \strng{namehash}{LW+1}
+    \strng{fullhash}{LWLLXXYM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2017}
+    \field{labeldatesource}{year}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+    \field{abstract}{%
+    Latin hypercube sampling (LHS), as an efficient sampling method, has been
+  widely used in computer experiments. But it is difficult to choice the sample
+  size while applying LHS, especially for expensive simulations. The effective
+  way is to add sample points sequentially. Nevertheless, the oversampling
+  problem may be countered while extending the sample size with the existing
+  extension algorithms of LHS. To alleviate this problem and obtain extension
+  sample with good space-filling properties, a novel extension algorithm of
+  optimized LHS (OLHS) is proposed. According to the extending rule, a new LHS
+  is constructed by adding sample points of size n each time firstly. Then each
+  additional sample points are optimized by the enhanced stochastic
+  evolutionary algorithm based on the CL2 space-filling criterion. The
+  extension algorithm is illustrated by two test functions and appears to
+  perform well in both efficiency and convergence compared with the traditional
+  extension algorithm.%
+    }
+    \verb{doi}
+    \verb 10.1080/00949655.2017.1340475
+    \endverb
+    \field{issn}{0094-9655, 1563-5163}
+    \field{number}{13}
+    \field{pages}{2549\bibrangedash 2559}
+    \field{title}{A Novel Extension Algorithm for Optimized {{Latin}} Hypercube
+  Sampling}
+    \field{volume}{87}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/AQR4ZDKZ/Li e
+    \verb t al. - 2017 - A novel extension algorithm for optimized Latin hy.pdf
+    \endverb
+    \field{journaltitle}{Journal of Statistical Computation and Simulation}
+    \field{month}{09}
+    \field{year}{2017}
+  \endentry
+
+  \entry{liu2020}{article}{}
+    \name{author}{4}{}{%
+      {{hash=LH}{%
+         family={Liu},
+         familyi={L\bibinitperiod},
+         given={Haitao},
+         giveni={H\bibinitperiod},
+      }}%
+      {{hash=OYS}{%
+         family={Ong},
+         familyi={O\bibinitperiod},
+         given={Yew-Soon},
+         giveni={Y\bibinithyphendelim S\bibinitperiod},
+      }}%
+      {{hash=SX}{%
+         family={Shen},
+         familyi={S\bibinitperiod},
+         given={Xiaobo},
+         giveni={X\bibinitperiod},
+      }}%
+      {{hash=CJ}{%
+         family={Cai},
+         familyi={C\bibinitperiod},
+         given={Jianfei},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \strng{namehash}{LH+1}
+    \strng{fullhash}{LHOYSSXCJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{shorttitle}
+    \field{labelyear}{2020}
+    \field{labeldatesource}{year}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+    \field{abstract}{%
+    The vast quantity of information brought by big data as well as the
+  evolving computer hardware encourages success stories in the machine learning
+  community. In the meanwhile, it poses challenges for the Gaussian process
+  regression (GPR), a well-known nonparametric, and interpretable Bayesian
+  model, which suffers from cubic complexity to data size. To improve the
+  scalability while retaining desirable prediction quality, a variety of
+  scalable GPs have been presented. However, they have not yet been
+  comprehensively reviewed and analyzed to be well understood by both academia
+  and industry. The review of scalable GPs in the GP community is timely and
+  important due to the explosion of data size. To this end, this article is
+  devoted to reviewing state-of-the-art scalable GPs involving two main
+  categories: global approximations that distillate the entire data and local
+  approximations that divide the data for subspace learning. Particularly, for
+  global approximations, we mainly focus on sparse approximations comprising
+  prior approximations that modify the prior but perform exact inference,
+  posterior approximations that retain exact prior but perform approximate
+  inference, and structured sparse approximations that exploit specific
+  structures in kernel matrix; for local approximations, we highlight the
+  mixture/product of experts that conducts model averaging from multiple local
+  experts to boost predictions. To present a complete review, recent advances
+  for improving the scalability and capability of scalable GPs are reviewed.
+  Finally, the extensions and open issues of scalable GPs in various scenarios
+  are reviewed and discussed to inspire novel ideas for future research
+  avenues.%
+    }
+    \verb{doi}
+    \verb 10.1109/TNNLS.2019.2957109
+    \endverb
+    \field{issn}{2162-237X, 2162-2388}
+    \field{pages}{1\bibrangedash 19}
+    \field{shorttitle}{When {{Gaussian Process Meets Big Data}}}
+    \field{title}{When {{Gaussian Process Meets Big Data}}: {{A Review}} of
+  {{Scalable GPs}}}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/PYBTTC44/Liu
+    \verb et al. - 2020 - When Gaussian Process Meets Big Data A Review of .pdf
+    \endverb
+    \field{journaltitle}{IEEE Transactions on Neural Networks and Learning
+  Systems}
+    \field{year}{2020}
+  \endentry
+
+  \entry{marsaglia1964}{article}{}
+    \name{author}{2}{}{%
+      {{hash=MG}{%
+         family={Marsaglia},
+         familyi={M\bibinitperiod},
+         given={G.},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=BT}{%
+         family={Bray},
+         familyi={B\bibinitperiod},
+         given={T.},
+         giveni={T\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{MGBT1}
+    \strng{fullhash}{MGBT1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1964}
+    \field{labeldatesource}{year}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \verb{doi}
+    \verb 10.1137/1006063
+    \endverb
+    \field{pages}{260\bibrangedash 264}
+    \field{title}{A Convenient Method for Generating Normal Variables}
+    \field{volume}{6}
+    \field{journaltitle}{Siam Review - SIAM REV}
+    \field{month}{07}
+    \field{year}{1964}
+  \endentry
+
+  \entry{mercer1909}{article}{}
+    \name{author}{1}{}{%
+      {{hash=MJ}{%
+         family={Mercer},
+         familyi={M\bibinitperiod},
+         given={J.},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \keyw{MachineLearning intelligenza-artificiale imported svm}
+    \strng{namehash}{MJ1}
+    \strng{fullhash}{MJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1909}
+    \field{labeldatesource}{year}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \field{pages}{415\bibrangedash 446}
+    \field{title}{Functions of Positive and Negative Type, and Their Connection
+  with the Theory of Integral Equations}
+    \field{volume}{209}
+    \field{journaltitle}{Philosophical Transactions of the Royal Society,
+  London}
+    \field{year}{1909}
+  \endentry
+
+  \entry{metropolis1953}{article}{}
+    \name{author}{5}{}{%
+      {{hash=MN}{%
+         family={Metropolis},
+         familyi={M\bibinitperiod},
+         given={Nicholas},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=RAW}{%
+         family={Rosenbluth},
+         familyi={R\bibinitperiod},
+         given={Arianna\bibnamedelima W.},
+         giveni={A\bibinitperiod\bibinitdelim W\bibinitperiod},
+      }}%
+      {{hash=RMN}{%
+         family={Rosenbluth},
+         familyi={R\bibinitperiod},
+         given={Marshall\bibnamedelima N.},
+         giveni={M\bibinitperiod\bibinitdelim N\bibinitperiod},
+      }}%
+      {{hash=TAH}{%
+         family={Teller},
+         familyi={T\bibinitperiod},
+         given={Augusta\bibnamedelima H.},
+         giveni={A\bibinitperiod\bibinitdelim H\bibinitperiod},
+      }}%
+      {{hash=TE}{%
+         family={Teller},
+         familyi={T\bibinitperiod},
+         given={Edward},
+         giveni={E\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {{American Institute of Physics}}%
+    }
+    \strng{namehash}{MN+1}
+    \strng{fullhash}{MNRAWRMNTAHTE1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1953}
+    \field{labeldatesource}{year}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \verb{doi}
+    \verb 10.1063/1.1699114
+    \endverb
+    \field{issn}{0021-9606}
+    \field{number}{6}
+    \field{pages}{1087\bibrangedash 1092}
+    \field{title}{Equation of {{State Calculations}} by {{Fast Computing
+  Machines}}}
+    \field{volume}{21}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/N28XVWM9/Metr
+    \verb opolis et al. - 1953 - Equation of State Calculations by Fast Computi
+    \verb ng M.pdf;/home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/J9RD
+    \verb IPEF/1.html
+    \endverb
+    \field{journaltitle}{The Journal of Chemical Physics}
+    \field{month}{06}
+    \field{year}{1953}
+  \endentry
+
+  \entry{micchelli2005}{article}{}
+    \name{author}{2}{}{%
+      {{hash=MCA}{%
+         family={Micchelli},
+         familyi={M\bibinitperiod},
+         given={Charles\bibnamedelima A.},
+         giveni={C\bibinitperiod\bibinitdelim A\bibinitperiod},
+      }}%
+      {{hash=PM}{%
+         family={Pontil},
+         familyi={P\bibinitperiod},
+         given={Massimiliano},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \strng{namehash}{MCAPM1}
+    \strng{fullhash}{MCAPM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2005}
+    \field{labeldatesource}{year}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \field{abstract}{%
+    In this paper, we provide a study of learning in a Hilbert space of
+  vector-valued functions. We motivate the need for extending learning theory
+  of scalar-valued functions by practical considerations and establish some
+  basic results for learning vector-valued functions which should prove useful
+  in applications. Specifically, we allow an output space Y to be a Hilbert
+  space and we consider a reproducing kernel Hilbert space of functions whose
+  values lie in Y. In this setting, we derive the form of the minimal norm
+  interpolant to a finite set of data and apply it to study some regularization
+  functionals which are important in learning theory. We consider specific
+  examples of such functionals corresponding to multiple-output regularization
+  networks and support vector machines, both for regression and classification.
+  Finally, we provide classes of operator-valued kernels of the dot product and
+  translation invariant type.%
+    }
+    \verb{doi}
+    \verb 10.1162/0899766052530802
+    \endverb
+    \field{issn}{0899-7667, 1530-888X}
+    \field{number}{1}
+    \field{pages}{177\bibrangedash 204}
+    \field{title}{On {{Learning Vector}}-{{Valued Functions}}}
+    \field{volume}{17}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/N2J93TBE/Micc
+    \verb helli y Pontil - 2005 - On Learning Vector-Valued Functions.pdf
+    \endverb
+    \field{journaltitle}{Neural Computation}
+    \field{month}{01}
+    \field{year}{2005}
+  \endentry
+
+  \entry{mises1964}{book}{}
+    \name{author}{2}{}{%
+      {{hash=vMR}{%
+         prefix={von.},
+         prefixi={v\bibinitperiod},
+         family={Mises},
+         familyi={M\bibinitperiod},
+         given={Richard},
+         giveni={R\bibinitperiod},
+      }}%
+      {{hash=GH}{%
+         family={Geiringer},
+         familyi={G\bibinitperiod},
+         given={Hilda.},
+         giveni={H\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {English}%
+    }
+    \list{publisher}{1}{%
+      {{Academic Press}}%
+    }
+    \strng{namehash}{MRvGH1}
+    \strng{fullhash}{MRvGH1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1964}
+    \field{labeldatesource}{year}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \field{title}{Mathematical Theory of Probability and Statistics}
+    \list{location}{1}{%
+      {{New York}}%
+    }
+    \field{year}{1964}
+  \endentry
+
+  \entry{mohri2018}{book}{}
+    \name{author}{3}{}{%
+      {{hash=MM}{%
+         family={Mohri},
+         familyi={M\bibinitperiod},
+         given={Mehryar},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=RA}{%
+         family={Rostamizadeh},
+         familyi={R\bibinitperiod},
+         given={Afshin},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=TA}{%
+         family={Talwalkar},
+         familyi={T\bibinitperiod},
+         given={Ameet},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \list{publisher}{1}{%
+      {{The MIT Press}}%
+    }
+    \keyw{Computer algorithms,Machine learning}
+    \strng{namehash}{MMRATA1}
+    \strng{fullhash}{MMRATA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2018}
+    \field{labeldatesource}{year}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \field{edition}{Second edition}
+    \field{isbn}{978-0-262-03940-6}
+    \field{series}{Adaptive Computation and Machine Learning}
+    \field{title}{Foundations of Machine Learning}
+    \list{location}{1}{%
+      {{Cambridge, Massachusetts}}%
+    }
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/GSJN4I28/Mohr
+    \verb i et al. - 2018 - Foundations of machine learning.pdf
+    \endverb
+    \field{year}{2018}
+  \endentry
+
+  \entry{muandet2017}{article}{}
+    \name{author}{4}{}{%
+      {{hash=MK}{%
+         family={Muandet},
+         familyi={M\bibinitperiod},
+         given={Krikamol},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=FK}{%
+         family={Fukumizu},
+         familyi={F\bibinitperiod},
+         given={Kenji},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=SB}{%
+         family={Sriperumbudur},
+         familyi={S\bibinitperiod},
+         given={Bharath},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=SB}{%
+         family={Sch{\"o}lkopf},
+         familyi={S\bibinitperiod},
+         given={Bernhard},
+         giveni={B\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \keyw{Computer Science - Machine Learning,Statistics - Machine Learning}
+    \strng{namehash}{MK+1}
+    \strng{fullhash}{MKFKSBSB1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{shorttitle}
+    \field{labelyear}{2017}
+    \field{labeldatesource}{year}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \field{abstract}{%
+    A Hilbert space embedding of a distribution---in short, a kernel mean
+  embedding---has recently emerged as a powerful tool for machine learning and
+  inference. The basic idea behind this framework is to map distributions into
+  a reproducing kernel Hilbert space (RKHS) in which the whole arsenal of
+  kernel methods can be extended to probability measures. It can be viewed as a
+  generalization of the original "feature map" common to support vector
+  machines (SVMs) and other kernel methods. While initially closely associated
+  with the latter, it has meanwhile found application in fields ranging from
+  kernel machines and probabilistic modeling to statistical inference, causal
+  discovery, and deep learning. The goal of this survey is to give a
+  comprehensive review of existing work and recent advances in this research
+  area, and to discuss the most challenging issues and open problems that could
+  lead to new research directions. The survey begins with a brief introduction
+  to the RKHS and positive definite kernels which forms the backbone of this
+  survey, followed by a thorough discussion of the Hilbert space embedding of
+  marginal distributions, theoretical guarantees, and a review of its
+  applications. The embedding of distributions enables us to apply RKHS methods
+  to probability measures which prompts a wide range of applications such as
+  kernel two-sample testing, independent testing, and learning on
+  distributional data. Next, we discuss the Hilbert space embedding for
+  conditional distributions, give theoretical insights, and review some
+  applications. The conditional mean embedding enables us to perform sum,
+  product, and Bayes' rules---which are ubiquitous in graphical model,
+  probabilistic inference, and reinforcement learning---in a non-parametric
+  way. We then discuss relationships between this framework and other related
+  areas. Lastly, we give some suggestions on future research directions.%
+    }
+    \verb{doi}
+    \verb 10.1561/2200000060
+    \endverb
+    \field{issn}{1935-8237, 1935-8245}
+    \field{number}{1-2}
+    \field{pages}{1\bibrangedash 141}
+    \field{shorttitle}{Kernel {{Mean Embedding}} of {{Distributions}}}
+    \field{title}{Kernel {{Mean Embedding}} of {{Distributions}}: {{A Review}}
+  and {{Beyond}}}
+    \field{volume}{10}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/5PQJ3BB5/Muan
+    \verb det et al. - 2017 - Kernel Mean Embedding of Distributions A Review a
+    \verb .pdf
+    \endverb
+    \field{journaltitle}{Foundations and Trends\textregistered{} in Machine
+  Learning}
+    \field{year}{2017}
+  \endentry
+
+  \entry{neto2012}{book}{}
+    \name{author}{2}{}{%
+      {{hash=NFDM}{%
+         family={Neto},
+         familyi={N\bibinitperiod},
+         given={Francisco Duarte\bibnamedelima Moura},
+         giveni={F\bibinitperiod\bibinitdelim D\bibinitperiod\bibinitdelim
+  M\bibinitperiod},
+      }}%
+      {{hash=NAJdS}{%
+         family={Neto},
+         familyi={N\bibinitperiod},
+         given={Ant{\^o}nio Jos{\'e} da\bibnamedelima Silva},
+         giveni={A\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim
+  d\bibinitperiod\bibinitdelim S\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \list{publisher}{1}{%
+      {{Springer Science \& Business Media}}%
+    }
+    \keyw{Computers / Computer Science,Mathematics / Applied,Science /
+  Mechanics / Thermodynamics,Technology \& Engineering / General}
+    \strng{namehash}{NFDMNAJdS1}
+    \strng{fullhash}{NFDMNAJdS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2012}
+    \field{labeldatesource}{year}
+    \field{sortinit}{N}
+    \field{sortinithash}{N}
+    \field{abstract}{%
+    Computational engineering/science uses a blend of applications,
+  mathematical models and computations. Mathematical models require accurate
+  approximations of their parameters, which are often viewed as solutions to
+  inverse problems. Thus, the study of inverse problems is an integral part of
+  computational engineering/science. This book presents several aspects of
+  inverse problems along with needed prerequisite topics in numerical analysis
+  and matrix algebra. If the reader has previously studied these prerequisites,
+  then one can rapidly move to the inverse problems in chapters 4-8 on image
+  restoration, thermal radiation, thermal characterization and heat
+  transfer.``This text does provide a comprehensive introduction to inverse
+  problems and fills a void in the literature''.Robert E White, Professor of
+  Mathematics, North Carolina State University%
+    }
+    \field{isbn}{978-3-642-32556-4}
+    \field{title}{An {{Introduction}} to {{Inverse Problems}} with
+  {{Applications}}}
+    \field{month}{09}
+    \field{year}{2012}
+  \endentry
+
+  \entry{osullivan1986}{article}{}
+    \name{author}{3}{}{%
+      {{hash=OF}{%
+         family={O'sullivan},
+         familyi={O\bibinitperiod},
+         given={Finbarr},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=YBS}{%
+         family={Yandell},
+         familyi={Y\bibinitperiod},
+         given={Brian\bibnamedelima S.},
+         giveni={B\bibinitperiod\bibinitdelim S\bibinitperiod},
+      }}%
+      {{hash=WJR}{%
+         family={William},
+         familyi={W\bibinitperiod},
+         given={J.\bibnamedelima Raynor},
+         giveni={J\bibinitperiod\bibinitdelim R\bibinitperiod},
+      }}%
+    }
+    \keyw{Cross-validation,IRLS,Penalized likelihood,Smoothing splines}
+    \strng{namehash}{OFYBSWJR1}
+    \strng{fullhash}{OFYBSWJR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1986}
+    \field{labeldatesource}{year}
+    \field{sortinit}{O}
+    \field{sortinithash}{O}
+    \field{abstract}{%
+    We consider the penalized likelihood method for estimating nonparametric
+  regression functions in generalized linear models (Nelder and Wedderburn
+  1972) and present a generalized cross-validation procedure for empirically
+  assessing an appropriate amount of smoothing in these estimates. Asymptotic
+  arguments and numerical simulations are used to show that the generalized
+  cross-validatory procedure preforms well from the point of view of a weighted
+  mean squared error criterion. The methodology adds to the battery of
+  graphical tools for model building and checking within the generalized linear
+  model framework. Included are two examples motivated by medical and
+  horticultural applications.%
+    }
+    \verb{doi}
+    \verb 10.1080/01621459.1986.10478243
+    \endverb
+    \field{issn}{0162-1459}
+    \field{number}{393}
+    \field{pages}{96\bibrangedash 103}
+    \field{title}{Automatic {{Smoothing}} of {{Regression Functions}} in
+  {{Generalized Linear Models}}}
+    \field{volume}{81}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/9TYLKYQ8/0162
+    \verb 1459.1986.html
+    \endverb
+    \field{journaltitle}{Journal of the American Statistical Association}
+    \field{month}{03}
+    \field{year}{1986}
+  \endentry
+
+  \entry{press1992}{book}{}
+    \name{author}{4}{}{%
+      {{hash=PWH}{%
+         family={Press},
+         familyi={P\bibinitperiod},
+         given={William\bibnamedelima H.},
+         giveni={W\bibinitperiod\bibinitdelim H\bibinitperiod},
+      }}%
+      {{hash=TSA}{%
+         family={Teukolsky},
+         familyi={T\bibinitperiod},
+         given={Saul\bibnamedelima A.},
+         giveni={S\bibinitperiod\bibinitdelim A\bibinitperiod},
+      }}%
+      {{hash=VWT}{%
+         family={Vetterling},
+         familyi={V\bibinitperiod},
+         given={William\bibnamedelima T.},
+         giveni={W\bibinitperiod\bibinitdelim T\bibinitperiod},
+      }}%
+      {{hash=FBP}{%
+         family={Flannery},
+         familyi={F\bibinitperiod},
+         given={Brian\bibnamedelima P.},
+         giveni={B\bibinitperiod\bibinitdelim P\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {English}%
+    }
+    \list{publisher}{1}{%
+      {{Cambridge University Press}}%
+    }
+    \strng{namehash}{PWH+1}
+    \strng{fullhash}{PWHTSAVWTFBP1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1992}
+    \field{labeldatesource}{year}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{isbn}{0-521-43108-5 978-0-521-43108-8}
+    \field{title}{Numerical Recipes in {{C}} : The Art of Scientific Computing}
+    \list{location}{1}{%
+      {{Cambridge [etc.]}}%
+    }
+    \field{year}{1992}
+  \endentry
+
+  \entry{rao2009}{book}{}
+    \name{author}{1}{}{%
+      {{hash=RSS}{%
+         family={Rao},
+         familyi={R\bibinitperiod},
+         given={Singiresu\bibnamedelima S.},
+         giveni={S\bibinitperiod\bibinitdelim S\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \list{publisher}{1}{%
+      {{John Wiley \& Sons}}%
+    }
+    \keyw{Engineering,Mathematical models,Mathematical optimization}
+    \strng{namehash}{RSS1}
+    \strng{fullhash}{RSS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{shorttitle}
+    \field{labelyear}{2009}
+    \field{labeldatesource}{year}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \field{edition}{4th ed}
+    \field{isbn}{978-0-470-18352-6}
+    \field{shorttitle}{Engineering Optimization}
+    \field{title}{Engineering Optimization: Theory and Practice}
+    \list{location}{1}{%
+      {{Hoboken, N.J}}%
+    }
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/NWQFH4ZE/Rao
+    \verb - 2009 - Engineering optimization theory and practice.pdf
+    \endverb
+    \field{annotation}{%
+    OCLC: ocn320352991%
+    }
+    \field{year}{2009}
+  \endentry
+
+  \entry{rasmussen2006}{book}{}
+    \name{author}{2}{}{%
+      {{hash=RCE}{%
+         family={Rasmussen},
+         familyi={R\bibinitperiod},
+         given={Carl\bibnamedelima Edward},
+         giveni={C\bibinitperiod\bibinitdelim E\bibinitperiod},
+      }}%
+      {{hash=WCKI}{%
+         family={Williams},
+         familyi={W\bibinitperiod},
+         given={Christopher K.\bibnamedelima I.},
+         giveni={C\bibinitperiod\bibinitdelim K\bibinitperiod\bibinitdelim
+  I\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \list{publisher}{1}{%
+      {{MIT Press}}%
+    }
+    \keyw{Data processing,Gaussian processes,Machine learning,Mathematical
+  models}
+    \strng{namehash}{RCEWCKI1}
+    \strng{fullhash}{RCEWCKI1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2006}
+    \field{labeldatesource}{year}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \field{isbn}{978-0-262-18253-9}
+    \field{series}{Adaptive Computation and Machine Learning}
+    \field{title}{Gaussian Processes for Machine Learning}
+    \list{location}{1}{%
+      {{Cambridge, Mass}}%
+    }
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/638QAH2H/Rasm
+    \verb ussen y Williams - 2006 - Gaussian processes for machine learning.pdf
+    \endverb
+    \field{annotation}{%
+    OCLC: ocm61285753%
+    }
+    \field{year}{2006}
+  \endentry
+
+  \entry{rescorla2015}{article}{}
+    \name{author}{1}{}{%
+      {{hash=RM}{%
+         family={Rescorla},
+         familyi={R\bibinitperiod},
+         given={Michael},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \strng{namehash}{RM1}
+    \strng{fullhash}{RM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2015}
+    \field{labeldatesource}{year}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \field{abstract}{%
+    This paper discusses conditional probability P(A|B), or the probability of
+  A given B. When P(B) {$>$} 0, the ratio formula determines P(A|B). When P(B)
+  = 0, the ratio formula breaks down. The Borel\textendash Kolmogorov paradox
+  suggests that conditional probabilities in such cases are indeterminate or
+  ill-posed. To analyze the paradox, I explore the relation between probability
+  and intensionality. I argue that the paradox is a Frege case, similar to
+  those that arise in many probabilistic and non-probabilistic contexts. The
+  paradox vividly illustrates how an agent's way of representing an entity can
+  rationally influence her credal assignments. I deploy my analysis to defend
+  Kolmogorov's relativistic treatment of conditional probability.%
+    }
+    \verb{doi}
+    \verb 10.1007/s11229-014-0586-z
+    \endverb
+    \field{issn}{0039-7857, 1573-0964}
+    \field{number}{3}
+    \field{pages}{735\bibrangedash 767}
+    \field{title}{Some Epistemological Ramifications of the
+  {{Borel}}\textendash{{Kolmogorov}} Paradox}
+    \field{volume}{192}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/JCBD2VIM/Resc
+    \verb orla - 2015 - Some epistemological ramifications of the Borelâ€“Ko.pd
+    \verb f
+    \endverb
+    \field{journaltitle}{Synthese}
+    \field{month}{03}
+    \field{year}{2015}
+  \endentry
+
+  \entry{robert2004}{book}{}
+    \name{author}{2}{}{%
+      {{hash=RCP}{%
+         family={Robert},
+         familyi={R\bibinitperiod},
+         given={Christian\bibnamedelima P.},
+         giveni={C\bibinitperiod\bibinitdelim P\bibinitperiod},
+      }}%
+      {{hash=CG}{%
+         family={Casella},
+         familyi={C\bibinitperiod},
+         given={George},
+         giveni={G\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \list{publisher}{1}{%
+      {{Springer New York}}%
+    }
+    \strng{namehash}{RCPCG1}
+    \strng{fullhash}{RCPCG1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2004}
+    \field{labeldatesource}{year}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \verb{doi}
+    \verb 10.1007/978-1-4757-4145-2
+    \endverb
+    \field{isbn}{978-1-4419-1939-7 978-1-4757-4145-2}
+    \field{series}{Springer {{Texts}} in {{Statistics}}}
+    \field{title}{Monte {{Carlo Statistical Methods}}}
+    \list{location}{1}{%
+      {{New York, NY}}%
+    }
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/ACCG5Y4B/Robe
+    \verb rt y Casella - 2004 - Monte Carlo Statistical Methods.pdf
+    \endverb
+    \field{year}{2004}
+  \endentry
+
+  \entry{santner2003}{book}{}
+    \name{author}{3}{}{%
+      {{hash=STJ}{%
+         family={Santner},
+         familyi={S\bibinitperiod},
+         given={T.\bibnamedelima J.},
+         giveni={T\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+      {{hash=WBJ}{%
+         family={Williams},
+         familyi={W\bibinitperiod},
+         given={B.\bibnamedelima J.},
+         giveni={B\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+      {{hash=NWI}{%
+         family={Notz},
+         familyi={N\bibinitperiod},
+         given={W.\bibnamedelima I.},
+         giveni={W\bibinitperiod\bibinitdelim I\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \list{publisher}{1}{%
+      {{Springer New York}}%
+    }
+    \strng{namehash}{STJWBJNWI1}
+    \strng{fullhash}{STJWBJNWI1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2003}
+    \field{labeldatesource}{year}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \verb{doi}
+    \verb 10.1007/978-1-4757-3799-8
+    \endverb
+    \field{isbn}{978-1-4419-2992-1 978-1-4757-3799-8}
+    \field{series}{Springer {{Series}} in {{Statistics}}}
+    \field{title}{The {{Design}} and {{Analysis}} of {{Computer Experiments}}}
+    \list{location}{1}{%
+      {{New York, NY}}%
+    }
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/GNKQQDJT/Sant
+    \verb ner et al. - The Design and Analysis of Computer Experiments.pdf
+    \endverb
+    \field{year}{2003}
+  \endentry
+
+  \entry{schoenberg1964}{article}{}
+    \name{author}{1}{}{%
+      {{hash=SIJ}{%
+         family={Schoenberg},
+         familyi={S\bibinitperiod},
+         given={I.\bibnamedelima J.},
+         giveni={I\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{SIJ1}
+    \strng{fullhash}{SIJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1964}
+    \field{labeldatesource}{year}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{issn}{0027-8424}
+    \field{number}{4}
+    \field{pages}{947\bibrangedash 950}
+    \field{title}{Spline Functions and the Problem of Graduation}
+    \field{volume}{52}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/7U8GY3BH/Scho
+    \verb enberg - 1964 - SPLINE FUNCTIONS AND THE PROBLEM OF GRADUATION.pdf
+    \endverb
+    \field{journaltitle}{Proceedings of the National Academy of Sciences of the
+  United States of America}
+    \field{month}{10}
+    \field{year}{1964}
+  \endentry
+
+  \entry{schoenberg1988}{article}{}
+    \name{author}{1}{}{%
+      {{hash=SIJ}{%
+         family={Schoenberg},
+         familyi={S\bibinitperiod},
+         given={I.\bibnamedelima J.},
+         giveni={I\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {English}%
+    }
+    \strng{namehash}{SIJ1}
+    \strng{fullhash}{SIJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1988}
+    \field{labeldatesource}{year}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{pages}{115\bibrangedash 145}
+    \field{title}{Metric {{Spaces}} and {{Completely Monotone Functions}}}
+    \field{year}{1988}
+  \endentry
+
+  \entry{scholkopf2001}{incollection}{}
+    \name{author}{3}{}{%
+      {{hash=SB}{%
+         family={Sch{\"o}lkopf},
+         familyi={S\bibinitperiod},
+         given={Bernhard},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=HR}{%
+         family={Herbrich},
+         familyi={H\bibinitperiod},
+         given={Ralf},
+         giveni={R\bibinitperiod},
+      }}%
+      {{hash=SAJ}{%
+         family={Smola},
+         familyi={S\bibinitperiod},
+         given={Alex\bibnamedelima J.},
+         giveni={A\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+    }
+    \name{editor}{5}{}{%
+      {{hash=GG}{%
+         family={Goos},
+         familyi={G\bibinitperiod},
+         given={G.},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=HJ}{%
+         family={Hartmanis},
+         familyi={H\bibinitperiod},
+         given={J.},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=vJ}{%
+         family={{van Leeuwen}},
+         familyi={v\bibinitperiod},
+         given={J.},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=HD}{%
+         family={Helmbold},
+         familyi={H\bibinitperiod},
+         given={David},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=WB}{%
+         family={Williamson},
+         familyi={W\bibinitperiod},
+         given={Bob},
+         giveni={B\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \list{publisher}{1}{%
+      {{Springer Berlin Heidelberg}}%
+    }
+    \strng{namehash}{SBHRSAJ1}
+    \strng{fullhash}{SBHRSAJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2001}
+    \field{labeldatesource}{year}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{abstract}{%
+    Wahba's classical representer theorem states that the solutions of certain
+  risk minimization problems involving an empirical risk term and a quadratic
+  regularizer can be written as expansions in terms of the training examples.
+  We generalize the theorem to a larger class of regularizers and empirical
+  risk terms, and give a self-contained proof utilizing the feature space
+  associated with a kernel. The result shows that a wide range of problems have
+  optimal solutions that live in the finite dimensional span of the training
+  examples mapped into feature space, thus enabling us to carry out kernel
+  algorithms independent of the (potentially infinite) dimensionality of the
+  feature space.%
+    }
+    \field{booktitle}{Computational {{Learning Theory}}}
+    \verb{doi}
+    \verb 10.1007/3-540-44581-1_27
+    \endverb
+    \field{isbn}{978-3-540-42343-0 978-3-540-44581-4}
+    \field{pages}{416\bibrangedash 426}
+    \field{title}{A {{Generalized Representer Theorem}}}
+    \field{volume}{2111}
+    \list{location}{1}{%
+      {{Berlin, Heidelberg}}%
+    }
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/VE8HITX6/SchÃ
+    \verb ¶lkopf et al. - 2001 - A Generalized Representer Theorem.pdf
+    \endverb
+    \field{year}{2001}
+  \endentry
+
+  \entry{simpson2001}{article}{}
+    \name{author}{4}{}{%
+      {{hash=STW}{%
+         family={Simpson},
+         familyi={S\bibinitperiod},
+         given={Timothy\bibnamedelima W.},
+         giveni={T\bibinitperiod\bibinitdelim W\bibinitperiod},
+      }}%
+      {{hash=MTM}{%
+         family={Mauery},
+         familyi={M\bibinitperiod},
+         given={Timothy\bibnamedelima M.},
+         giveni={T\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+      {{hash=KJJ}{%
+         family={Korte},
+         familyi={K\bibinitperiod},
+         given={John\bibnamedelima J.},
+         giveni={J\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+      {{hash=MF}{%
+         family={Mistree},
+         familyi={M\bibinitperiod},
+         given={Farrokh},
+         giveni={F\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{STW+1}
+    \strng{fullhash}{STWMTMKJJMF1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2001}
+    \field{labeldatesource}{year}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \verb{doi}
+    \verb 10.2514/2.1234
+    \endverb
+    \field{issn}{0001-1452}
+    \field{number}{12}
+    \field{pages}{2233\bibrangedash 2241}
+    \field{title}{Kriging {{Models}} for {{Global Approximation}} in
+  {{Simulation}}-{{Based Multidisciplinary Design Optimization}}}
+    \field{volume}{39}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/AXVFDBYZ/Simp
+    \verb son et al. - 2001 - Kriging Models for Global Approximation in Simula
+    \verb t.pdf;/home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/JI4ENEN
+    \verb P/2.html
+    \endverb
+    \field{journaltitle}{AIAA Journal}
+    \field{year}{2001}
+  \endentry
+
+  \entry{smith1993}{article}{}
+    \name{author}{2}{}{%
+      {{hash=SAFM}{%
+         family={Smith},
+         familyi={S\bibinitperiod},
+         given={A.\bibnamedelima F.\bibnamedelima M.},
+         giveni={A\bibinitperiod\bibinitdelim F\bibinitperiod\bibinitdelim
+  M\bibinitperiod},
+      }}%
+      {{hash=RGO}{%
+         family={Roberts},
+         familyi={R\bibinitperiod},
+         given={G.\bibnamedelima O.},
+         giveni={G\bibinitperiod\bibinitdelim O\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {{[Royal Statistical Society, Wiley]}}%
+    }
+    \strng{namehash}{SAFMRGO1}
+    \strng{fullhash}{SAFMRGO1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1993}
+    \field{labeldatesource}{year}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{abstract}{%
+    The use of the Gibbs sampler for Bayesian computation is reviewed and
+  illustrated in the context of some canonical examples. Other Markov chain
+  Monte Carlo simulation methods are also briefly described, and comments are
+  made on the advantages of sample-based approaches for Bayesian inference
+  summaries.%
+    }
+    \field{issn}{0035-9246}
+    \field{number}{1}
+    \field{pages}{3\bibrangedash 23}
+    \field{title}{Bayesian {{Computation Via}} the {{Gibbs Sampler}} and
+  {{Related Markov Chain Monte Carlo Methods}}}
+    \field{volume}{55}
+    \field{journaltitle}{Journal of the Royal Statistical Society. Series B
+  (Methodological)}
+    \field{year}{1993}
+  \endentry
+
+  \entry{song2008}{thesis}{}
+    \name{author}{1}{}{%
+      {{hash=SL}{%
+         family={Song},
+         familyi={S\bibinitperiod},
+         given={Le},
+         giveni={L\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{SL1}
+    \strng{fullhash}{SL1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2008}
+    \field{labeldatesource}{year}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{title}{Learning via {{Hilbert Space Embedding}} of
+  {{Distributions}}}
+    \list{institution}{1}{%
+      {University of Sydney}%
+    }
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/E6SGQHM6/Lear
+    \verb ningViaHilbertSpaceEmbeddingOfDistributions_Song_PhD_thesis.pdf
+    \endverb
+    \field{type}{phdthesis}
+    \field{year}{2008}
+  \endentry
+
+  \entry{spall2003}{book}{}
+    \name{author}{1}{}{%
+      {{hash=SJC}{%
+         family={Spall},
+         familyi={S\bibinitperiod},
+         given={James\bibnamedelima C.},
+         giveni={J\bibinitperiod\bibinitdelim C\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {English}%
+    }
+    \list{publisher}{1}{%
+      {{Wiley}}%
+    }
+    \strng{namehash}{SJC1}
+    \strng{fullhash}{SJC1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2003}
+    \field{labeldatesource}{year}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{isbn}{0-471-33052-3 978-0-471-33052-3}
+    \field{title}{Introduction to Stochastic Search and Optimization :
+  Estimation, Simulation, and Control}
+    \list{location}{1}{%
+      {{Hoboken}}%
+    }
+    \field{year}{2003}
+  \endentry
+
+  \entry{tanaka2003}{book}{}
+    \name{author}{1}{}{%
+      {{hash=TM}{%
+         family={Tanaka},
+         familyi={T\bibinitperiod},
+         given={Mana},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \list{publisher}{1}{%
+      {{Elsevier}}%
+    }
+    \keyw{Mathematics / Applied,Science / Mechanics / Fluids,Science /
+  Mechanics / Solids,Technology \& Engineering / Engineering (General)}
+    \strng{namehash}{TM1}
+    \strng{fullhash}{TM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{shorttitle}
+    \field{labelyear}{2003}
+    \field{labeldatesource}{year}
+    \field{sortinit}{T}
+    \field{sortinithash}{T}
+    \field{abstract}{%
+    This latest collection of proceedings provides a state of the art review of
+  research on inverse problems in engineering mechanics. Inverse problems can
+  be found in many areas of engineering mechanics, and have many successful
+  applications. They are concerned with estimating the unknown input and/or the
+  characteristics of a system given certain aspects of its output. The
+  mathematical challenges of such problems have to be overcome through the
+  development of new computational schemes, regularization techniques,
+  objective functionals, and experimental procedures. The papers within this
+  represent an excellent reference for all in the field.Providing a state of
+  the art review of research on inverse problems in engineering
+  mechanicsContains the latest research ideas and related techniquesA
+  recognized standard reference in the field of inverse problemsPapers from
+  Asia, Europe and America are all well represented%
+    }
+    \field{isbn}{978-0-08-053517-3}
+    \field{shorttitle}{Inverse {{Problems}} in {{Engineering Mechanics IV}}}
+    \field{title}{Inverse {{Problems}} in {{Engineering Mechanics IV}}}
+    \field{month}{11}
+    \field{year}{2003}
+  \endentry
+
+  \entry{tanaka1998}{book}{}
+    \name{author}{2}{}{%
+      {{hash=TM}{%
+         family={Tanaka},
+         familyi={T\bibinitperiod},
+         given={Masataka},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=DGS}{%
+         family={Dulikravich},
+         familyi={D\bibinitperiod},
+         given={G.\bibnamedelima S.},
+         giveni={G\bibinitperiod\bibinitdelim S\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \list{publisher}{1}{%
+      {{Elsevier}}%
+    }
+    \keyw{Technology \& Engineering / Mechanical}
+    \strng{namehash}{TMDGS1}
+    \strng{fullhash}{TMDGS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1998}
+    \field{labeldatesource}{year}
+    \field{sortinit}{T}
+    \field{sortinithash}{T}
+    \field{abstract}{%
+    Inverse problems can be found in many topics of engineering mechanics.
+  There are many successful applications in the fields of inverse problems
+  (non-destructive testing and characterization of material properties by
+  ultrasonic or X-ray techniques, thermography, etc.). Generally speaking, the
+  inverse problems are concerned with the determination of the input and the
+  characteristics of a mechanical system from some of the output from the
+  system. Mathematically, such problems are ill-posed and have to be overcome
+  through development of new computational schemes, regularization techniques,
+  objective functionals, and experimental procedures.Seventy-two papers were
+  presented at the International Symposium on Inverse Problems in Mechanics
+  (ISIP '98) held in March of 1998 in Nagano, where recent developments in the
+  inverse problems in engineering mechanics and related topics were discussed.
+  The main themes were: mathematical and computational aspects of the inverse
+  problems, parameter or system identification, shape determination,
+  sensitivity analysis, optimization, material property characterization,
+  ultrasonic non-destructive testing, elastodynamic inverse problems, thermal
+  inverse problems, and other engineering applications.%
+    }
+    \field{isbn}{978-0-08-053516-6}
+    \field{title}{Inverse {{Problems}} in {{Engineering Mechanics}}}
+    \field{month}{11}
+    \field{year}{1998}
+  \endentry
+
+  \entry{titterington1985}{book}{}
+    \name{author}{3}{}{%
+      {{hash=TDM}{%
+         family={Titterington},
+         familyi={T\bibinitperiod},
+         given={D.\bibnamedelima M.},
+         giveni={D\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+      {{hash=SAFM}{%
+         family={Smith},
+         familyi={S\bibinitperiod},
+         given={A.\bibnamedelima F.\bibnamedelima M.},
+         giveni={A\bibinitperiod\bibinitdelim F\bibinitperiod\bibinitdelim
+  M\bibinitperiod},
+      }}%
+      {{hash=MUE}{%
+         family={Makov},
+         familyi={M\bibinitperiod},
+         given={U.\bibnamedelima E.},
+         giveni={U\bibinitperiod\bibinitdelim E\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {English}%
+    }
+    \list{publisher}{1}{%
+      {{J. Wiley}}%
+    }
+    \strng{namehash}{TDMSAFMMUE1}
+    \strng{fullhash}{TDMSAFMMUE1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1985}
+    \field{labeldatesource}{year}
+    \field{sortinit}{T}
+    \field{sortinithash}{T}
+    \field{isbn}{0-471-90763-4 978-0-471-90763-3}
+    \field{title}{Statistical Analysis of Finite Mixture Distributions}
+    \list{location}{1}{%
+      {{Chichester}}%
+    }
+    \field{year}{1985}
+  \endentry
+
+  \entry{trefethen1997}{book}{}
+    \name{author}{2}{}{%
+      {{hash=TLN}{%
+         family={Trefethen},
+         familyi={T\bibinitperiod},
+         given={Lloyd\bibnamedelima N.},
+         giveni={L\bibinitperiod\bibinitdelim N\bibinitperiod},
+      }}%
+      {{hash=BD}{%
+         family={Bau},
+         familyi={B\bibinitperiod},
+         given={David.},
+         giveni={D\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {English}%
+    }
+    \list{publisher}{1}{%
+      {{SIAM}}%
+    }
+    \strng{namehash}{TLNBD1}
+    \strng{fullhash}{TLNBD1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1997}
+    \field{labeldatesource}{year}
+    \field{sortinit}{T}
+    \field{sortinithash}{T}
+    \field{isbn}{0-89871-361-7 978-0-89871-361-9}
+    \field{title}{Numerical Linear Algebra}
+    \list{location}{1}{%
+      {{Philadelphia, Pa.}}%
+    }
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/VYL2KJNE/Tref
+    \verb ethen_Bau.pdf
+    \endverb
+    \field{year}{1997}
+  \endentry
+
+  \entry{vonluxburg2008}{article}{}
+    \name{author}{2}{}{%
+      {{hash=vU}{%
+         family={{von Luxburg}},
+         familyi={v\bibinitperiod},
+         given={Ulrike},
+         giveni={U\bibinitperiod},
+      }}%
+      {{hash=SB}{%
+         family={Schoelkopf},
+         familyi={S\bibinitperiod},
+         given={Bernhard},
+         giveni={B\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \keyw{Mathematics - Statistics Theory,Statistics - Machine Learning}
+    \strng{namehash}{vUSB1}
+    \strng{fullhash}{vUSB1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{shorttitle}
+    \field{labelyear}{2008}
+    \field{labeldatesource}{year}
+    \field{sortinit}{V}
+    \field{sortinithash}{V}
+    \field{abstract}{%
+    Statistical learning theory provides the theoretical basis for many of
+  today's machine learning algorithms. In this article we attempt to give a
+  gentle, non-technical overview over the key ideas and insights of statistical
+  learning theory. We target at a broad audience, not necessarily machine
+  learning researchers. This paper can serve as a starting point for people who
+  want to get an overview on the field before diving into technical details.%
+    }
+    \verb{eprint}
+    \verb 0810.4752
+    \endverb
+    \field{shorttitle}{Statistical {{Learning Theory}}}
+    \field{title}{Statistical {{Learning Theory}}: {{Models}}, {{Concepts}},
+  and {{Results}}}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/EIZ85BGT/von
+    \verb Luxburg y Schoelkopf - 2008 - Statistical Learning Theory Models, Con
+    \verb cepts, and.pdf
+    \endverb
+    \field{journaltitle}{arXiv:0810.4752 [math, stat]}
+    \field{eprinttype}{arxiv}
+    \field{eprintclass}{math, stat}
+    \field{month}{10}
+    \field{year}{2008}
+    \warn{\item Can't use 'eprinttype' + 'archiveprefix'}
+  \endentry
+
+  \entry{wang2005}{inproceedings}{}
+    \name{author}{4}{}{%
+      {{hash=WL}{%
+         family={Wang},
+         familyi={W\bibinitperiod},
+         given={Liping},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=BD}{%
+         family={Beeson},
+         familyi={B\bibinitperiod},
+         given={Don},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=AS}{%
+         family={Akkaram},
+         familyi={A\bibinitperiod},
+         given={Srikanth},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=WG}{%
+         family={Wiggs},
+         familyi={W\bibinitperiod},
+         given={Gene},
+         giveni={G\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \list{publisher}{1}{%
+      {{ASMEDC}}%
+    }
+    \strng{namehash}{WL+1}
+    \strng{fullhash}{WLBDASWG1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2005}
+    \field{labeldatesource}{year}
+    \field{sortinit}{W}
+    \field{sortinithash}{W}
+    \field{abstract}{%
+    Probabilistic design in complex design spaces is often a computationally
+  expensive and difficult task because of the highly nonlinear and noisy nature
+  of those spaces. Approximate probabilistic methods, such as, First-Order
+  Second-Moments (FOSM) and Point Estimate Method (PEM) have been developed to
+  alleviate the high computational cost issue. However, both methods have
+  difficulty with non-monotonic spaces and FOSM may have convergence problems
+  if noise on the space makes it difficult to calculate accurate numerical
+  partial derivatives. Use of design and Analysis of Computer Experiments
+  (DACE) methods to build polynomial meta-models is a common approach which
+  both smoothes the design space and significantly improves the computational
+  efficiency. However, this type of model is inherently limited by the
+  properties of the polynomial function and its transformations. Therefore,
+  polynomial meta-models may not accurately represent the portion of the design
+  space that is of interest to the engineer. The objective of this paper is to
+  utilize Gaussian Process (GP) techniques to build an alternative meta-model
+  that retains the properties of smoothness and fast execution but has a much
+  higher level of accuracy. If available, this high quality GP model can then
+  be used for fast probabilistic analysis based on a function that much more
+  closely represents the original design space. Achieving the GP goal of a
+  highly accurate meta-model requires a level of mathematics that is much more
+  complex than the mathematics required for regular linear and quadratic
+  response surfaces. Many difficult mathematical issues encountered in the
+  implementation of the Gaussian Process meta-model are addressed in this
+  paper. Several selected examples demonstrate the accuracy of the GP models
+  and efficiency improvements related to probabilistic design.%
+    }
+    \field{booktitle}{Volume 2: 31st {{Design Automation Conference}}, {{Parts
+  A}} and {{B}}}
+    \verb{doi}
+    \verb 10.1115/DETC2005-85406
+    \endverb
+    \field{isbn}{978-0-7918-4739-8}
+    \field{pages}{785\bibrangedash 798}
+    \field{title}{Gaussian {{Process Meta}}-{{Models}} for {{Efficient
+  Probabilistic Design}} in {{Complex Engineering Design Spaces}}}
+    \list{location}{1}{%
+      {{Long Beach, California, USA}}%
+    }
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/4N3UGIKV/Wang
+    \verb  et al. - 2005 - Gaussian Process Meta-Models for Efficient Probabi.p
+    \verb df
+    \endverb
+    \field{month}{01}
+    \field{year}{2005}
+  \endentry
+
+  \entry{woodbury1950}{book}{}
+    \name{author}{1}{}{%
+      {{hash=WMA}{%
+         family={Woodbury},
+         familyi={W\bibinitperiod},
+         given={Max\bibnamedelima A.},
+         giveni={M\bibinitperiod\bibinitdelim A\bibinitperiod},
+      }}%
+    }
+    \name{editor}{1}{}{%
+      {{hash=P}{%
+         family={{Princeton University}},
+         familyi={P\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {English}%
+    }
+    \list{publisher}{1}{%
+      {{Princeton, NJ: Department of Statistics, Princeton University}}%
+    }
+    \keyw{Matrices,Statistics}
+    \strng{namehash}{WMA1}
+    \strng{fullhash}{WMA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1950}
+    \field{labeldatesource}{year}
+    \field{sortinit}{W}
+    \field{sortinithash}{W}
+    \field{series}{{{SRG Memorandum}} Report ; 42}
+    \field{title}{Inverting Modified Matrices}
+    \field{year}{1950}
+  \endentry
+
+  \entry{xiong2009}{article}{}
+    \name{author}{4}{}{%
+      {{hash=XF}{%
+         family={Xiong},
+         familyi={X\bibinitperiod},
+         given={F.},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=XY}{%
+         family={Xiong},
+         familyi={X\bibinitperiod},
+         given={Y.},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=CW}{%
+         family={Chen},
+         familyi={C\bibinitperiod},
+         given={W.},
+         giveni={W\bibinitperiod},
+      }}%
+      {{hash=YS}{%
+         family={Yang},
+         familyi={Y\bibinitperiod},
+         given={S.},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \strng{namehash}{XF+1}
+    \strng{fullhash}{XFXYCWYS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2009}
+    \field{labeldatesource}{year}
+    \field{sortinit}{X}
+    \field{sortinithash}{X}
+    \verb{doi}
+    \verb 10.1080/03052150902852999
+    \endverb
+    \field{issn}{0305-215X, 1029-0273}
+    \field{number}{8}
+    \field{pages}{793\bibrangedash 810}
+    \field{title}{Optimizing {{Latin}} Hypercube Design for Sequential Sampling
+  of Computer Experiments}
+    \field{volume}{41}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/HVZQMI2Y/Xion
+    \verb g et al. - 2009 - Optimizing Latin hypercube design for sequential s.
+    \verb pdf
+    \endverb
+    \field{journaltitle}{Engineering Optimization}
+    \field{month}{08}
+    \field{year}{2009}
+  \endentry
+
+  \entry{yang2010}{book}{}
+    \name{author}{1}{}{%
+      {{hash=YXS}{%
+         family={Yang},
+         familyi={Y\bibinitperiod},
+         given={Xin-She},
+         giveni={X\bibinithyphendelim S\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \list{publisher}{1}{%
+      {{John Wiley \& Sons}}%
+    }
+    \keyw{Mathematics / Discrete Mathematics,Mathematics / General}
+    \strng{namehash}{YXS1}
+    \strng{fullhash}{YXS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{shorttitle}
+    \field{labelyear}{2010}
+    \field{labeldatesource}{year}
+    \field{sortinit}{Y}
+    \field{sortinithash}{Y}
+    \field{abstract}{%
+    An accessible introduction to metaheuristics and optimization, featuring
+  powerful and modern algorithms for application across engineering and the
+  sciences From engineering and computer science to economics and management
+  science, optimization is a core component for problem solving. Highlighting
+  the latest developments that have evolved in recent years, Engineering
+  Optimization: An Introduction with Metaheuristic Applications outlines
+  popular metaheuristic algorithms and equips readers with the skills needed to
+  apply these techniques to their own optimization problems. With insightful
+  examples from various fields of study, the author highlights key concepts and
+  techniques for the successful application of commonly-used metaheuristc
+  algorithms, including simulated annealing, particle swarm optimization,
+  harmony search, and genetic algorithms. The author introduces all major
+  metaheuristic algorithms and their applications in optimization through a
+  presentation that is organized into three succinct parts: Foundations of
+  Optimization and Algorithms provides a brief introduction to the underlying
+  nature of optimization and the common approaches to optimization problems,
+  random number generation, the Monte Carlo method, and the Markov chain Monte
+  Carlo method Metaheuristic Algorithms presents common metaheuristic
+  algorithms in detail, including genetic algorithms, simulated annealing, ant
+  algorithms, bee algorithms, particle swarm optimization, firefly algorithms,
+  and harmony search Applications outlines a wide range of applications that
+  use metaheuristic algorithms to solve challenging optimization problems with
+  detailed implementation while also introducing various modifications used for
+  multi-objective optimization Throughout the book, the author presents
+  worked-out examples and real-world applications that illustrate the modern
+  relevance of the topic. A detailed appendix features important and popular
+  algorithms using MATLAB\textregistered{} and Octave software packages, and a
+  related FTP site houses MATLAB code and programs for easy implementation of
+  the discussed techniques. In addition, references to the current literature
+  enable readers to investigate individual algorithms and methods in greater
+  detail. Engineering Optimization: An Introduction with Metaheuristic
+  Applications is an excellent book for courses on optimization and computer
+  simulation at the upper-undergraduate and graduate levels. It is also a
+  valuable reference for researchers and practitioners working in the fields of
+  mathematics, engineering, computer science, operations research, and
+  management science who use metaheuristic algorithms to solve problems in
+  their everyday work.%
+    }
+    \field{isbn}{978-0-470-64041-8}
+    \field{shorttitle}{Engineering {{Optimization}}}
+    \field{title}{Engineering {{Optimization}}: {{An Introduction}} with
+  {{Metaheuristic Applications}}}
+    \field{month}{07}
+    \field{year}{2010}
+  \endentry
+
+  \entry{yao2016}{article}{}
+    \name{author}{2}{}{%
+      {{hash=YK}{%
+         family={Yao},
+         familyi={Y\bibinitperiod},
+         given={K.},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=GJ}{%
+         family={Gao},
+         familyi={G\bibinitperiod},
+         given={J.},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{YKGJ1}
+    \strng{fullhash}{YKGJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2016}
+    \field{labeldatesource}{year}
+    \field{sortinit}{Y}
+    \field{sortinithash}{Y}
+    \verb{doi}
+    \verb 10.1109/TFUZZ.2015.2466080
+    \endverb
+    \field{number}{3}
+    \field{pages}{615\bibrangedash 621}
+    \field{title}{Law of Large Numbers for Uncertain Random Variables}
+    \field{volume}{24}
+    \field{journaltitle}{IEEE T. Fuzzy Systems}
+    \field{year}{2016}
+  \endentry
+
+  \entry{zilinskas2016}{article}{}
+    \name{author}{2}{}{%
+      {{hash=ZA}{%
+         family={{\v Z}ilinskas},
+         familyi={{\v Z}\bibinitperiod},
+         given={Antanas},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=ZA}{%
+         family={Zhigljavsky},
+         familyi={Z\bibinitperiod},
+         given={Anatoly},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \strng{namehash}{ZAZA1}
+    \strng{fullhash}{ZAZA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{shorttitle}
+    \field{labelyear}{2016}
+    \field{labeldatesource}{year}
+    \field{sortinit}{Z}
+    \field{sortinithash}{Z}
+    \field{abstract}{%
+    This is a survey of the main achievements in the methodology and theory of
+  stochastic global optimization. It comprises two complimentary directions:
+  global random search and the methodology based on the use of stochastic
+  models about the objective function. The main attention is paid to
+  theoretically substantiated methods and mathematical results proven in the
+  last 25 years.%
+    }
+    \verb{doi}
+    \verb 10.15388/Informatica.2016.83
+    \endverb
+    \field{issn}{0868-4952, 1822-8844}
+    \field{number}{2}
+    \field{pages}{229\bibrangedash 256}
+    \field{shorttitle}{Stochastic {{Global Optimization}}}
+    \field{title}{Stochastic {{Global Optimization}}: {{A Review}} on the
+  {{Occasion}} of 25 {{Years}} of {{Informatica}}}
+    \field{volume}{27}
+    \verb{file}
+    \verb /home/akhrain/DATOS/PhD/libros_articulos/Zotero/storage/NHSUUX4H/Å½il
+    \verb inskas y Zhigljavsky - 2016 - Stochastic Global Optimization A Review
+    \verb  on the Oc.pdf
+    \endverb
+    \field{journaltitle}{Informatica}
+    \field{month}{01}
+    \field{year}{2016}
+  \endentry
+\enddatalist
+\endinput

@@ -1,0 +1,78 @@
+\BOOKMARK [0][-]{section*.1}{Abstract}{}% 1
+\BOOKMARK [0][-]{section*.2}{Acknowledgements}{}% 2
+\BOOKMARK [0][-]{chapter.1}{Introduction}{}% 3
+\BOOKMARK [1][-]{section.1.1}{Forward problem}{chapter.1}% 4
+\BOOKMARK [1][-]{section.1.2}{Inverse problem}{chapter.1}% 5
+\BOOKMARK [1][-]{section.1.3}{Airbus project}{chapter.1}% 6
+\BOOKMARK [1][-]{section.1.4}{Probability measures and notation}{chapter.1}% 7
+\BOOKMARK [0][-]{chapter.2}{Forward problem}{}% 8
+\BOOKMARK [1][-]{section.2.1}{Fundamentals of learning}{chapter.2}% 9
+\BOOKMARK [2][-]{subsection.2.1.1}{The regression function f }{section.2.1}% 10
+\BOOKMARK [2][-]{subsection.2.1.2}{The generalization error}{section.2.1}% 11
+\BOOKMARK [3][-]{subsubsection.2.1.2.1}{Empirical error}{subsection.2.1.2}% 12
+\BOOKMARK [2][-]{subsection.2.1.3}{Hypothesis spaces and the existence of fH and fz}{section.2.1}% 13
+\BOOKMARK [2][-]{subsection.2.1.4}{Sample error and approximation error}{section.2.1}% 14
+\BOOKMARK [3][-]{subsubsection.2.1.4.1}{Bias-variance problem}{subsection.2.1.4}% 15
+\BOOKMARK [3][-]{subsubsection.2.1.4.2}{Regularized error}{subsection.2.1.4}% 16
+\BOOKMARK [2][-]{subsection.2.1.5}{Reproducing Kernel Hilbert Spaces \(RKHS\)}{section.2.1}% 17
+\BOOKMARK [3][-]{subsubsection.2.1.5.1}{Operators defined by a kernel}{subsection.2.1.5}% 18
+\BOOKMARK [3][-]{subsubsection.2.1.5.2}{Spectral theorem}{subsection.2.1.5}% 19
+\BOOKMARK [3][-]{subsubsection.2.1.5.3}{Mercer kernels and Mercer's theorem}{subsection.2.1.5}% 20
+\BOOKMARK [3][-]{subsubsection.2.1.5.4}{The feature space and the kernel trick}{subsection.2.1.5}% 21
+\BOOKMARK [3][-]{subsubsection.2.1.5.5}{Characterization of RKHS spaces}{subsection.2.1.5}% 22
+\BOOKMARK [3][-]{subsubsection.2.1.5.6}{Representer theorem}{subsection.2.1.5}% 23
+\BOOKMARK [1][-]{section.2.2}{Gaussian Process Regression}{chapter.2}% 24
+\BOOKMARK [2][-]{subsection.2.2.1}{The measure governing the samples}{section.2.2}% 25
+\BOOKMARK [2][-]{subsection.2.2.2}{The linear model}{section.2.2}% 26
+\BOOKMARK [3][-]{subsubsection.2.2.2.1}{The likelihood and the prior}{subsection.2.2.2}% 27
+\BOOKMARK [3][-]{subsubsection.2.2.2.2}{The posterior on the weights}{subsection.2.2.2}% 28
+\BOOKMARK [2][-]{subsection.2.2.3}{The linear model on a feature space}{section.2.2}% 29
+\BOOKMARK [3][-]{subsubsection.2.2.3.1}{The kernel trick in Gaussian Process regression}{subsection.2.2.3}% 30
+\BOOKMARK [2][-]{subsection.2.2.4}{Gaussian processes}{section.2.2}% 31
+\BOOKMARK [3][-]{subsubsection.2.2.4.1}{GP example}{subsection.2.2.4}% 32
+\BOOKMARK [2][-]{subsection.2.2.5}{Some kernel functions}{section.2.2}% 33
+\BOOKMARK [2][-]{subsection.2.2.6}{Kernel selection}{section.2.2}% 34
+\BOOKMARK [0][-]{chapter.3}{Inverse problem}{}% 35
+\BOOKMARK [1][-]{section.3.1}{Sampling from a probability distribution}{chapter.3}% 36
+\BOOKMARK [2][-]{subsection.3.1.1}{Pseudorandom number generators}{section.3.1}% 37
+\BOOKMARK [2][-]{subsection.3.1.2}{Uniform distribution on \(0,1\)}{section.3.1}% 38
+\BOOKMARK [2][-]{subsection.3.1.3}{Inverse transform sampling}{section.3.1}% 39
+\BOOKMARK [2][-]{subsection.3.1.4}{Normal distribution}{section.3.1}% 40
+\BOOKMARK [3][-]{subsubsection.3.1.4.1}{Non-standard normal distribution}{subsection.3.1.4}% 41
+\BOOKMARK [3][-]{subsubsection.3.1.4.2}{Multivariate normal distribution}{subsection.3.1.4}% 42
+\BOOKMARK [2][-]{subsection.3.1.5}{Sampling from an arbitrary PDF}{section.3.1}% 43
+\BOOKMARK [3][-]{subsubsection.3.1.5.1}{Rejection sampling}{subsection.3.1.5}% 44
+\BOOKMARK [3][-]{subsubsection.3.1.5.2}{Markov chain sampling}{subsection.3.1.5}% 45
+\BOOKMARK [3][-]{subsubsection.3.1.5.3}{Metropolis Hastings}{subsection.3.1.5}% 46
+\BOOKMARK [2][-]{subsection.3.1.6}{Sampling with variables' constraints}{section.3.1}% 47
+\BOOKMARK [3][-]{subsubsection.3.1.6.1}{A generalization of the conditional PDF}{subsection.3.1.6}% 48
+\BOOKMARK [3][-]{subsubsection.3.1.6.2}{Parametrization of A}{subsection.3.1.6}% 49
+\BOOKMARK [3][-]{subsubsection.3.1.6.3}{PDF w.r.t. the Lebesgue measure on the parameters u}{subsection.3.1.6}% 50
+\BOOKMARK [1][-]{section.3.2}{A probabilistic framework for robust inverse design}{chapter.3}% 51
+\BOOKMARK [2][-]{subsection.3.2.1}{The general framework}{section.3.2}% 52
+\BOOKMARK [2][-]{subsection.3.2.2}{Stochastic optimization}{section.3.2}% 53
+\BOOKMARK [3][-]{subsubsection.3.2.2.1}{Simulated Annealing}{subsection.3.2.2}% 54
+\BOOKMARK [2][-]{subsection.3.2.3}{Target PDF approximation}{section.3.2}% 55
+\BOOKMARK [3][-]{subsubsection.3.2.3.1}{A distance between probability distributions}{subsection.3.2.3}% 56
+\BOOKMARK [3][-]{subsubsection.3.2.3.2}{Maximum Mean Discrepancy}{subsection.3.2.3}% 57
+\BOOKMARK [2][-]{subsection.3.2.4}{Parametric families of probability distributions}{section.3.2}% 58
+\BOOKMARK [3][-]{subsubsection.3.2.4.1}{Multivariate normal}{subsection.3.2.4}% 59
+\BOOKMARK [3][-]{subsubsection.3.2.4.2}{Mixtures}{subsection.3.2.4}% 60
+\BOOKMARK [2][-]{subsection.3.2.5}{Gradient-based optimization}{section.3.2}% 61
+\BOOKMARK [0][-]{chapter.4}{Perspectives on early-stage aircraft wing design}{}% 62
+\BOOKMARK [1][-]{section.4.1}{Parametrization}{chapter.4}% 63
+\BOOKMARK [2][-]{subsection.4.1.1}{Design Of Experiments}{section.4.1}% 64
+\BOOKMARK [3][-]{subsubsection.4.1.1.1}{Optimized Latin Hypercube Sampling}{subsection.4.1.1}% 65
+\BOOKMARK [2][-]{subsection.4.1.2}{Bending and torsional stiffness}{section.4.1}% 66
+\BOOKMARK [2][-]{subsection.4.1.3}{Wing twist}{section.4.1}% 67
+\BOOKMARK [1][-]{section.4.2}{Simulations}{chapter.4}% 68
+\BOOKMARK [2][-]{subsection.4.2.1}{Aerodynamic performance data}{section.4.2}% 69
+\BOOKMARK [2][-]{subsection.4.2.2}{Loads data}{section.4.2}% 70
+\BOOKMARK [3][-]{subsubsection.4.2.2.1}{Gust cases}{subsection.4.2.2}% 71
+\BOOKMARK [3][-]{subsubsection.4.2.2.2}{Manoeuver cases}{subsection.4.2.2}% 72
+\BOOKMARK [2][-]{subsection.4.2.3}{Description of Interesting Quantities \(IQ\)}{section.4.2}% 73
+\BOOKMARK [3][-]{subsubsection.4.2.3.1}{Load types \(IQ type\)}{subsection.4.2.3}% 74
+\BOOKMARK [3][-]{subsubsection.4.2.3.2}{Locations \(IQ component\)}{subsection.4.2.3}% 75
+\BOOKMARK [1][-]{section.4.3}{Design optimization guidelines}{chapter.4}% 76
+\BOOKMARK [0][-]{chapter.5}{Conclusions}{}% 77
+\BOOKMARK [0][-]{chapter*.34}{References}{}% 78

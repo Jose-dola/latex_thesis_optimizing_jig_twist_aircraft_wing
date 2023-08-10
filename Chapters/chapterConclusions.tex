@@ -1,0 +1,79 @@
+\chapter{Conclusions} \label{chapter_conclusions} 
+
+The aim of this thesis is to provide information about surrogate modeling from the learning theory point of view, and to propose a useful method for identifying distributions on design parameters which satisfy target performance metrics.
+
+%The mathematical foundations of learning theory were covered during the first part of Chapter \ref{chapter_forwardProblem}.
+%From a probabilistic point of view, the general picture of the regression problem exposed in section \ref{sec_FundamentalsLearning} allows a reader of this thesis to understand fundamental concepts in regression such as underfitting, overfitting (see section \ref{sec_BiasVariance}), or regularization (see section \ref{sec_regularizedError}) from a mathematical point of view.
+%After that, the thesis focused on RKHS explaining the basic concepts used in algorithms based in kernel functions such as the kernel trick (see \ref{}) spaces giving a first regression tool (see XXX and XXXX) and, in the second part of Chapter XXX, the main regression tool proposed in this work: GP regression.
+%Regression is an active research topic that has received special attention since the irruption of ML.
+%Other tools in the field of supervised learning could be used such as Neural Networks and Deep Learning.
+%Especially for large datasets.
+Regression is a vast field that can be tackled with many different approaches.
+This thesis explains the key concepts to understand learning theory, the regression algorithms based in RKHS spaces and, particularly, GP regression.
+The mathematical steps to build a GP were covered in detail.
+Examples and figures were given for a better understanding.
+
+%In order to create a GP from a dataset, it is essential to compute the inverse of a matrix (see (\ref{eq_GPconditionalForRegression})).
+%The size of this matrix depends on the size of the dataset.
+%Although it is one of the most powerful tools in regression, it can be computationally impossible to do this matrix inversion and to optimize the kernel parameters.%, which is key for the success of GP regression. 
+%Thus, other regression techniques should be explored in those scenarios.
+
+Regression is an active research topic that has received special attention since the irruption of ML.
+Other tools in ML could be adopted for surrogate modeling from input-output data such as Neural Networks (NN) and Deep Learning, especially for large datasets. In addition, a surrogate model built from functions whose derivatives are easy to compute (e.g., NN) could be a suitable candidate for using the ideas introduced in section \ref{sec_gradientBasedOptimization}.
+
+The novelties of this work are in Chapter \ref{chapter_inverseProblem}.
+A novel framework for design optimization is proposed.
+Chapter \ref{chapter_AirBusData} analyzes a dataset provided by Airbus and gives clear guidelines on the use of this framework with it.
+The goal is to identify probability distribution in the input space of a surrogate model such that a desired performance is observed in the output.
+This inverse problem (stated at the beginning of section \ref{sec_inverseDesign}) is transformed into an optimization problem of PDF parameters.
+%This inverse problem stated at the beginning of section \ref{sec_inverseDesign} is transformed into an optimization problem of PDF parameters.
+Although this optimization problem is well defined using the expectation of a function as the objective function, it becomes inconsistent when the expectation is approximated by samples 
+\footnote{There are uncertainties in the evaluations of the objective function due to the uncertainties in the sampling process.}.
+Two methods to eradicate uncertainties in the objective function were proposed: 
+\begin{enumerate}
+\item Transforming the same set of samples during the optimization process from a standard normal distribution to any other normal distribution by a linear transformation (in the case of multivariate normal PDFs).
+\item Resetting the pseudorandom number generator seed to a fix value before any sampling step (in the case of an arbitrary PDF).
+\end{enumerate}
+
+%Sampling is an essential topic in this framework and the theory of the relevant sampling algorithms is explained in detail in section \ref{sec_sampling}.
+
+General guidelines for applying this framework were provided.
+However, its success in each particular case depends on 3 fundamental points:
+\begin{enumerate}
+\item Designing the objective function $H$ is crucial.%for achieving a specific performance is crucial. 
+Examples \ref{ex_basicFramework1} and \ref{ex_basicFramework2}
+%, and section \ref{sec_targetPDFapproximation} give examples of 
+illustrate objective functions for different scenarios. 
+Section \ref{sec_targetPDFapproximation} proposes MMD for the particular case of PDF approximation.
+However, it would be relevant to design functions $H$ for more purposes and study its behavior.
+\item The optimization process is key. The use of SA as a general tool, which would be suitable in many situations, was proposed. 
+%In addition, a deeper study of SA would be interesting.
+The general theory of SA was explained.
+However, a deeper study of the different improvements of the basic SA and the tunning of the SA parameters (such as the cooling schedule) would be interesting to make it as efficient as possible for this optimization problem.
+Other optimization algorithms could be explored and compared with SA. 
+%It would be relevant to study the different options and improvements of the basic SA algorithm and the tunning of the SA parameters (such as the cooling schedule) to make it as much efficient as possible in this optimization problem.
+\item Methods to accelerate the exploration of the parameters space $S(\lambda)$ may be necessary for high dimensions. 
+The possibility of an initial search with a small number of samples and increasing this number during the process could be considered and studied.
+\footnote{In a similar fashion to the cooling schedule.}
+%\footnote{This idea is similar to the cooling schedule (reducing the parameter $T$). During the SA process, the number of samples used to evaluate $H$ would increase. Being a small number at the beginning would allow the process to explore the whole space $S(\lambda)$.}. 
+\end{enumerate}
+
+Furthermore, the possibility of optimizing PDF parameters with fast methods based on the gradient of the objective function could be more computationally efficient, allowing the optimization process to work in higher dimensions.
+The key point for this approach was the idea of transforming the problem of generating samples from a process involving uncertainties to a deterministic process given by a linear function (see (\ref{eq_linearFunctionsToSamplingFromNormal})).
+%This idea was not completely developed because t
+This work focused on the assumption that the surrogate's model may not be differentiable, and therefore this idea was not completely developed.
+%This decision was made due to the assumption of lack of surrogate’s knowledge.
+However, this line of research could lead to interesting results if differentiability is assumed.
+
+%The basic theory of this novel framework for design optimization was.
+%The performance of this novel framework was only tested in some theoretical and unrealistic scenarios (see example \ref{ex_twoModeSurrogate}), and in experiments conducted with the dataset analyzed in Chapter \ref{chapter_AirBusData}. 
+%However, its performance was only tested in some theoretical and unrealistic scenarios (see example \ref{ex_twoModeSurrogate}), and in some experiments with the dataset of Chapter \ref{chapter_AirBusData}.
+%Therefore, more extensive validation of its potential should be conducted.
+
+%Chapter \ref{chapter_AirBusData} analyzes the dataset provided by Airbus in detail. This thesis provides information to build a surrogate model from input-output data and proposes a useful method to identify distributions in its parameter space according to a desired performance in the outputs.
+%Finally, Chapter \ref{chapter_AirBusData} provides future researchers working in the Airbus project with an analysis of the Airbus dataset, and suggestions and recommendations to train a surrogate model and apply the theory introduced in section \ref{sec_inverseDesign} with that data.
+%----------------------------------------------------------------------------------------
+%	SECTION 
+%----------------------------------------------------------------------------------------
+
+

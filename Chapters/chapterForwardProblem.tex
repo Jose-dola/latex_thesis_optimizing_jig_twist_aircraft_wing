@@ -1,0 +1,2227 @@
+\chapter[Forward problem]{Forward problem: a review on learning theory and Gaussian Process Regression} \label{chapter_forwardProblem} 
+
+The motivation of this chapter arises from the need for surrogate models in the cases where optimization algorithms are run over a design space and the outcome of interest is not easily measured.
+For example, simulations from a Finite Element Method (FEM) might take several hours or even days. This computational cost makes the run of optimization algorithms unfeasible since they require evaluating the model many times (see, e.g., \textcite{wang2005}).
+See Chapter \ref{chapter_AirBusData} for a specific example.
+In these cases, the outcome of interest is measured only in a few points in the design space generating a dataset. When running an optimization algorithm, the outcome of points that are not in that dataset can be estimated by interpolation. 
+The method to interpolate the points in the dataset is called surrogate model\footnote{
+Also known as metamodels (a model of the model), approximation models, response surface models, or emulators.
+}. 
+For instance, \textcite{forrester2008} explain this issue in engineering design and provide different surrogate modeling techniques to tackle it.
+
+The problem of estimating the unknown points from the dataset is known as regression in statistical modeling and Machine Learning (ML).
+This chapter provides a summary of the mathematical foundations of learning theory\footnote{
+The general theory behind the regression problem from the ML perspective.
+}
+and describes one of the algorithms used to tackle this problem, Gaussian Process (GP) regression.
+GP regression is also known as kriging in geostatistics and Engineering (see, e.g., \textcite{simpson2001}). 
+
+The benefits and advantages of using GP as a surrogate modeling technique are given in the Chapter. The key points are highlighted in remarks \ref{remark_GPconsistentWithRepresenterTheorem}, \ref{remark_GPlearningTheoryConnections}, \ref{remark_GPfollowsRepresenterTheorem} and \ref{remark_GPalsoGivesUncertainties}, and in theorem \ref{theorem_representer}.
+
+Therefore, the first part of this chapter (section \ref{sec_FundamentalsLearning}) is dedicated to the study of the mathematical foundations of learning theory.
+The second part (section \ref{sec_GP}) describes Gaussian Process regression in detail.
+
+%----------------------------------------------------------------------------------------
+%	SECTION 
+%----------------------------------------------------------------------------------------
+
+\section{Fundamentals of learning} \label{sec_FundamentalsLearning}
+
+This section intends to illustrate the mathematical tools and objects in probability and measure theory which are used in learning theory to tackle regression. The goal is to approximate a regression function $f_{\rho} : \mathcal{X} \to \mathcal{Y}$ where $\rho$ is a probability measure defined on $\mathcal{Z}=\mathcal{X} \times \mathcal{Y}$ and it is unknown. However, samples of $\rho$, 
+\begin{equation*}
+  \pmb{z} = \{(x_0,y_0), \dots, (x_n,y_n)\}, 
+\end{equation*}
+are given. 
+
+$\mathcal{X}$ and $\mathcal{Y}$ are usually finite dimensional vector spaces (of possibly different dimension). Considering $\mathcal{Y} \subset \mathbb{R}^M$, it will be assumed that $M=1$ in this Chapter. %The case $M > 1$ will be considered in section REF-KERNELS-MULTIOUTPUT-FUNCTIONS-SECTION which explores kernels for multi-output functions. 
+In contrast, considering $\mathcal{X} \subset \mathbb{R}^N$, $N$ can be any strictly positive integer.
+
+%-----------------------------------
+%	SUBSECTION 
+%-----------------------------------
+\subsection{The regression function $f_{\rho}$ } \label{sec_regressionFunction}
+
+%The notion of conditional and marginal probability measures is key to understand regression from a stochastic point of view.
+Let $\rho(y|x)$ be the conditional probability on $\mathcal{Y}$ with respect to $x \in \mathcal{X}$. Let $\rho_{\mathcal{X}}(x)$ be the marginal probability on $\mathcal{X}$. This is $\rho_{\mathcal{X}}(A) = \rho(\pi^{-1}(A))$ where,
+\begin{align*}
+\pi \colon \mathcal{X}\times \mathcal{Y} &\to \mathcal{X}\\
+(x,y) & \mapsto x,
+\end{align*}
+and $A \subset \mathcal{X}$.
+
+\begin{definition}[Regression function] \label{def_regressionFunction}
+The regression function is defined by,
+\begin{equation} \begin{aligned} \label{eq_regressionFunction}
+f_{\rho} \colon \mathcal{X} &\to \mathcal{Y}\\
+x & \mapsto f_{\rho}(x) = \int_{\mathcal{Y}} y \ d\rho(y|x).
+\end{aligned} \end{equation}
+\end{definition}
+Therefore, $f_{\rho}(x)$ is the expected value of $y \in \mathcal{Y}$ given $x \in \mathcal{X}$. 
+%Regularity properties on $f_{\rho}(x)$ are induced by regularity hypotheses on $\rho$.
+
+\begin{remark} \label{remark_frho_unknown}
+  $f_{\rho}$ can not be calculated since $\rho(y|x)$ is unknown. 
+\end{remark}
+
+Similarly, a variance function on $\mathcal{X}$ can be defined as the variance of $\rho(y|x)$.
+\begin{definition}[Variance function] \label{def_varianceFunction} The variance function $\sigma^2$ is defined by,
+\begin{align*}
+\sigma^2 \colon \mathcal{X} &\to \mathbb{R}\\
+x & \mapsto \sigma^2(x) = \int_{\mathcal{Y}} (y-f_{\rho}(x))^2 \ d\rho(y|x).
+\end{align*}
+\end{definition}
+
+\begin{definition}
+  $\sigma_{\rho}^2$ is used to refer to the expected value of $\sigma^2(x)$ according to $\rho_{\mathcal{X}}$,
+  \begin{equation*}
+    \sigma_{\rho}^2 = \int_{\mathcal{X}} \sigma^2(x) \ d\rho_{\mathcal{X}}.
+  \end{equation*}
+\end{definition}
+
+\begin{remark}
+  $\sigma_{\rho}^2$ can be seen as an analogous to the condition number in linear algebra (\textcite{cucker2001}). Considering in this case probability measures instead of matrices.
+\end{remark}
+
+\begin{remark} \label{remark_sigmaRhoSquare_onlyDenpendsOnRho}
+  $\sigma_{\rho}^2$ only depends on the probability measure $\rho$.
+\end{remark}
+
+%-----------------------------------
+%	SUBSECTION 
+%-----------------------------------
+\subsection{The generalization error} \label{sec_generalizationError}
+
+\begin{definition} [Generalization error] \label{def_generalizationError}
+Given an arbitrary $\rho$-integrable function $f : \mathcal{X} \to \mathcal{Y}$, the generalization error (or least squares error) of $f$ is defined as,
+\begin{equation} \label{eq_generalizationError}
+  \mathcal{E}_{\rho}(f) = \int_{\mathcal{Z}} (f(x)-y)^2 \ d\rho.
+\end{equation}
+\end{definition}
+
+It is possible to ``break'' the integral that defines the generalization error. Although it is defined with respect to $\rho$, it can be decomposed to express it as an integral with respect to the conditional probability $\rho(y|x)$ and the marginal $\rho_{\mathcal{X}}$.
+
+\begin{proposition}[Fubini's theorem] \label{prop_fubini}
+  Let $g: \mathcal{X} \times \mathcal{Y} \to \mathbb{R}$ be a $\rho$-integrable function. Then,
+  \begin{equation*}
+    \int_{\mathcal{Z}=\mathcal{X}\times \mathcal{Y}} g(x,y) \ d\rho = \int_{\mathcal{X}} \left( \int_{\mathcal{Y}} g(x,y) \ d\rho(y|x) \right) \ d\rho_{\mathcal{X}}.
+  \end{equation*} 
+\end{proposition}
+
+%Corollary \ref{corollary_frhoMinimizes} can also be deduced from the following proposition. 
+%The following proposition is a consequence of proposition \ref{prop_fubini}.
+
+\begin{proposition} \label{prop_generalizationErrorProposition}
+  Let $f: \mathcal{X} \times \mathcal{Y} \to \mathbb{R}$ be a $\rho$-integrable function. Then,
+  \begin{equation} \label{eq_generalizationErrorRho}
+    \mathcal{E}_{\rho}(f) = \int_{\mathcal{X}} (f(x) - f_{\rho}(x))^2 \ d\rho_{\mathcal{X}} + \sigma_{\rho}^2.
+  \end{equation}
+  \begin{proof} Using proposition \ref{prop_fubini},
+  \begin{equation*} \begin{array} {rcl}
+    \mathcal{E}_{\rho}(f) &= &\int_{\mathcal{Z}} (f(x)-y)^2 \ d\rho \\ 
+                          &= &\int_{\mathcal{Z}} \left((f(x)-f_{\rho}(x))-(y-f_{\rho}(x))\right)^2 \ d\rho \\
+                          &= &\int_{\mathcal{X}} (f(x)-f_{\rho}(x))^2 \ d\rho_{\mathcal{X}} + \int_{\mathcal{Z}} (y-f_{\rho}(x))^2 \ d\rho \\
+                          &  &+ 2 \int_{\mathcal{X}} (f(x)-f_{\rho}(x)) \left( \int_{\mathcal{Y}} (y-f_{\rho}(x)) \ d\rho(y|x) \right) d\rho_{\mathcal{X}} \\
+                          &= &\int_{\mathcal{X}} (f(x) - f_{\rho}(x))^2 \ d\rho_{\mathcal{X}} + \sigma_{\rho}^2. \\
+  \end{array} \end{equation*}
+  \end{proof}
+\end{proposition}
+
+\begin{corollary} \label{corollary_frhoMinimizes}
+  $f_{\rho}$ (\ref{eq_regressionFunction}) minimizes $\mathcal{E}_{\rho}$ (\ref{eq_generalizationError}).  
+\end{corollary}
+
+The first term of $\mathcal{E}_{\rho}$ considering its expression in (\ref{eq_generalizationErrorRho}),
+\begin{equation*}
+  \int_{\mathcal{X}} (f(x) - f_{\rho}(x))^2 \ d\rho_{\mathcal{X}},
+\end{equation*} 
+is an average of the error of using $f$ instead of $f_{\rho}$. The second term $\sigma_{\rho}^2$ is a lower bound of $\mathcal{E}_{\rho}$ which is reached when $f=f_{\rho}$. It only depends on the probability measure $\rho$ (remark \ref{remark_sigmaRhoSquare_onlyDenpendsOnRho}). 
+
+Therefore, as mentioned at the beginning of this section, the goal is to approximate $f_{\rho}$ from samples of $\rho$ on $\mathcal{Z}$.
+
+%-----------------------------------
+%	SUBSUBSECTION 
+%-----------------------------------
+\subsubsection{Empirical error}
+
+Let
+\begin{equation*}
+  \pmb{z} = \{(x_1,y_1),\dots,(x_n,y_n)\} \in \mathcal{Z}^n
+\end{equation*}
+be independent and identically distributed samples according to the probability measure $\rho$.
+
+\begin{definition} [Empirical error] \label{def_empiricalError}
+If $f: \mathcal{X} \to \mathcal{Y}$ is a $\rho$-integrable function, then the empirical error of $f$ with respect to $\pmb{z}$ is,
+\begin{equation*}
+  \mathcal{E}_{\pmb{z}}(f) = \frac{1}{n} \sum_{i=1}^{n} (f(x_i)-y_i)^2.
+\end{equation*}
+\end{definition}
+
+Remember that $\mathcal{E}_{\pmb{z}}(f)$ converges in probability towards $\mathcal{E}_{\rho}(f)$ because of the law of large numbers. See, e.g., \textcite{dekking2005} or \textcite{yao2016} for more details about the law of large numbers. See,e.g., \textcite{cucker2001} for more details about the convergence of $\mathcal{E}_{\pmb{z}}(f)$ towards $\mathcal{E}_{\rho}(f)$.
+
+%-----------------------------------
+%	SUBSECTION 
+%-----------------------------------
+\subsection{Hypothesis spaces and the existence of $f_{\mathcal{H}}$ and $f_z$} \label{sec_hypothesisSpaces}
+
+\begin{definition}[$\mathcal{C}(\mathcal{X})$ as a Banach space] \label{def_continuosFunctBanachSpace}
+  Let $\mathcal{C}(\mathcal{X})$ be the space of continuous functions on $\mathcal{X}$ with the infinity norm,
+  \begin{equation} \label{eq_inifinitynorm}
+    \|f\|_{\infty} = \underset{x \in \mathcal{X}}{\textup{sup}} |f(x)|, \ \ f \in \mathcal{C}(\mathcal{X}).
+  \end{equation}
+\end{definition}
+
+\begin{definition}[Hypothesis space] \label{def_HypothesisSpace}
+  The hypothesis space $\mathcal{H}$ is a subset of $\mathcal{C}(\mathcal{X})$ such that,
+  \begin{enumerate}
+    \item $\mathcal{H}$ is compact,
+    \item for all $f \in \mathcal{H}$, there exists $M$ such that $|f(x) - y| \leq M$ almost everywhere (w.r.t $\rho$). 
+  \end{enumerate}  
+\end{definition}
+
+\begin{remark}
+  Hypothesis spaces do not necessarily have to be Hilbert spaces. Notice that the infinity norm (\ref{eq_inifinitynorm}) is not derived from an inner product and defining an inner product is not a necessary condition for fulfilling the requirements of definition \ref{def_HypothesisSpace}. However, a Hypothesis space can be a Hilbert space. Indeed, section \ref{sec_RKHS} focuses on special cases of Hypothesis spaces that are also Hilbert spaces. 
+\end{remark}
+
+Remember that the main goal is to find an approximation of $f_{\rho}$. The problem can be reduced to finding an approximation of $f_{\rho}$ in $\mathcal{H}$. 
+
+Therefore, the aim is to formulate algorithms for finding good approximations of $f_{\rho}$ in $\mathcal{H}$. The selection of $\mathcal{H}$ is closely related to the formulation of those algorithms. Section \ref{sec_RKHS} will cover one family of hypothesis spaces called Reproducing Kernel Hilbert Spaces (RKHS). Section \ref{sec_GP} will explain an specific algorithm which uses RKHS spaces to tackle regression. 
+
+Expressions \ref{eq_optimazerLSError} and \ref{eq_optimazerEmpiricalError} give a rigorous definition of an approximation in $\mathcal{H}$ with respect to the generalization error (definition \ref{def_generalizationError}) and the empirical error (definition \ref{def_empiricalError}) respectively. Proposition \ref{prop_targetFunctionsExists} proves its existence.
+
+\begin{definition}[Target function] \label{def_targetFunction}
+  Define $f_{\mathcal{H}}$ to be a function minimizing the generalization error (definition \ref{def_generalizationError}) in $\mathcal{H}$, i.e.,
+  \begin{equation} \label{eq_optimazerLSError}
+    f_{\mathcal{H}} = \underset{f \in \mathcal{H}}{\textup{argmin}} \ \ \mathcal{E}_{\rho}(f).
+  \end{equation}
+\end{definition}
+
+\begin{remark}
+A minimizer of
+\begin{equation*}
+ % \underset{f \in \mathcal{H}}{\min} 
+     \int_{\mathcal{X}} (f(x) - f_{\rho}(x))^2 \ d\rho_{\mathcal{X}},
+\end{equation*}
+is also a minimizer of (\ref{eq_optimazerLSError}). See (\ref{eq_generalizationErrorRho}).
+\end{remark}
+
+\begin{definition}[Empirical target function]
+  Let $\pmb{z} \in \mathcal{Z}^n$ be i.i.d samples according to $\rho$. A empirical target function $f_{\mathcal{H},\pmb{z}}$ (or $f_{\pmb{z}}$) is a function minimizing the empirical error (definition \ref{def_empiricalError}) in $\mathcal{H}$, i.e.,
+  \begin{equation} \label{eq_optimazerEmpiricalError}
+    f_{\pmb{z}} = f_{\mathcal{H},\pmb{z}} = \underset{f \in \mathcal{H}}{\textup{argmin}} \ \ \mathcal{E}_{\pmb{z}}(f).
+  \end{equation}
+\end{definition}
+
+The existence of $f_{\pmb{z}}$ and $f_{\mathcal{H}}$ can be proved from the hypotheses on $\mathcal{H}$ (definition \ref{def_HypothesisSpace}). 
+
+\begin{proposition} \label{prop_targetFunctionsExists}
+  $f_{\pmb{z}}$ (\ref{eq_optimazerEmpiricalError}) and $f_{\mathcal{H}}$ (\ref{eq_optimazerLSError}) exists.
+  \begin{proof}
+  The compactness of $\mathcal{H}$ and the continuity of the functions $\mathcal{E}_{\rho}: \mathcal{C}(\mathcal{X}) \to \mathbb{R}$ and $\mathcal{E}_{\pmb{z}}: \mathcal{C}(\mathcal{X}) \to \mathbb{R}$ lead to the existence of $f_{\mathcal{H}}$ and $f_{\pmb{z}}$. A broader discussion can be found in \textcite{cucker2007}.
+  \end{proof}
+\end{proposition}
+
+\begin{remark}
+  $f_{\mathcal{H}}$ may not be unique. However, it is unique when $\mathcal{H}$ is convex. Proof can be found in, e.g., \textcite{cucker2001}.
+\end{remark}
+
+%-----------------------------------
+%	SUBSECTION 
+%-----------------------------------
+\subsection{Sample error and approximation error} \label{sec_sampleApproximationErrors}
+
+\begin{definition}[Normalized error] Let $\mathcal{H}$ be a hypothesis space (definition \ref{def_HypothesisSpace}). The normalized error in $\mathcal{H}$ of a function $f \in \mathcal{H}$ is,
+  \begin{equation} \label{eq_normalizedError}
+    \mathcal{E}_{\mathcal{H}}(f) = \mathcal{E}_{\rho}(f) - \mathcal{E}_{\rho}(f_{\mathcal{H}}).
+  \end{equation}
+\end{definition}
+
+\begin{remark} 
+  $\mathcal{E}_{\mathcal{H}}(f) \geq 0$ for all $f \in \mathcal{H}$.
+\end{remark}
+
+\begin{remark} 
+  $\mathcal{E}_{\mathcal{H}}(f_{\mathcal{H}}) = 0$.
+\end{remark}
+
+Remember that $f_{\mathcal{H}}$ is a function minimizing the generalization error (definition \ref{def_generalizationError}) in $\mathcal{H}$. Thus, the normalized error (\ref{eq_normalizedError}) is the error of using $f$ instead of $f_{\mathcal{H}}$ in $\mathcal{H}$.
+
+\begin{definition}[Sample error] Let $\mathcal{H}$ be a hypothesis space. Let $f_{\pmb{z}} \in \mathcal{H}$ be a function minimizing the empirical error (definition \ref{def_empiricalError}). The sample error is the normalized error (\ref{eq_normalizedError}) of $f_{\pmb{z}}$, i.e,
+  \begin{equation} \label{eq_sampleError}
+    \mathcal{E}_{\mathcal{H}}(f_{\pmb{z}}) = \mathcal{E}_{\rho}(f_{\pmb{z}}) - \mathcal{E}_{\rho}(f_{\mathcal{H}}).
+  \end{equation}
+\end{definition}
+
+\begin{definition}[Approximation error]
+  Let $\mathcal{H}$ be a hypothesis space. 
+  Let
+  \begin{equation*}
+    \mathcal{A}(\mathcal{H}) = \int_{\mathcal{X}} (f_{\mathcal{H}}(x) - f_{\rho}(x))^2 \ d\rho_{\mathcal{X}}.
+  \end{equation*}
+  The approximation error is the generalization error of $f_{\mathcal{H}}$ (definition \ref{def_targetFunction}), i.e,
+  \begin{equation} \label{eq_approximationError}
+    \mathcal{E}_{\rho}(f_{\mathcal{H}}) 
+                      = \int_{\mathcal{X}} (f_{\mathcal{H}}(x) - f_{\rho}(x))^2 \ d\rho_{\mathcal{X}} + \sigma_{\rho}^2 
+                      = \mathcal{A}(\mathcal{H}) + \sigma_{\rho}^2. 
+  \end{equation}
+\end{definition}
+
+\begin{remark} \label{remark_aproximationError}
+  The approximation error (\ref{eq_approximationError}) is independent of sampling. It can be seen as the error of using $\mathcal{H}$. %The more complex $f_{\rho}$ is, the more difficult will be to find good approximations with functions in $\mathcal{H}$.
+\end{remark}
+
+\begin{remark}  
+  From (\ref{eq_sampleError}) and (\ref{eq_approximationError}), the generalization error of a empirical target function $f_{\pmb{z}}$ can be expressed as follows,
+\begin{equation} \label{eq_sampleApproximationErrors}
+    \begin{aligned}
+      \underbrace{\int_{\mathcal{X}} (f_{\pmb{z}}(x) - f_{\rho}(x))^2 \ d\rho_{\mathcal{X}} + \sigma_{\rho}^2}_
+                  {\text{Proposition \ref{prop_generalizationErrorProposition}}} \ \
+      = \underbrace{\mathcal{E}_{\rho}(f_{\pmb{z}})}_{\substack{\text{Generaliza-} \\ \text{tion error}}} 
+           &=  \ \ \underbrace{\mathcal{E}_{\mathcal{H}}(f_{\pmb{z}})}_{\substack{\text{Sample} \\ \text{error}}} \ \ \ +  \
+                  \underbrace{\mathcal{E}_{\rho}(f_{\mathcal{H}})}_{\substack{\text{Approxima-} \\ \text{tion error}}} \\
+           &= \ \ \mathcal{E}_{\mathcal{H}}(f_{\pmb{z}}) + 
+                  \mathcal{A}(\mathcal{H}) + \sigma_{\rho}^2 \ .
+      \end{aligned}   
+  \end{equation}
+\end{remark}
+
+Remember from remark \ref{remark_sigmaRhoSquare_onlyDenpendsOnRho} that $\sigma_{\rho}^2$ solely depends on the probability measure on $\rho$. Hence, the quantity $\int_{\mathcal{X}} (f_{\pmb{z}}(x) - f_{\rho}(x))^2 \ d\rho_{\mathcal{X}}$ is the excess generalization error of using $f_{\pmb{z}}$. Estimating this quantity is a primary aim of learning theory. %Under some hypotheses on $\rho$ and $\mathcal{H}$, it can be proved that it tends to zero (in probability) as the sample size of $\pmb{z}$ tends to infinity (see, e.g., \textcite{cucker2007}).
+
+Observing the right hand side of (\ref{eq_sampleApproximationErrors}), it can be seen that estimating the excess generalization error can be divided into two problems: 
+\begin{enumerate}
+  \item estimating the sample error $\mathcal{E}_{\mathcal{H}}(f_{\pmb{z}})$,
+  \item estimating the excess approximation error $\mathcal{A}(\mathcal{H})$.
+\end{enumerate}
+
+\begin{remark}
+  Regarding the first point above, the sample error $\mathcal{E}_{\mathcal{H}}(f_{\pmb{z}})$ depends on the sample $\pmb{z}$ and, therefore, on the probability measure $\rho$. Notice that it loses dependence on the behaviour of $f_{\rho}$. It can be seen as a distance between $f_{\pmb{z}}$ and $f_{\mathcal{H}}$ in $\mathcal{H}$. Therefore, the complexity or behaviour of $f_{\rho}$ will not affect $\mathcal{E}_{\mathcal{H}}(f_{\pmb{z}})$.
+  
+  Regarding the second point, in contrast to the sample error, $\mathcal{A}(\mathcal{H})$ will be affected by the behaviour of $f_{\rho}$. However, it is independent of sampling. %See remark \ref{remark_aproximationError}. 
+\end{remark}
+
+Selecting a hypothesis space $\mathcal{H}$ and designing algorithms to compute or approximate $f_{\pmb{z}}$ in $\mathcal{H}$ will be the procedure for tackling the main goal of this Chapter: approximating the regression function $f_{\rho}$. A fundamental issue is to select $\mathcal{H}$. The selection of $\mathcal{H}$ plays a key role in the design of those algorithms. It has a major impact on the sample error and the approximation error. The selection of $\mathcal{H}$ to optimize these errors is known as the bias-variance problem.
+
+%Selecting a hypothesis space $\mathcal{H}$ and designing algorithms to compute or approximate $f_{\pmb{z}}$ in $\mathcal{H}$ will be the procedure for tackling the main goal of this Chapter: approximating the regression function $f_{\rho}$. A fundamental issue is to select $\mathcal{H}$. Although $\mathcal{A}(\mathcal{H})$ depends on the behaviour of $f_{\rho}$, it is difficult to know its properties only from the sample $\pmb{z}$. Thus, the selection of $\mathcal{H}$ plays a key role in the approximation error and, therefore, in the generalization error of $f_{\pmb{z}}$. A well known problem related to this issue is the bias-variance problem.
+
+ 
+%-----------------------------------
+%	SUBSUBSECTION 
+%-----------------------------------
+\subsubsection{Bias-variance problem} \label{sec_BiasVariance}
+
+Determine and fix a hypothesis space $\mathcal{H}$. It is clear that increasing the number of samples $n$ makes the sample error lower since there is more information about $\rho$ in order to approximate $f_{\rho}$. In addition, that makes no difference to the approximation error which is independent of sampling (remark \ref{remark_aproximationError}). Therefore, increasing $n$ will decrease the generalization error of $f_{\pmb{z}}$. See (\ref{eq_sampleApproximationErrors}) that relates generalization, sample and approximation errors. Undoubtedly, the more samples are used, the better $f_{\pmb{z}}$ will approximate $f_{\rho}$.
+ 
+However, the size of $\mathcal{H}$ does not make the same impact on $\mathcal{E}_{\rho}(f_{\pmb{z}})$. Now fix $n$. If $\mathcal{H}$ grows with the addition of more elements, then the approximation error will decrease (or remain stable at worst) because it will be possible to find a better approximation $f_{\mathcal{H}}$ of $f_{\rho}$ in $\mathcal{H}$. Nevertheless, the sample error will increase. The bias-variance problem aim is to choose the size of $\mathcal{H}$ when $n$ is fixed in order to minimize the generalization error $\mathcal{E}_{\rho}(f_{\pmb{z}})$. 
+
+In the literature, the terminology bias-variance refers to the optimization of the bias (associated with the approximation error) and the variance (associated with the sample error).
+
+In summary, a very small hypothesis space $\mathcal{H}$ leads to a large approximation error $\mathcal{E}_{\rho}(f_{\mathcal{H}})$. This is called underfitting. Yet, a large hypothesis space $\mathcal{H}$ leads to a large sample error $\mathcal{E}_{\mathcal{H}}(f_{\pmb{z}})$. This is called overfitting.  
+
+\begin{figure}[!htbp]
+  \centering
+    \includegraphics[width=0.97\textwidth]{codeSomeFigures/underOverFitting/underFitting.eps}
+    \includegraphics[width=0.97\textwidth]{codeSomeFigures/underOverFitting/overFitting.eps}
+  \caption[Example of underfitting and overfitting]%
+{Example of underfitting and overfitting. 
+  \emph{Black line}: a $\mathcal{C}^{\infty}$ function $f_{\rho}$. 
+  \emph{Black points}: training points. Evaluations of $f_{\rho}$ with Gaussian noise. 
+  \emph{Blue line}: example of underfitting. Function $f_{\mathcal{H}_{u}}$ minimizing the empirical error $\mathcal{E}_{\pmb{z}}(f)$ in 
+  $\mathcal{H}_u$ (\ref{eq_Hu}) 
+  where $\pmb{z}$ are the training points.
+  \emph{Red line}: example of overfitting. It is analogous to the blue line but using
+  $\mathcal{H}_o \supset \mathcal{H}_u$ (\ref{eq_Ho}) 
+  instead of $\mathcal{H}_u$.}
+  \label{fig_overUnderFitting}
+\end{figure}
+
+\begin{example}
+Figure \ref{fig_overUnderFitting} illustrates examples of underfitting and overfitting. A function built from a second degree polynomial and two exponential functions was used as a regression function $f_{\rho}$. Training points $\pmb{z}$ were generated from evaluations of $f_{\rho}$ plus Gaussian noise to represent a probability measure $\rho$. With this construction, $\rho(y|x)$ is a Gaussian distribution (in a real scenario, however, the only information about $\rho$ would be $\pmb{z}$).
+
+The underfitting example was generated minimizing the empirical error $\mathcal{E}_{\pmb{z}}(f)$ (definition \ref{def_empiricalError}) over the following hypothesis space of functions,
+\begin{equation} \label{eq_Hu}
+  \mathcal{H}_u = \{ f \in \mathcal{C}(\mathbb{R}) \ | \ f(x) = \sum_{i=1}^2 a_i\sin(b_i x + c_i), \ a_i,b_i,c_i \in \mathbb{R}  \}.
+\end{equation}
+
+The problem in this case is that there are too many changes in the behaviour of $f_{\rho}$ to be captured by the functions in $\mathcal{H}_u$.  
+
+The overfitting example is analogous to the underfitting one. However, the hypothesis space used was
+\begin{equation} \label{eq_Ho}
+  \mathcal{H}_o = \{ f \in \mathcal{C}(\mathbb{R}) \ | \ f(x) = \sum_{i=1}^8 a_i\sin(b_i x + c_i), \ a_i,b_i,c_i \in \mathbb{R} \} \supset \mathcal{H}_u.
+\end{equation}
+
+In contrast with the underfitting example, the problem here is the possibility of finding functions in $\mathcal{H}_o$ which are able to fit very well all training points $\pmb{z}$. Although it leads to a low empirical error, it fails in approximating smoothly $f_{\rho}$ and overfits the particular training points that are being used. Notice that if the Gaussian noise is removed, i.e., without considering the stochastic approach of having a probability measure $\rho$ governing the samples, then there would not be overfitting problem. 
+\end{example}
+
+The bias-variance is a central problem in Machine Learning theory for regression and classification. Therefore, it is widely covered in the literature of this subject. Notice that it was illustrated from the regression perspective in this work. See, e.g., \textcite{vonluxburg2008}, \textcite{geman1992} or \textcite{cucker2001} for more details about it.
+
+%-----------------------------------
+%	SUBSUBSECTION 
+%-----------------------------------
+
+\subsubsection{Regularized error} \label{sec_regularizedError}
+
+In the last section, the bias-variance problem was presented. The overfitting and underfitting problems were associated with the selection of the hypothesis space $\mathcal{H}$. Consider that $\mathcal{H}$ is fixed in this section. The underfitting problem can only be tackle adding new elements to $\mathcal{H}$ but $\mathcal{H}$ is fixed. However, the overfitting problem can be tackle adding a regularized term to the generalization error, which depends on the functions $f \in \mathcal{H}$ but not on the sample $z$.
+
+Consider $\mathcal{H}$ to be a Hilbert space of functions. The approach is to define that regularized term according to the norm induced by the inner product in $\mathcal{H}$.
+
+
+
+\begin{definition} [Regularized error] \label{def_regularizedError}
+Let $\mathcal{H}$ be a hypothesis space (definition \ref{def_HypothesisSpace}) and a Hilbert space of functions. Given an arbitrary function $f \in \mathcal{H}$, the regularized error of $f$ is defined as,
+\begin{equation*} %\label{eq_regularizedError}
+  \mathcal{E}_{\gamma}(f) = \int_{\mathcal{Z}} (f(x)-y)^2 \ d\rho + \gamma \|f\|^2_{\mathcal{H}}.
+\end{equation*}
+\end{definition}
+
+\begin{definition} [Regularized empirical error] \label{def_regularizedEmpiricalError}
+Let $\mathcal{H}$ be a hypothesis space (definition \ref{def_HypothesisSpace}) and a Hilbert space of functions. The empirical error of $f \in \mathcal{H}$ with respect to the sample $\pmb{z} = \{(x_i,y_i)\}_{1 \leq i \leq n}$ is,
+\begin{equation*}
+  \mathcal{E}_{\pmb{z},\gamma}(f) = \frac{1}{n} \sum_{i=1}^{n} (f(x_i)-y_i)^2 + \gamma \|f\|^2_{\mathcal{H}}.
+\end{equation*}
+\end{definition}
+
+\begin{definition}[Empirical target function w.r.t. $\mathcal{E}_{\pmb{z},\gamma}$]
+  Let $\pmb{z} \in \mathcal{Z}^n$ be i.i.d samples according to $\rho$. A empirical target function $f_{\mathcal{H},\pmb{z},\gamma}$ (or $f_{\pmb{z},\gamma}$) is a function minimizing the regularized empirical error (definition \ref{def_regularizedEmpiricalError}) in $\mathcal{H}$, i.e.,
+  \begin{equation} \label{eq_optimazerReguralizedEmpiricalError}
+    f_{\pmb{z},\gamma} = f_{\mathcal{H},\pmb{z},\gamma} = \underset{f \in \mathcal{H}}{\textup{argmin}} \ \ \mathcal{E}_{\pmb{z},\gamma}(f).
+  \end{equation}
+\end{definition}
+
+Given a sample $\pmb{z} = \{(x_i,y_i)\}_{1 \leq i \leq n}$ , instead of considering the empirical error $f_{\pmb{z}}$, the idea is to tackle regression considering the problem of finding a minimizer $f_{\pmb{z},\gamma}$ of the regularized empirical error in $\mathcal{H}$. The Representer theorem (theorem \ref{theorem_representer}) will cover this problem in a special family of hypothesis spaces called Reproducing Kernel Hilbert Spaces (RKHS).
+
+%-----------------------------------
+%	SUBSECTION 
+%-----------------------------------
+\subsection{Reproducing Kernel Hilbert Spaces (RKHS)} \label{sec_RKHS}
+
+In the previous sections of this Chapter, the regression problem (i.e., function fitting) was presented from the point of view of a measure $\rho$ governing the pairs $(x,y)$ where the components $x$ are the inputs and the components $y$ are the outputs. %This is analogous to considering uncertainties in the outputs. 
+
+The aim is to find a function $f_{\pmb{z}}$ that approximates the regression function $f_{\rho}$ (\ref{eq_regressionFunction}). The key issue is that the measure $\rho$ is unknown. However, samples $\pmb{z} = \{(x_0,y_0), \dots, (x_n,y_n)\}$ of $\rho$ are given. Thus, algorithms will try to build $f_{\pmb{z}}$ or $f_{\pmb{z},\gamma}$ from the samples $\pmb{z}$. The set $\pmb{z}$ is usally called the training set. 
+
+Instead of considering any continuous function to be a $f_{\pmb{z},\gamma}$ candidate, the problem was reduced to considering only functions in a compact space of functions $\mathcal{H} \subset \mathcal{C}(\mathcal{X})$ called hypothesis space. Section \ref{sec_sampleApproximationErrors} explains the importance of the choice of $\mathcal{H}$. This section will introduce a family of infinite dimensional hypothesis spaces broadly used in Machine Learning (ML) algorithms called Reproducing Kernel Hilbert Spaces. The Gaussian Process regression is one of those algorithms. Indeed, it is the algorithm adopted in this work to tackle regression (section \ref{sec_GP}). 
+
+Although this work is not focusing on the proofs of the different theorems and propositions presented and its aim is an understanding of the mathematical objects and fundations of learning theory, the proofs of the four main results (theorems \ref{theorem_kernelTrick}, \ref{theorem_RKHS}, \ref{theorem_HkandHthesame} and \ref{theorem_representer}) are provided. In the author's opinion, they are interesting for fully understanding the power of using kernels (definition \ref{def_kernel}) and their corresponding RKHS spaces.
+
+%-----------------------------------
+%	SUBSUBSECTION 
+%-----------------------------------
+\subsubsection{Operators defined by a kernel} \label{sec_operatorsKernel}
+
+Remember that $\mathcal{X}$ is the space of inputs in the regression problem addressed in this Chapter. In this section, it will be assumed that $\mathcal{X}$ is a compact domain or manifold in an Euclidean space. $\nu$ will be used to refer to a Borel measure on Euclidean spaces (e.g., the Lebesgue measure).
+
+Remember that $\mathcal{C}(\mathcal{X})$ is the space of continuous functions on $\mathcal{X}$ with the infinity norm (definition \ref{def_continuosFunctBanachSpace}).
+
+\begin{definition}[Kernel] \label{def_kernel}
+  A continuous function,
+  \begin{equation*}
+    K : \mathcal{X} \times \mathcal{X} \to \mathbb{R},
+  \end{equation*}
+  is called kernel.
+\end{definition}
+
+\begin{definition} \label{def_HilbertSpaceSquareIntegrableFunctions}
+  Let $\mathcal{L}^2_{\nu}(\mathcal{X})$ be the Hilbert space of square integrable functions on $\mathcal{X}$ with the inner product,
+  \begin{equation*}
+    \langle f,g\rangle  = \int_{\mathcal{X}} f(x)g(x) d\nu.
+  \end{equation*}
+\end{definition}
+
+\begin{definition}[Linear operator $L_{K}$] \label{def_linearOperator}
+  Let $K$ be a kernel. The linear map,
+  \begin{equation*}
+    \begin{aligned}
+      L_{K} : \mathcal{L}^2_{\nu}(\mathcal{X}) &\to \mathcal{C}(\mathcal{X}) \subset \mathcal{L}^2_{\nu}(\mathcal{X}) \\
+      f &\mapsto L_{K}f,
+    \end{aligned}
+  \end{equation*}
+  where 
+  \begin{equation*}
+    (L_{K}f)(x) = \int_{\mathcal{X}} K(x,t)f(t)d\nu(t), 
+  \end{equation*}
+  is the linear operator associated with the kernel $K$.
+\end{definition}
+
+\begin{remark} \label{remark_LKwelldefinedandcompact}
+  $L_{K}$ is well-defined. In addition, it is a compact operator. Proof of the continuity of $L_{K}f$ and its compactness can be found in, e.g., \textcite{cucker2001}. The linearity is trivial.   
+\end{remark}
+
+%-----------------------------------
+%	SUBSUBSECTION 
+%-----------------------------------
+
+\subsubsection{Spectral theorem} \label{sec_spectralTheorem}
+
+Above in this section, the linear operators $L_{K}$ associated with their respective kernels $K$ were presented. The following theorem goal is to expose that there exists a orthonormal basis $\{\phi_1,\phi_2,...\}$ of $\mathcal{L}^2_{\nu}(\mathcal{X})$ consisting in eigenfunctions of $L_{K}$. The eigenfunctions of $L_{K}$ are analogous to the eigenvectors of a matrix as a operator in an Euclidean vector space. Remember that, in the case of $\mathcal{L}^2_{\nu}(\mathcal{X})$, its elements are square-integrable functions on $\mathcal{X}$ and it is an infinite dimensional vector space.
+
+\begin{theorem}[Spectral theorem] \label{theorem_spectral}
+  Let $L: H \to H$ be a compact linear operator on an infinite\hyp{}dimsional Hilbert space $H$. Then there exists a orthonormal basis of $H$, $\{\phi_1,\phi_2,...\}$, consisting of eigenvectors of $L$ (or eigenfunctions in the case of $H$ being a space of functions). In addition, if the set $\{\lambda_k\}_{k \geq 1}$ are the eigenvalues of $L$ (assuming, without lost of generality, $\lambda_k \geq \lambda_{k+1}$, $\forall k$) and it is not a finite set, then $\lambda_k \to 0$ when $k \to \infty$.
+\end{theorem}
+
+A \emph{self-adjoint} operator $L: H \to H$ is an operator such that,
+\begin{equation*}
+  \langle Lf,g\rangle  = \langle f,Lg\rangle , \ \forall f, g \in H.
+\end{equation*}
+In addition a self-adjoint operator $L$ is \emph{positive} if $\langle Lf,f \rangle \geq 0$ for all non-trivial $f \in H$ (or strictly positive if $\langle Lf,f\rangle  >  0$).  
+
+\begin{proposition} \label{prop_eigenRealAndPositive}
+  The eigenvalues $\{\lambda_k\}_{k \geq 1}$ of a compact linear operator $L$ are real if $L$ is self-adjoint. In addition, if $L$ is positive then $\lambda_k \geq 0$, \ $\forall k \geq 1$. If it is strictly positve then $\lambda_k > 0$, \ $\forall k \geq 1$.
+\end{proposition}
+
+Theorem \ref{theorem_spectral} and proposition \ref{prop_eigenRealAndPositive} are fundamental results of spectral theory. Proof of them can be found in \textcite{debnath1990}.
+
+%-----------------------------------
+%	SUBSUBSECTION 
+%-----------------------------------
+
+\subsubsection{Mercer kernels and Mercer's theorem} \label{sec_mercer}
+
+\begin{definition}[Symmetric kernel] \label{def_symmetryKernel}
+  A kernel $K: \mathcal{X} \times \mathcal{X} \to \mathbb{R}$ is symmetric if $K(x,x') = K(x',x)$ for all $x,x' \in \mathcal{X}$.
+\end{definition}
+
+\begin{definition}[Positive-definite kernel] \label{def_positiveDefinitenessKernel}
+  A symmetric kernel $K: \mathcal{X} \times \mathcal{X} \to \mathbb{R}$ is positive-definite if
+  \begin{equation} \label{eq_positiveDefiniteSum}
+    \sum_i^s \sum_j^s c_i c_j K(x_i,x_j) > 0 
+  \end{equation}
+  for any $s \in \mathbb{N}$, $x_1, \dots, x_s \in \mathcal{X}$ and $(c_1, \dots, c_s) \in \mathbb{R}^s \setminus \{0\}$. 
+\end{definition}
+
+If $\pmb{x}=(x_1,\dots,x_s)$, $x_i \in \mathcal{X}$, let $K[\pmb{x}] \in \mathbb{R}^{s \times s}$ be the matrix whose entries are $K(x_i,x_j)$,
+\begin{equation} \label{eq_Kx} 
+  K[\pmb{x}] = 
+  \begin{pmatrix}
+    K(x_1,x_1) & \dots  & K(x_1,x_s) \\
+     \vdots    & \ddots & \vdots     \\
+    K(x_s,x_1) & \dots  & K(x_s,x_s) \\
+  \end{pmatrix},
+\end{equation}
+and 
+\begin{equation*}
+  f_{\pmb{x}} = (f(x_1), \dots, f(x_s)),
+\end{equation*}
+the vector of evaluations of $f$ at $x_1, \dots, x_s$.
+
+\begin{remark} \label{remark_KxPositiveDefinite}
+  Notice that the expression (\ref{eq_positiveDefiniteSum}) is equivalent to $K[\pmb{x}]$ being a positive-definite matrix for any $\pmb{x} \in \mathcal{X}^s$ and $s \in \mathbb{N}$, i.e., 
+  \begin{equation*}
+    v^T K[\pmb{x}] v > 0 
+  \end{equation*}
+  for any $v \in \mathbb{R}^s \setminus \{0\}$, $\pmb{x} \in \mathcal{X}^s$ and $s \in \mathbb{N}$.
+\end{remark}
+
+\begin{proposition} \label{prop_KsymetricLKselfadjoint}
+  If a kernel $K$ is symmetric, then the associated linear operator $L_K$ is self-adjoint.
+  \begin{proof}
+  The result is a direct consequence of the Fubini-Tonelli's theorem (which allows to change the order of integration) and the symmetry of $K$.
+  \end{proof}
+\end{proposition}
+
+\begin{proposition} \label{prop_KpositiveDefiniteLKpositive}
+  If a kernel $K$ is positive definite then the associated linear operator $L_K$ is positive.
+  \begin{proof} Notice that
+    \begin{equation*} \begin{aligned}
+      \langle L_K , f \rangle &= \int_{\mathcal{X}} \int_{\mathcal{X}} K(x,t)f(x)f(t) d\nu(x) d\nu(t) \\
+                              &= \lim_{s \to \infty} \frac{\nu(\mathcal{X})}{s^2} 
+                                  \sum_{i=1}^s \sum_{j=1}^s K(x_i,x_j)f(x_i)f(x_j) \\
+                              &= \lim_{s \to \infty} \frac{\nu(\mathcal{X})}{s^2} 
+                                           f_{\pmb{x}}^T K[\pmb{x}] f_{\pmb{x}},
+    \end{aligned} \end{equation*}
+    and $f_{\pmb{x}}^T K[\pmb{x}] f_{\pmb{x}} > 0$ since $K$ is positive definite.
+  \end{proof}
+\end{proposition}
+
+\begin{remark} \label{remark_mercerKernelTopropetiesOfTheOperator}
+  If a function $K: \mathcal{X} \times \mathcal{X} \to \mathbb{R}$ is continuous and satisfy the conditions of symmetry and positive-definiteness of a kernel (definitions \ref{def_symmetryKernel} and \ref{def_positiveDefinitenessKernel}), then for the remark \ref{remark_LKwelldefinedandcompact} and the propositions \ref{prop_KsymetricLKselfadjoint} and \ref{prop_KpositiveDefiniteLKpositive}, the associated linear operator $L_K$ is compact, self-adjoint and positive. Notice that those are the hypotheses of the spectral theorem \ref{theorem_spectral} and the proposition \ref{prop_eigenRealAndPositive}. Therefore, there exists a orthonormal basis of $\mathcal{L}^2_{\nu}(\mathcal{X})$ consisting of eigenfunctions of $L_K$, $\{ \phi_k \}_{k \geq 1}$. In addition, the respective eigenvalues $\{ \lambda_k \}_{k \geq 1}$ are real, positive and $\lambda_k \to 0$ when $k \to \infty$ (assuming, without lost of generality, $\lambda_k \geq \lambda_{k+1}$, $\forall k$).
+\end{remark}
+
+\begin{remark} \label{remark_orthonormalBasis} 
+  If $\{ \phi_k \}_{k \geq 1}$ is a orthonormal basis of $\mathcal{L}^2_{\nu}(\mathcal{X})$, then any function $f \in \mathcal{L}^2_{\nu}(\mathcal{X})$ can be uniquely written as,
+  \begin{equation*}
+    f = \sum_{k=1}^{\infty} a_k \phi_k, \ a_k \in \mathbb{R}, 
+  \end{equation*}
+  where,
+  \begin{equation*}
+    a_k = \langle \phi_k , f \rangle, \ \forall k \geq 1, 
+  \end{equation*}
+  and the partial sums $\sum_{k=1}^{N} a_k \phi_k$ converge to $f$ in $\mathcal{L}^2_{\nu}(\mathcal{X})$, i.e.,
+  \begin{equation} \label{eq_partialSumsConvergeTOf}
+    \sum_{k=1}^{N} a_k \phi_k \xrightarrow{N \to \infty} f, \ \text{with } \sum_{k=1}^{N} a_k \phi_k \in \mathcal{L}^2_{\nu}(\mathcal{X}), \ \forall N \in \mathbb{N}.  
+  \end{equation}
+\end{remark}
+
+\begin{definition}[Mercer kernel] \label{def_mercerKernel}
+  A kernel $K$ which is symmetric and positive definite is called Mercer kernel. 
+\end{definition}
+
+\begin{remark} \label{remark_PDSkernel}
+  Mercer kernels are usually called Positive Definite Symmetric (PDS) in the literature (see, e.g., \textcite{mohri2018}). The terminology of ``Mercer kernel'' often refers to the kernels that satisfy the conclusion of the Mercer's theorem (theorem \ref{theorem_mercer}). Indeed, it can be proved that a kernel is a Mercer kernels (according to this last definition), if and only if, it is a PDS kernel. Hence, they are the same mathematical objects. Theorem \ref{theorem_mercer} proves the implication to the left. More details can be found in \textcite{mohri2018}.
+\end{remark}
+
+Mercer kernels are important mathematical objects because of the implications highlighted in the remark \ref{remark_mercerKernelTopropetiesOfTheOperator} and explained during this section. They are necessary to state the Mercer's theorem (theorem \ref{theorem_mercer}) which plays a key role in the main goal of this section, presenting the Reproducing Kernel Hilbert Spaces.
+
+\begin{remark} 
+  A pertinent question about Mercer kernels which the reader may be thinking is the existence of such a kernels. They do not only exist, but the next preposition \ref{prop_radialKernels} gives a family of them.
+\end{remark}
+
+\begin{proposition} \label{prop_radialKernels}
+  Let $f: (0,\infty) \to \mathbb{R}$ be a completely monotonic function. The kernel,
+  \begin{equation} \label{eq_radialKernels}
+    \begin{aligned}
+      K : \mathcal{X} \times \mathcal{X} &\to     \mathbb{R} \\
+      (x,t)          &\mapsto K(x,t) = f(\|x-t\|^2),
+    \end{aligned}
+  \end{equation}
+  is a Mercer kernel.
+\end{proposition}
+
+Generally, it is easy to prove the continuity and symmetry of a kernel. However, the positive-definiteness is more challenging. In the case of the kernels defined by (\ref{eq_radialKernels}), the continuity and symmetry follows from the completely monotonicity of $f$ and the continuity and symmetry of $\|x-t\|^2$. First proof of the positive-definiteness can be found in \textcite{schoenberg1988}.
+
+Examples of kernels according to the proposition \ref{prop_radialKernels} are,
+\begin{itemize}
+  \item \emph{Gaussian or squared exponential}:
+    \begin{equation} \label{eq_SExpKernel}
+      K_{SE}(x,t) = \exp{-\frac{\|x-t\|^2}{2l^2}}, \ \ l \neq 0. 
+    \end{equation}
+  \item \emph{Rational Quadratic}:
+    \begin{equation*}
+      K_{RQ}(x,t) = \left(1-\frac{\|x-t\|^2}{2 \alpha l^2} \right)^{-\alpha}, \ \ \alpha, l > 0. 
+    \end{equation*} 
+\end{itemize}
+
+Remember that if the convergence in the expression (\ref{eq_partialSumsConvergeTOf}) satisfy,
+\begin{equation*}
+  \sum_{k=1}^{N} a_k \phi_k \in \mathcal{C}(\mathcal{X}), \ \forall N \in \mathbb{N},
+\end{equation*}
+it is said that the series uniformly converges to $f$.
+
+In addition, it is said that a serie $\sum_{k=1}^{N} a_k$ converges absolutely if $\sum_{k=1}^{N} |a_k|$ is convergent.
+
+\begin{theorem}[Mercer's theorem] \label{theorem_mercer}
+Let $K: \mathcal{X} \times \mathcal{X} \to \mathbb{R}$ be a Mercer kernel (definition \ref{def_mercerKernel}). Let $\{ \phi_k \}_{k \geq 1}$ be the eigenfunctions of $L_K$ (definition \ref{def_linearOperator}) and $\{ \lambda_k \}_{k \geq 1}$ the corresponding eigenvalues. For all $x,t \in \mathcal{X}$,
+\begin{equation} \label{eq_MercerTheorem}
+  K(x,t) = \sum_{k=1}^{\infty} \lambda_k \phi_k(x) \phi_k(t),
+\end{equation}
+where the convergence is uniform and absolute.
+\begin{proof}
+  A proof covering all details can be found in \textcite{cucker2007}. The key point is as follows. Let $K_x(t) = K(x,t)$, $K_x \in \mathcal{L}_{\nu}^2(\mathcal{X})$. Note that,%By theorem \ref{theorem_spectral}, $\{ \phi_k \}_{k \geq 1}$ are a orthonormal basis of $\mathcal{L}_{\nu}^2$, and therefore,
+  \begin{equation*}
+  \begin{aligned}
+    K(x,t) &= K_x(t) \\
+           &= \sum_{k=1}^{\infty} \langle K_x , \phi_k \rangle \phi_k(t) & 
+                  \substack{\text{($\{ \phi_k \}_{k \geq 1}$ are a orthonormal basis}\\ \text{of $\mathcal{L}_{\nu}^2$ (theorem \ref{theorem_spectral}))}} \\
+                    &= \sum_{k=1}^{\infty} L_K(\phi_k)(x) \phi_k(t) & \text{(definition \ref{def_linearOperator})} \\
+                    &= \sum_{k=1}^{\infty} \lambda_k \phi_k(x) \phi_k(t) & 
+                  \substack{\text{($\phi_k$ eigenfunction $L_K$} \\ \text{with eigenvalue $\lambda_k$)}} \\
+  \end{aligned}
+  \end{equation*}
+\end{proof}
+\end{theorem}
+
+First proof of theorem \ref{theorem_mercer} can be found in \textcite{mercer1909}. The first version of it, however, consider $\nu$ to be the Lebesgue measure and $\mathcal{X}$ to be an interval $[a,b] \subset \mathbb{R}$. \textcite{hochstadt1989}, and \textcite{cucker2007} are more recent references for the proof of this theorem. \textcite{konig1986} gives more details about the generalization for finite measures which is considered in this work.
+
+%-----------------------------------
+%	SUBSUBSECTION 
+%-----------------------------------
+
+\subsubsection{The feature space and the kernel trick} \label{sec_featureSpaceKernelTrick}
+
+The Mercer's theorem (theorem \ref{theorem_mercer}) is a necessary requirement for proving the next theorem (theorem \ref{theorem_kernelTrick}), which is a significant result in learning theory. It is an essential tool for designing regression algorithms in Machine Learning, e.g., Gaussian Processes (see section \ref{sec_GP}). It is usually called the kernel trick in the literature of this subject.
+
+Remember that $l^2$ is the space of square-summable sequences, which is a Hilbert space. 
+
+\begin{definition}[Feature map] \label{def_featureMap}
+  Let $\{\phi_k\}_{k \geq 1}$ be the eigenfunctions and $\{\lambda_k\}_{k \geq 1}$ be the corresponding eigenvalues of the linear operator $L_K$ with kernel $K: \mathcal{X} \times \mathcal{X} \to \mathbb{R}$. The map,
+  \begin{equation} \label{eq_featureMap}
+    \begin{aligned}
+      \Phi : \mathcal{X} &\to     l^2  \\
+             x &\mapsto \Phi(x) = (\sqrt{\lambda_k}\phi_k(x))_{k \geq 1}
+    \end{aligned}
+  \end{equation}
+  is called the feature map $\Phi$ associated with the kernel $K$.
+\end{definition}
+
+\begin{definition}[Feature space]
+  The image of the feature map $\Phi(\mathcal{X})$ (\ref{eq_featureMap}) is called feature space.
+\end{definition}
+
+\begin{remark}
+  Notice that the definition \ref{def_featureMap} assumes that the set of eigenfunctions $\{\phi_k\}_{k \geq 1}$ is infinite. This is usually the most interesting case. Nevertheless, the definition can easily be changed for the case of $\{\phi_k\}_{k}$ being finite and then $\Phi(x)$ would also be finite,
+  \begin{equation*}
+    \Phi(x) = \left(\sqrt{\lambda_1}\phi_1(x), \dots, \sqrt{\lambda_{k_{max}}}\phi_{k_{max}}(x)\right).
+  \end{equation*}  
+\end{remark}
+
+\begin{definition} \label{def_degenerateKernel}
+  A kernel which leads to a finite number of non-zero eigenvalues and eigenfunctions is called degenerate kernel.
+\end{definition}
+
+\begin{remark} \label{remark_semidefiniteDegenerateKernel}
+    A kernel that satisfies the definition \ref{def_positiveDefinitenessKernel} if the equality is considered in (\ref{eq_positiveDefiniteSum}) is called positive-semidefinite kernel. Degenerate kernels are positive-semidefinite kernels that are not positive-definite.
+\end{remark}
+
+\begin{theorem}[The kernel trick] \label{theorem_kernelTrick}
+  The feature map $\Phi$ (definition \ref{def_featureMap}) is well-defined and continuous. In addition,
+  \begin{equation*}
+    K(x,t) = \langle \Phi(x), \Phi(t) \rangle.
+  \end{equation*}
+  \begin{proof}
+    The following proof can be found in \textcite{cucker2001}. 
+    This theorem is an immediate consequence of the Mercer's theorem (theorem \ref{theorem_mercer}),
+    \begin{equation*}
+      K(x,t) = \sum_{k=1}^{\infty} \lambda_k \phi_k(x) \phi_k(t) = \langle \Phi(x), \Phi(t) \rangle.
+    \end{equation*}
+    Also,
+    \begin{equation*}
+      \sum_{k=1}^{\infty} \lambda_k \phi_k(x)^2 = K(x,x) < \infty , \ \ \forall x \in \mathcal{X}.
+    \end{equation*}
+    Thus, 
+    \begin{equation*}
+      (\sqrt{\lambda_k}\phi_k(x))_{k \geq 1} \in l^2.
+    \end{equation*}
+    Finally, the continuity of $\Phi : \mathcal{X} \to l^2$ follows from the continuity of $K$,
+    \begin{equation*} %\label{eq_continuityPhi}
+      \begin{aligned}
+        \| \Phi(x) - \Phi(t) \| &= \langle \Phi(x) , \Phi(x) \rangle
+                                      + \langle \Phi(t) , \Phi(t) \rangle
+                                      - 2\langle \Phi(x) , \Phi(t) \rangle \\
+                                &= K(x,x) + K(t,t) - 2K(x,t).
+      \end{aligned}
+    \end{equation*}
+    Note that $ \| \Phi(x) - \Phi(t) \|$ tends to zero when $x$ tends to $t$.
+  \end{proof}
+\end{theorem}
+
+Feature spaces are a major breakthrough in function regression because they allow the use of linear regression models even when the data show a non-linear behaviour. Obviously, linear regression applied to the inputs do not capture non-linear behaviour of the target regression function. Therefore, it seems to be useful only for a very few cases, in the linear scenario. However, it is analytically tractable. The idea behind feature spaces is to project the inputs into a space (feature space), whose dimension is higher than the inputs dimension (it is usually infinite\hyp{}dimsional) and where algorithms will perform linear regression. Although the model of those algorithms will be linear, they will capture non-linear behaviour. The reason for this is that the input projections may show a linear behaviour in the feature space even when the data show a very non-linear scenario.
+
+\begin{example}
+Figure \ref{fig_featureSpaceProjectionsExample} illustrates an example of this idea. A two degree polynomial was used as a regression function to be approximated,
+\begin{equation*} 
+  f(x) = 3x^2+2x+1.
+\end{equation*}
+Ten random points of this function were generated as a training data. The graph above shows the regression function (blue), the training points (black) and the best linear approximation according to these training points (red). The adjective 'best' was used in the least-squares sense (definition \ref{def_empiricalError}). It can be seen that the linear regression on the inputs fails. 
+
+The graph below shows the input projections into the feature space,
+\begin{equation*} 
+  \Phi(x) = (\phi_1(x),\phi_2(x)) = (x^2,x).
+\end{equation*}
+Since the regression function is
+\begin{equation*} 
+  f(x) = 3(x^2)+2(x)+1 = 3\phi_1(x) + 2\phi_2(x) + 1, 
+\end{equation*}
+any input point projection belongs to the plane $F(\phi_1,\phi_2) = 3\phi_1 + 2\phi_2 + 1$, and therefore linear regression on the feature space would succeed with a perfect fitting. Indeed,
+\begin{equation*}
+  f(x) = 3x^2+2x+1 \in \textup{span}\{x^2,x\} \subset \mathcal{C}(\mathcal{X}).
+\end{equation*}
+\end{example}
+
+\begin{example}
+Projecting into a feature space is interesting even if the regression function does not belong to the selected feature space. Although there is not a perfect fitting, functions belonging to that hypothesis space can be good approximations of the regression function. Figure \ref{fig_featureSpaceProjectionsExampleSinCos} shows an example trying to fit the same function $f(x) = 3x^2+2x+1$ in figure \ref{fig_featureSpaceProjectionsExample}. However, in this case, the feature space is
+\begin{equation*}
+  \Phi(x) = (\phi_1(x),\phi_2(x)) = (\cos(x),\sin(x)).
+\end{equation*}
+Although $f(x)$ does not belong to $\textup{span}\{\cos(x),\sin(x)\}$, it was possible to find the approximation, 
+\begin{equation*}
+  7.603 - 6.612\cos(x) + 2.267\sin(x),
+\end{equation*}
+which fits $f(x)$ with a little error. The fact that $f(x)$ is not in the span of $\{\cos(x),\sin(x)\}$ can be seen in the bottom graph. The blue line, which represents the regression function 
+\footnote{The points $(\cos(x),\sin(x),f(x))$ in the graph.},
+is not belonging to any plane 
+\footnote{$\notin \{(\phi_1,\phi_2,f) \ | \ f = a_0 + a_1 \phi_1 + a_2 \phi_2\}, \ \forall a_0,a_1,a_2 \in \mathbb{R}$.}.
+Nevertheless, the plane
+\begin{equation*}
+  \{(\phi_1,\phi_2,f) \ | \ f = 7.603 - 6.612\phi_1 + 2.267\phi_2\} \ \ \ \text{(shown in red)}
+\end{equation*} 
+is close to it.
+\end{example}
+
+\begin{example}
+Figure \ref{fig_featureSpaceProjectionsExampleCos} is the last example of projection into a feature space. It is an interesting example for a better visualization of the linearity in the feature space. It is easier to see the linearity in one dimension (i.e., points in a line) than in two dimensions (i.e., points in a plane). In contrast to the examples in figures \ref{fig_featureSpaceProjectionsExample} and \ref{fig_featureSpaceProjectionsExampleSinCos} where the inputs are $1$\hyp{}dimensional values and the feature space is $2$\hyp{}dimensional, in this case the feature space is also 1\hyp{}dimensional: $\Phi(x) = \cos(x-2.8)$. The top graph shows the regression function (blue), 10 training points (black), the best linear approximation in the inputs (red) and the best linear approximation in the feature space $\Phi(x)$ (magenta). The bottom graph shows the training points projections into $\Phi(x)$, i.e., $(\cos(x_i^t-2.8),f(x_i^t))$ for all training points $x_i^t, \ i=\{1,\dots,10\}$. In contrast with the top graph, it can be seen how the projections into $\Phi(x)$ almost lie in a straight line, and therefore the linear model applied to that feature espace suceeds. It is also an interesting example because it is showing that projecting into a feature space can improve the linear model even if the dimension of the feature space is not higher that the dimension of the inputs.
+\end{example}
+
+Figures \ref{fig_featureSpaceProjectionsExample} and \ref{fig_featureSpaceProjectionsExampleSinCos} show examples of projections from a $1$\hyp{}dimensional input space to a $2$\hyp{}dimensional feature space. Although a $2$\hyp{}dimensional feature space was chosen due to visualization restrictions, the dimension could be far higher. Even infinite, which is the most interesting case (the non-degenerate case, see definition \ref{def_degenerateKernel}). However, operations with vectors in the feature space will become more expensive computationally when the dimension is increased. Here is when the kernel trick (\ref{theorem_kernelTrick}) comes into the picture. Inner products in feature spaces can be computed with a little computational cost using kernels. Even projecting into infinite\hyp{}dimsional feature spaces. This is a tremendous advantage because it will allow algorithms to substitute inner products in the feature space for kernel evaluations. The example of using the kernel trick in a particular regression algorithm will be covered in section \ref{sec_GP}.
+
+\begin{figure}[!htbp]
+  \centering
+    \includegraphics[width=0.99\textwidth]{codeSomeFigures/kernelTrick/linearRegression.png}
+    \includegraphics[width=0.99\textwidth]{codeSomeFigures/kernelTrick/featureSpaceProjections.png}
+  \caption[Example of a projection into a feature space $\Phi(x) = (x^2,x)$.]%
+{Example of a projection into a feature space $\Phi(x) = (x^2,x)$. 
+  \emph{Blue line}: $f(x) = 3x^2+2x+1$, two degree polynomial as a regression function. 
+  \emph{Black points}: Training points. Ten evaluations of $f(x)$. 
+  \emph{red line}: Best linear approximation (in the least squares sense). 
+  \emph{red plane}: Plane $3\phi_1+2\phi_2+1$ containing the regression function projections into the feature space $\Phi(x) = (\phi_1(x),\phi_2(x)) = (x^2,x)$.
+  The figure illustrates an example where a linear model on the inputs fails while a linear model on the feature space $\Phi(x) = (x^2,x)$ succeeds with a perfect fitting.} 
+  \label{fig_featureSpaceProjectionsExample}
+\end{figure}
+
+\begin{figure}[!htbp]
+  \centering
+    \includegraphics[width=0.99\textwidth]{codeSomeFigures/kernelTrick/2dSinCosFitting.png}
+    \includegraphics[width=0.99\textwidth]{codeSomeFigures/kernelTrick/featureSpaceProjectionsSinCos.png}
+  \caption[Example of a projection into a feature space $\Phi(x) = (\cos(x),\sin(x))$]%
+{Example of a projection into a feature space $\Phi(x) = (\cos(x),\sin(x))$. 
+  \emph{Blue line}: $f(x) = 3x^2+2x+1$, two degree polynomial as a regression function. 
+  \emph{Black points}: Training points. Ten evaluations of $f(x)$. 
+  \emph{red line}: Best linear approximation (in the least squares sense). 
+  \emph{magenta line}: Best approximation (in the least squares sense) considering the model $f(x) = a_0 + a_1\cos(x) + a_2\sin(x)$. The parameters which give the best fitting are: $a_0 = 7.603$, $a_1 = -6.612$ and $a_2 = 2.267$.
+  \emph{red plane}: Plane $a_0+a_1\phi_1+a_2\phi_2$ containing the regression function projections into the feature space $\Phi(x) = (\phi_1(x),\phi_2(x)) = (\cos(x),\sin(x))$.
+  The figure illustrates an example where a linear model on the inputs fails while a linear model on the feature space $\Phi(x) = (\cos(x),\sin(x))$ succeeds with a little error.} 
+  \label{fig_featureSpaceProjectionsExampleSinCos}
+\end{figure}
+
+\begin{figure}[!htbp]
+  \centering
+    \includegraphics[width=0.99\textwidth]{codeSomeFigures/kernelTrick/inputSpaceCosFitting.png}
+    \includegraphics[width=0.99\textwidth]{codeSomeFigures/kernelTrick/featureSpaceProjectionsCos.png}
+  \caption[Example of a projection into a feature space $\Phi(x) = cos(x-2.8)$]%
+{Example of a projection into a feature space $\Phi(x) = cos(x-2.8)$. 
+  \emph{Blue line}: $f(x) = 3x^2+2x+1$, two degree polynomial as a regression function. 
+  \emph{Black points}: Training points. Ten evaluations of $f(x)$. 
+  \emph{red line (top)}: Best linear approximation (in the least squares sense). 
+  \emph{magenta line}: Best approximation (in the least squares sense) considering the model $f(x) = a_0 + a_1\cos(x-2.8)$. The parameters which give the best fitting are: $a_0 = 7.462$ and $a_1 = 6.878$.
+  \emph{red line (bottom)}: Line $a_0+a_1\Phi$ which approximates the training points projections into the feature space $\Phi(x) = \cos(x-2.8)$.
+  The figure illustrates an example where a linear model on the inputs fails while a linear model on the feature space $\Phi(x) = cos(x-2.8)$ succeeds with a little error.} 
+  \label{fig_featureSpaceProjectionsExampleCos}
+\end{figure}
+
+%-----------------------------------
+%	SUBSUBSECTION 
+%-----------------------------------
+
+\subsubsection{Characterization of RKHS spaces} \label{sec_characterizationRKHS}
+
+\begin{definition}
+  Let $K: \mathcal{X} \times \mathcal{X} \to \mathbb{R}$ be a kernel. $C_K$ is the supremum of $|K(x,t)|$, i.e.,
+  \begin{equation*}
+    C_K = \sup_{x,t \in \mathcal{X}} |K(x,t)|.
+  \end{equation*}
+\end{definition}
+
+\begin{definition}
+  Let $K: \mathcal{X} \times \mathcal{X} \to \mathbb{R}$ be a Mercer Kernel (definition \ref{def_mercerKernel}). Define
+  \begin{equation*}
+    \begin{aligned}
+      K_x : \mathcal{X} &\to     \mathbb{R} \\
+            t &\mapsto K_x(t) = K(x,t).
+    \end{aligned}
+  \end{equation*}
+\end{definition}
+
+\begin{theorem}[Moore–Aronszajn] \label{theorem_RKHS}
+  Let $K: \mathcal{X} \times \mathcal{X} \to \mathbb{R}$ be a Mercer Kernel. The Hilbert space $\mathcal{H}_K$ of functions on $\mathcal{X}$ satisfying,
+  \begin{enumerate}
+    \item $K_x \in \mathcal{H}_K, \ \ \forall x \in \mathcal{X}$, and the span of the set $\{ K_x | x \in \mathcal{X} \}$ is dense in $\mathcal{H}_K$; \label{enumerate_KernelsDense}
+    \item $f(x) = \langle K_x,f \rangle_{\mathcal{H}_K}, \ \ \forall f \in \mathcal{H}_K$; \label{enum_reproducingPropertiy}
+  \end{enumerate}
+  exists and it is unique. In addition, any function $f \in \mathcal{H}_K$ is continuous and the operator norm of the inclusion
+  \begin{equation*}
+    I_K : \mathcal{H}_K \to \mathcal{C}(\mathcal{X}),
+  \end{equation*}
+  is bounded by $\sqrt{C_K}$, i.e.,
+  \begin{equation*}
+    \|I_K\| \leq \sqrt{C_K}.
+  \end{equation*}
+
+  \begin{proof}
+    Full proof of this theorem including all the mathematical details can be found in \textcite{cucker2007}.
+    Let $H_0$ be the span of $\{ K_x | x \in \mathcal{X} \}$. If
+    \begin{equation*}
+      f = \sum_{i=1}^s \alpha_i K_{x_i} \in H_0 \ \ \text{ and } \ \
+      g = \sum_{j=1}^r \beta_j K_{t_j} \in H_0,  
+    \end{equation*}
+    consider the inner product in $H_0$ given by,
+    \begin{equation} \label{eq_innerproductH0}
+      \langle f,g \rangle = \sum_{\substack{1 \leq i \leq s \\ 1 \leq j \leq r}}
+                                         \alpha_i \beta_j K(x_i,t_j).
+    \end{equation}
+    It can be proved that this inner product is well defined (see, e.g., \textcite{cucker2007}). %Yet, it is not an interesting proof for this work (some details can be found in \textcite{cucker2007}).
+    Let $\mathcal{H}_K$ be the completion of $H_0$. Notice that $\mathcal{H}_K$ satisfies the two conditions above. Condition \ref{enumerate_KernelsDense} is trivial and condition \ref{enum_reproducingPropertiy} is straightforward: if
+    \begin{equation*} 
+      f = \sum_{i=1}^s \alpha_i K_{t_i} \in H_0 \ \ \text{ and } \ \ x \in \mathcal{X},
+    \end{equation*}
+    then
+    \begin{equation*}
+      \langle K_x,f \rangle = \sum_{i=1}^s \alpha_i K(t_i,x) = f(x). 
+    \end{equation*} 
+    Therefore, the existance is proved. 
+
+    Regarding the uniqueness, let $H$ be another Hilbert space satisfying the conditions above. First, notice that $\mathcal{H}_K$ and $H$ are completions of $H_0$ due to the condition \ref{enumerate_KernelsDense}. Thus, for the uniqueness of the completion $\mathcal{H}_K = H$. Secondly,
+    \begin{equation*}
+      \langle K_x,K_t \rangle_H = K(x,t) = \langle K_x,K_t \rangle_{\mathcal{H}_K}, \ \ \forall x,t \in \mathcal{X},
+    \end{equation*}
+    due to the condition \ref{enum_reproducingPropertiy} and, by linearity,
+    \begin{equation*}
+      \langle f,g \rangle_H = \langle f,g \rangle_{\mathcal{H}_K},
+    \end{equation*}
+    where,
+    \begin{equation*} 
+    f,g \in \mathcal{H}_K = H,
+    \end{equation*}
+    i.e., $f$ and $g$ belong to the completion of $H_0 = \textup{span}\{ K_x | x \in \mathcal{X} \}$). Therefore, $\langle , \rangle_H = \langle , \rangle_{\mathcal{H}_K}$.
+
+    With regards to the last part of the statement,
+    \begin{equation*}
+      |f(x)| = |\langle K_x,f \rangle_{\mathcal{H}_K}| \leq 
+                     \|K_x\|_{\mathcal{H}_K} \|f\|_{\mathcal{H}_K} 
+                     \leq C_K \|f\|_{\mathcal{H}_K}, \ \ 
+                     \forall f \in \mathcal{H}_K, \forall x \in \mathcal{X}
+    \end{equation*}
+    Hence $\|f\|_{\infty} \leq C_K \|f\|_{\mathcal{H}_K}$. Therefore, $\|I_K\| \leq C_K$ and convergence in $\mathcal{H}_K$ implies convergence in $\mathcal{C}(\mathcal{X})$ (definition \ref{def_continuosFunctBanachSpace}). For the completeness of $\mathcal{C}(\mathcal{X})$ and the continuity of the functions $K_x, \ x \in \mathcal{X}$, any $f \in \mathcal{H}_K$ is continuous. 
+  \end{proof}
+\end{theorem}
+
+\begin{remark}
+  Given a Mercer kernel, the Hilbert space $\mathcal{H}_K$ of functions on $\mathcal{X}$ described in theorem \ref{theorem_RKHS} is called the RKHS associated with the kernel $K$.
+\end{remark}
+
+\begin{remark}
+  The condition \ref{enum_reproducingPropertiy} in theorem \ref{theorem_RKHS} is called the \emph{reproducing property} of the RKHS $\mathcal{H}_K$.
+\end{remark}
+
+\begin{remark}
+  The existence of a unique Hilbert space of functions on $\mathcal{X}$ satisfying the reproducing property in theorem \ref{theorem_RKHS} first apperead in \textcite{aronszajn1950a}. N. Aronszajn developed a significant proportion of the RKHS general theory. Nevertheless, he attributed this theorem to E.H. Moore.
+\end{remark}
+
+\begin{remark}
+  The Hilbert space $\mathcal{H}_K$ defined in theorem \ref{theorem_RKHS} is independent of any measure considered on $\mathcal{X}$. It is defined as the completion of $H_0 = \textup{span}\{K_x | x \in \mathcal{X} \}$, and therefore it only depends on the kernel $K$ and the compact domain $\mathcal{X}$. However, theorem \ref{theorem_HkandHthesame} shows that $\mathcal{H}_K$ can also be defined from the eigenfunctions $\{\phi_k\}_{k \geq 1}$ and the eigenvalues $\{\lambda_k\}_{k \geq 1}$ of the linear operator $L_K$ (definition \ref{def_linearOperator}), which depends on a measure $\nu$ on $\mathcal{X}$. 
+\end{remark}
+
+\begin{theorem} \label{theorem_HkandHthesame}
+  Let $K: \mathcal{X} \times \mathcal{X} \to \mathbb{R}$ be a Mercer kernel. Let $\{\phi_k\}_{k \geq 1}$ and $\{\lambda_k\}_{k \geq 1}$ the eigenfunctions and the eigenvalues of the associated linear operator $L_K$. The Hilbert space of functions $\mathcal{H}_K$ defined in theorem \ref{theorem_RKHS}, i.e., the completion of the span of $\{K_x | x \in \mathcal{X} \}$ with the inner product defined in (\ref{eq_innerproductH0}), and the Hilbert space of functions,
+  \begin{equation*}
+    \mathcal{H}'_K = \left\{ f \in \mathcal{L}_{\nu}^2(\mathcal{X}) \ | \ 
+                             f = \sum_{k=1}^{\infty} a_k \phi_k, \ 
+                             \left( \frac{a_k}{\sqrt{\lambda_k}} \right) \in l^2 \right\},
+  \end{equation*}
+with the inner product,
+  \begin{equation*}
+    f = \sum_{k=1}^{\infty} a_k \phi_k, \ g = \sum_{k=1}^{\infty} b_k \phi_k 
+        \Rightarrow \langle f,g \rangle_{\mathcal{H}'_K} =  
+        \sum_{k=1}^{\infty} \frac{a_k b_k}{\lambda_k}, 
+  \end{equation*}
+
+  are the same space of functions with the same inner product.
+  \begin{proof}
+    First part of the proof is to show that functions in $\mathcal{H}'_K$ are continuous and if $f = \sum_{k=1}^{\infty} a_k \phi_k$ then the partials sums $\sum_{k=1}^{s} a_k \phi_k$ converge absolutely and uniformly to $f$ when $s$ tends to $\infty$. The details of this and the second part explained below can be found in \textcite{cucker2001}. 
+
+The second part is to prove the two conditions in theorem \ref{theorem_RKHS}. The reproducing property is the most interesting for this work because it can be proved with the propositions and theorems developed in this Chapter. First, note that,
+    \begin{equation*} 
+      K_x(t) =  K(x,t) = \sum_{k=1}^{\infty} 
+           \underbrace{\lambda_k \phi_k(x)}_{a_k} \phi_k(t)
+    \end{equation*}
+    by Mercer's theorem (theorem \ref{theorem_mercer}). In addition, 
+    \begin{equation*}
+      \left( \frac{\lambda_k \phi_k(x)}{\sqrt{\lambda_k}} \right)_{k \geq 1} \in l^2
+    \end{equation*} 
+    by theorem \ref{theorem_kernelTrick}. Thus $K_x \in \mathcal{H}'_K$, $\forall x \in \mathcal{X}$, and, for $f \in \mathcal{H}'_K$, $f = \sum_{k=1}^{\infty} a_k \phi_k$,
+    \begin{equation*}
+      \begin{aligned}
+        \langle f , K_x \rangle_{\mathcal{H}'_K} &= \sum_{k=1}^{\infty} 
+                              \langle a_k \phi_k, K_x \rangle_{\mathcal{H}'_K} \\
+             &= \sum_{k=1}^{\infty} 
+                 \frac{a_k \langle \phi_k, K_x \rangle_{\mathcal{L}_{\nu}^2}}{\lambda_k}
+                 \ \ \ \ \
+                 \text{($\{\phi_k\}_{k \geq 1}$ orthonormal basis)} \\ 
+             &= \sum_{k=1}^{\infty} \frac{a_k}{\lambda_k} \int_{\mathcal{X}} \phi(t)K(x,t)d\nu(t)
+                 \ \ \ \ \
+                 \text{(definition \ref{def_HilbertSpaceSquareIntegrableFunctions})} \\ 
+             &= \sum_{k=1}^{\infty} \frac{a_k}{\lambda_k} (L_K \phi_k)(x)      
+                 \ \ \ \ \
+                 \text{(definition \ref{def_linearOperator})} \\ 
+             &= \sum_{k=1}^{\infty} \frac{a_k}{\lambda_k} \lambda_k \phi_k(x)
+                 \ \ \ \ \ 
+                 \substack{\text{($\{\phi_k\}_{k \geq 1}$ and $\{\lambda_k\}_{k \geq 1}$ eigenfunctions} \\ \text{and eigenvalues of $L_K$)}} \\
+             &= f(x). 
+      \end{aligned}
+    \end{equation*}
+    It only remains to prove that $\{K_x | x \in \mathcal{X}\}$ is dense in $\mathcal{H}'_K$. Again, refer to \textcite{cucker2001} for the details. 
+    
+    Finally, $\mathcal{H}_K = \mathcal{H}'_K$ by the uniqueness of $\mathcal{H}_K$ proved in theorem \ref{theorem_RKHS}.
+  \end{proof}
+\end{theorem}
+
+Alternatively, the RKHS spaces can be defined as follows.
+
+\begin{definition}[RKHS] \label{def_RKHS}
+  A Hilbert space of functions $\mathcal{H}$ on a compact set $\mathcal{X} \subset \mathbb{R}^N$ with the following property: the functions
+  \begin{equation*}
+    \begin{aligned}
+      F_x : \mathcal{H} &\to \mathcal{Y} \\
+            f           &\mapsto f(x) 
+    \end{aligned}
+    \ \ \ \ , \ \ \ \forall x \in \mathcal{X},
+  \end{equation*}
+are continuous linear functionals, is called Reproducing Kernel Hilbert Space (RKHS).
+\end{definition}
+
+\begin{remark} \label{remark_viceversaRKHStheorem}
+  It can be proved that definition \ref{def_RKHS} of a RKHS and the definition given by theorem \ref{theorem_RKHS} are equivalent, i.e., any RKHS space according to definition \ref{def_RKHS} can be given by a Mercer kernel following theorem \ref{theorem_RKHS} and vice versa (see, e.g., \textcite{hofmann2008}).
+\end{remark}
+      
+%-----------------------------------
+%	SUBSUBSECTION 
+%-----------------------------------
+
+\subsubsection{Representer theorem} \label{sec_representerTheorem}
+
+The ultimate goal of this Chapter is to provide a tool to tackle the stated regression problem. That means providing an algorithm which is computationally tractable, i.e., an algorithm consisting of a finite number of operations which modern computers can run in a reasonable time. 
+
+In this section, RKHS spaces were presented as spaces of functions $\mathcal{H}_K \subset \mathcal{L}^2_{\nu}$ completely defined by their respective kernels $K$ and the input space $\mathcal{X}$. In the regression problem, the idea is to look for approximations of the regression function in those special spaces. In the non-degenerate case (\ref{def_degenerateKernel}), i.e., when the RKHS is infinite\hyp{}dimsional, the problem is intractable by computers (a priori) because the search can not be done with finite memory in a finite time. 
+
+The kernel trick (theorem \ref{theorem_kernelTrick}) already gives a powerful tool for designing algorithms when the RKHS is infinite\hyp{}dimsional. Next theorem \ref{theorem_representer} is also a remarkable result regarding infinite\hyp{}dimensionality of the RKHS. It states that a minimizer of the regularized empirical error (definition \ref{def_regularizedEmpiricalError}) $f_{\pmb{z},\gamma}$ in a RKHS is a finite linear combination of kernel evaluations $\sum_{i=1}^n \alpha_i K_{x_i}$ where $\{x_i\}_{1 \leq i \leq n}$ are the inputs of the sample (or training set) $\pmb{z} = \{(x_i,y_i)\}_{1 \leq i \leq n}$. Therefore, it is not only proving that the infinite\hyp{}dimsional minimization problem of finding $f_{\pmb{z},\gamma}$ in a RKHS can actually be reduced to a computationally tractable problem, but also providing a method to do it: solving,
+\begin{equation*}
+  \underset{\alpha = (\alpha_1, \dots, \alpha_n)}{\textup{argmin}} \mathcal{E}_{\pmb{z},\gamma} \left( \sum_{i=1}^n \alpha_i K_{x_i} \right).
+\end{equation*}
+
+\begin{theorem}[Representer theorem] \label{theorem_representer}
+  Let $\pmb{z} = \{(x_i,y_i)\}_{1 \leq i \leq n}$ be a sample of $\rho$ (training data) and $\gamma > 0$. Let $\mathcal{H}_K$ be the RKHS associated with the Mercer kernel $K$. A empirical target function $f_{\pmb{z},\gamma}$ minimizing the regularized empirical error $\mathcal{E}_{\pmb{z},\gamma}$ (definition \ref{def_regularizedEmpiricalError}) in $\mathcal{H}_K$ can be written as,
+  \begin{equation*}
+    f_{\pmb{z},\gamma}(x) = \sum_{i=1}^n \alpha_i K_{x_i}(x), 
+  \end{equation*}    
+  where $\alpha_i \in \mathbb{R}$ for all $1 \leq i \leq n$.
+  \begin{proof}
+    Let $\{\phi_k\}_{k \geq 1}$ be eigenfunctions of $L_K$ which form an orthonormal basis of $\mathcal{L}_{\nu}^2$ (theorem \ref{theorem_spectral}). Let $\{\lambda_k\}_{k \geq 1}$ be the corresponding eigenvalues. If $f = \sum_{k=1}^{\infty} c_k \phi_k$ is a function in $\mathcal{H}_K$ (remark \ref{remark_orthonormalBasis}), then,
+    \begin{equation*}
+      \|f\|^2_{\mathcal{H}_K} = \sum_{k=1}^{\infty} \frac{c_k^2}{\lambda_k},
+    \end{equation*}
+    by theorem \ref{theorem_HkandHthesame}. Therefore,
+    \begin{equation} \label{eq_regularizedEmpiricalErrorInHrepresenterTheorem}
+      \mathcal{E}_{\pmb{z},\gamma}(f) 
+          = \mathcal{E}_{\pmb{z},\gamma}(\sum_{k=1}^{\infty} c_k \phi_k) 
+          = \frac{1}{n} \sum_{i=1}^n \left( y_i - \sum_{k=1}^{\infty} c_k \phi_k(x_i) \right)^2
+            + \gamma  \sum_{k=1}^{\infty} \frac{c_k^2}{\lambda_k}.
+    \end{equation}
+    The aim is to find the coefficients $\{c_k\}_{k \geq 1}$ which minimize (\ref{eq_regularizedEmpiricalErrorInHrepresenterTheorem}). Thus, solving $\frac{\partial \mathcal{E}_{\pmb{z},\gamma}}{\partial c_k} = 0$ for all $k \geq 1$,
+    \begin{equation*}
+      0 = \frac{\partial \mathcal{E}_{\pmb{z},\gamma}}{\partial c_k} 
+        = \frac{-2}{n} \sum_{i=1}^n 
+            \left( y_i - \sum_{j=1}^{\infty} c_j \phi_j(x_i) \right)\phi_k(x_i)
+          + 2\gamma \left( \frac{c_k}{\lambda_k} \right).
+    \end{equation*}
+    Therefore, the coefficients $\{c_k\}_{k \geq 1}$ which minimize (\ref{eq_regularizedEmpiricalErrorInHrepresenterTheorem}) are,
+    \begin{equation} \label{eq_ckminimizing}
+      c_k = \lambda_k 
+         \sum_{i=1}^n \underbrace{\frac{1}{\gamma n} \left( y_i - \sum_{j=1}^{\infty} c_j \phi_j(x_i) \right)}_{\alpha_i} \phi_k(x_i),
+    \end{equation}
+    and,
+    \begin{equation*}
+      \begin{aligned}
+        f_{\pmb{z},\gamma}(x) &= \sum_{k=1}^{\infty} c_k \phi_k(x) \\
+          &= \sum_{k=1}^{\infty} 
+           \left( \lambda_k \sum_{i=1}^n \alpha_i \phi_k(x_i) \right) \phi_k(x) 
+             \ \ \text{(by (\ref{eq_ckminimizing}))} \\
+          &= \sum_{i=1}^n \alpha_i \sum_{k=1}^{\infty} \lambda_k \phi_k(x_i) \phi_k(x) \\
+          &= \sum_{i=1}^n \alpha_i K_{x_i}(x) \ \ \text{(by theorem \ref{theorem_mercer})}.
+      \end{aligned}
+    \end{equation*}    
+  \end{proof}
+\end{theorem}
+
+A first version of the Representer theorem (theorem \ref{theorem_representer}) for the special case of cubic splines can be found in \textcite{schoenberg1964}. \textcite{kimeldorf1971} extended to RKHS (as it is stated in this work). A first generalization of the statement in theorem \ref{theorem_representer} can be found in \textcite{osullivan1986}. However, \textcite{scholkopf2001} generalize it even further, relaxing the hypothesis with these two changes:
+\begin{enumerate}
+  \item an arbitrary strictly increasing real-valued function $g: [0,\infty) \to \mathbb{R}$ is used to define the regularized term $g(\|f\|_{\mathcal{H}_K})$. Theorem \ref{theorem_representer} would be a special case where,
+  \begin{equation*}
+    g(\|f\|_{\mathcal{H}_K}) = \gamma \|f\|^2_{\mathcal{H}_K}.
+  \end{equation*}
+  \item an arbitrary function 
+    \begin{equation*}
+      \begin{aligned}
+        E : (\mathcal{X} \times \mathbb{R}^2)^n &\to \mathbb{R} \cup {\infty} \\
+            (x,y,f(x))                &\mapsto E(x,y,f(x))
+      \end{aligned}
+    \end{equation*}
+   is used as empirical error. The empirical error defined in this work,
+   \begin{equation*}
+     \mathcal{E}_{\pmb{x}}(f) = \frac{1}{n} \sum_{i=1}^{n} (f(x_i)-y_i)^2, 
+   \end{equation*}
+   would be the special case in theorem \ref{theorem_representer}.
+\end{enumerate}
+
+Next section \ref{sec_GP} will describe in detail an algorithm to tackle regression in RKHS spaces using Gaussian Processes. Nevertheless, it is interesting to show an answer for the regression problem using the tools explained so far. A minimizer of the regularized empirical error can be derived as an immediate consequence of theorem \ref{theorem_representer}. Corollary \ref{corollary_derivingAlphasMinimizer} shows the details.
+
+\begin{corollary}[A minimizer of $\mathcal{E}_{\pmb{z},\gamma}$ in $\mathcal{H}_K$] 
+  \label{corollary_derivingAlphasMinimizer}
+  Let $\pmb{z} = \{(x_i,y_i)\}_{1 \leq i \leq n}$ be a sample of $\rho$ (training data) and $\gamma > 0$. Let $\mathcal{H}_K$ be the RKHS associated with the Mercer kernel $K$. A empirical target function $f_{\pmb{z},\gamma}$ minimizing the regularized empirical error $\mathcal{E}_{\pmb{z},\gamma}$ (definition \ref{def_regularizedEmpiricalError}) in $\mathcal{H}_K$ can be expressed as,
+  \begin{equation*}
+    f_{\pmb{z},\gamma}(x) = \sum_{i=1}^n \alpha_i K_{x_i}(x), 
+  \end{equation*}    
+  where $\alpha_i \in \mathbb{R}$ is the solution of the $n$-dimensional linear system,
+  \begin{equation} \label{eq_alphaLinearSystem}
+    y = \left( K[\pmb{x}] + \gamma n Id_n \right) \alpha, \ \text{ with } \left\{
+    \begin{array}{l}
+      y = (y_1, \dots, y_n),  \\
+      \alpha = (\alpha_1, \dots, \alpha_n), \\
+      \pmb{x} = (x_1, \dots, x_n), \\ 
+      K[\pmb{x}] \text{ defined in \ref{eq_Kx} and} \\
+      Id_n \text{ the $n$-dimensional identity matrix}. \\
+    \end{array}
+    \right. 
+  \end{equation}
+  \begin{proof}
+    The proof is immediate using theorem \ref{theorem_representer}. From expression (\ref{eq_ckminimizing}),
+    \begin{equation*}
+      \alpha_i = \frac{1}{\gamma n} \left( y_i - f(x_i) \right), 
+    \end{equation*}
+    and using $f(x_i) = \sum_{j=1}^n \alpha_j K_{x_j}(x_i)$,
+    \begin{equation*}
+      y_i = \sum_{j=1}^n \alpha_j K_{x_j}(x_i) + \gamma n \alpha_i. 
+    \end{equation*} 
+    Therefore,
+    \begin{equation*}
+      \begin{aligned}
+        \pmb{y} &= K[\pmb{x}] \alpha + \gamma n \alpha \\
+                &= \left( K[\pmb{x}] + \gamma n Id_n \right) \alpha.
+      \end{aligned}
+    \end{equation*}
+  \end{proof}
+\end{corollary}
+
+\begin{remark}
+  Note that $K[\pmb{x}]$ is a positive-definite matrix since $K$ is a Mercer Kernel (definition \ref{def_mercerKernel}) and due to the remark \ref{remark_KxPositiveDefinite}. Therefore, $K[\pmb{x}] + \gamma n Id_n$ is also positive-definite and the solution of the linear system (\ref{eq_alphaLinearSystem}) exists and it is unique. The positive-definiteness of the matrix also gives some advantages in order to solve the system. For example, the conjugate gradients iterative method or Cholesky decomposition (proposition \ref{prop_cholesky}) can be applied.
+\end{remark}
+
+\begin{remark}
+  If data $\pmb{z} = \{(x_i,y_i)\}_{1 \leq i \leq n}$ is provided and a Mercer Kernel $K$ is chosen, then corollary \ref{corollary_derivingAlphasMinimizer} transform the infinite\hyp{}dimsional optimization problem of finding a minimizer of the regularized empirical error (definition \ref{def_regularizedEmpiricalError}) into a linear system, which is tractable by computers.
+\end{remark}
+
+\begin{remark} \label{remark_GPconsistentWithRepresenterTheorem}
+  Notice that the solution provided by Gaussian Process Regression in (\ref{eq_goodPosteriorPredictiveWithKernel}) is consistent with the corollary \ref{corollary_derivingAlphasMinimizer}. This is a manifestation of theorem \ref{theorem_representer} and the fact that Gaussian Process Regression is indeed providing a minimizer of a regularized empirical error. Remark \ref{remark_GPfollowsRepresenterTheorem} in next section \ref{sec_GP} gives the details.
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----------------------------------------------------------------------------------------
+%	SECTION 
+%----------------------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Gaussian Process Regression} \label{sec_GP}
+
+This section gives a review on Gaussian Process regression. Most of the ideas can be found in \textcite{rasmussen2006}. However, the mathematical steps to build the posterior predictive distribution have been explained in more detail.
+
+Section \ref{sec_probMeasuresNotation} gives some notation clarifications. It is recommended to read it before continuing with this section.
+
+%-----------------------------------
+%	SUBSECTION 
+%-----------------------------------
+
+\subsection{The measure governing the samples}
+
+At the beginning of section \ref{sec_FundamentalsLearning}, it was pointed out that the probability measure $\rho$ governing the samples (or training set) $\pmb{z} = \{(x_i,y_i)\}_{1 \leq i \leq n}$ is unknown. Yet, an assumption will be made in Gaussian Process regression. The conditional probability measure of $\rho$ on $\mathcal{Y}$ conditioned to $x \in \mathcal{X}$ will be assumed to be a Gaussian distribution with mean equal to the regression function (definition \ref{def_regularizedEmpiricalError}) evaluated at $x$ and a variance $\sigma^2(x)$ (definition \ref{def_varianceFunction}), i.e.,
+\begin{equation} \label{eq_condRhoGaussian}
+  \rho(y | x) \sim \mathcal{N}(f_{\rho}(x), \sigma^2(x)).
+\end{equation}
+
+Therefore, given an input $x \in \mathcal{X}$, the output $y \in \mathcal{Y}$ can be thought as an evaluation of the regression function $f_{\rho}$ at $x$ plus Gaussian noise $\epsilon \sim \mathcal{N}(0, \sigma^2(x))$,
+\begin{equation*}
+  y = f_{\rho}(x) + \epsilon.
+\end{equation*}
+
+\begin{remark} \label{remark_GPandRho}
+  Let $\rho_{\mathcal{X}}$ be the marginal probability of $\rho$ on $\mathcal{X}$. If $\rho_{\mathcal{X}}$ is known, then it is only remaining to know the regression function $f_{\rho}$ to have $\rho$ completely specified. This is because $\rho(y|x)$ and $\rho_{\mathcal{X}}(x)$ completely specify $\rho(x,y)$ (see \ref{prop_fubini}). 
+\end{remark}
+
+  Let $\mathcal{X} \subset \mathbb{R}^N$ be a compact set. If $\rho_{\mathcal{X}}(x)$ is assumed to be uniform on $\mathcal{X}$ and $\rho(y|x)$ is assumed to be as (\ref{eq_condRhoGaussian}), then it is only necessary to know $f_{\rho}(x)$ and $\sigma^2(x)$ to have the measure $\rho$, which governs the samples, completely specified.
+
+
+%-----------------------------------
+%	SUBSECTION 
+%-----------------------------------
+
+\subsection{The linear model} \label{sec_linearModel}
+
+\begin{definition}[Design matrix]
+  If $\mathcal{X} \subset \mathbb{R}^N$ is the input space and $\pmb{z} = \{(x_i,y_i)\}_{1 \leq i \leq n}$ is the training set, then $\pmb{X}$ will be the $N \times n$ matrix whose $i$th column is the vector $x_i$, i.e.,
+  \begin{equation*}
+    \pmb{X} = [x_1 \hdots x_n] \in \mathbb{R}^{N \times n}.
+  \end{equation*}  
+\end{definition}
+
+Let $\mathcal{H}_l \subset \mathcal{L}^2_{\nu}(\mathcal{X})$ be the hypothesis space of linear functions on $\mathcal{X} \subset \mathbb{R}^N$. Therefore, for any function $f_w \in  \mathcal{H}_l$ there exists a vector of weights $w = (w_1, \dots, w_N)^T$ such that,
+\begin{equation*}
+  f_w(x) = w^Tx, \ \ \forall x \in \mathcal{X}.
+\end{equation*}
+
+If the approach of last section \ref{sec_FundamentalsLearning} is followed, the procedure to make predictions would be finding a minimizer of the empirical error in $\mathcal{H}_l$. This is straight forward, it is only necessary to solve the minimization problem on the weights $w$ (see remark \ref{remark_minimizationEmpiricalErrorLinearModel}). Instead of doing that, the approach followed in this section will be the use of Bayesian analysis to find a posterior on the weights $w$ (i.e., on the functions $f_w \in \mathcal{H}_l$) given the training set $\pmb{z} = \{(x_i,y_i)\}_{1 \leq i \leq n}$ (i.e., given $\pmb{x}$ and $\pmb{y}$),
+\begin{equation} \label{eq_bayesLinearModel}
+  p(w | \pmb{y}, \pmb{x}) = \frac{p(\pmb{y}|w,\pmb{x}) p(w)}{p(\pmb{y}|\pmb{x})}.
+\end{equation}
+
+Therefore, it is necessary to compute the likelihood $p(\pmb{y}|w,\pmb{x})$ and set a prior $p(w)$ on the weights. The marginal $p(\pmb{y}|\pmb{x})$ is only a normalizing constant. It does not depend on $w$.
+
+\begin{remark} \label{remark_GPlearningTheoryConnections}
+  Although a new approach is presented, after applying the linear model to the projections to a feature space $\Phi(x)$ and changing, therefore, the hypothesis space $\mathcal{H}_l$ to a RKHS, it will be seen that the kernel trick (theorem \ref{theorem_kernelTrick}) can be exploited and the solution given by the GP regression is consistent with the Representer theorem (theorem \ref{theorem_representer}). Those are manifestation of the strong connections between GP regression and the theory explained in the last section \ref{sec_FundamentalsLearning}.
+\end{remark}
+
+
+%-----------------------------------
+%	SUBSUBSECTION 
+%-----------------------------------
+\subsubsection{The likelihood and the prior}
+
+Given an arbitrary vector of weights $w \in \mathbb{R}^N$ and assuming that $f_w$ is the regression function in (\ref{eq_condRhoGaussian}),
+\begin{equation} \label{eq_condWeights}
+  p(y | x,w) = \mathcal{N}(w^Tx, \sigma^2(x)) 
+    = \frac{1}{\sqrt{2\pi\sigma^2(x)}}\exp\left( \frac{-(y-w^Tx)^2}{2\sigma^2(x)} \right).
+\end{equation}
+
+Thus, if
+\begin{itemize} 
+  \item $\pmb{x} = \{x_i\}_{1 \leq i \leq n}$ are the input points and $\pmb{y} = (y_1, \dots, y_n)^T$ is the vector of outputs in the training set $\pmb{z}$,
+%  \item $\pmb{y} = (y_1, \dots, y_n)^T$ is the vector of outputs in the training set,
+  \item the samples in $\pmb{z}$ are i.i.d. and,
+  \item the variance $\sigma^2(x)$ is assumed to be constant in the input points of the training set, i.e., $\sigma^2(x_i) = \sigma^2$, $1 \leq i \leq n$,
+\end{itemize}  
+then,
+\begin{equation} \label{eq_linearModelLikelihood} 
+ \begin{array}{l}    
+    p(\pmb{y} | \pmb{x},w) = \\
+   \begin{aligned}
+       &= \prod_{i=1}^{n} p(y_i | x_i,w) \\ 
+       &= \prod_{i=1}^{n} \frac{1}{\sigma\sqrt{2\pi}}\exp\left( \frac{-(y_i-w^Tx_i)^2}{2\sigma^2} \right) \ \ \ \ \ \ \text{(by \ref{eq_condWeights})} \\
+       &= \frac{1}{(2\pi)^{\frac{n}{2}} 
+             \left( \textup{det}(\sigma^2I_{n \times n}) \right)^{\frac{1}{2}}}
+             \exp\left( 
+             -\frac{1}{2}
+             (\pmb{y} -  \pmb{X}^Tw)^T
+             (\sigma^2I_{n \times n})^{-1}
+             (\pmb{y} -  \pmb{X}^Tw)
+             \right) \\
+       &= \mathcal{N}(\pmb{X}^Tw, \sigma^2I_{n \times n}). \ \ \ \ \text{(definition of multivariate Normal density)}  
+  \end{aligned} \\
+ \end{array}
+\end{equation}
+
+Therefore, the likelihood of (\ref{eq_bayesLinearModel}) is already computed in (\ref{eq_linearModelLikelihood}). It only remains to set a prior on $w$.
+
+Let $\mathcal{N}(0,\Sigma_w)$ be a Gaussian prior on $w$ with zero mean and covariance matrix $\Sigma_w$, i.e,
+\begin{equation} \label{eq_linearModelPrior}
+  p(w) = (2\pi)^{-\frac{n}{2}} \det(\Sigma_w)^{-\frac{1}{2}} \exp\left( -\frac{w^T\Sigma_w^{-1}w}{2} \right).
+\end{equation}
+
+\begin{remark}
+It has been assumed a constant variance $\sigma^2(x_i) = \sigma^2$. 
+The adoption of this assumption in a regression model is called homoscedastic regression. 
+In contrast, the terminology heteroscedastic regression is used when the variance is assumed not to be constant. 
+Heteroscedastic GP regression has been studied. See, e.g., \textcite{antunes2017}; or \textcite{lazaro-gredilla2011}.
+\end{remark}
+
+%-----------------------------------
+%	SUBSUBSECTION 
+%-----------------------------------
+\subsubsection{The posterior on the weights}
+
+Computing the product of these two normal distributions, likelihood (\ref{eq_linearModelLikelihood}) and prior (\ref{eq_linearModelPrior}),
+\begin{equation*}
+  \begin{aligned}
+    p(w | \pmb{y}, \pmb{x}) &\propto p(\pmb{y}|w,\pmb{x}) p(w) \\
+          &\propto \exp\left( -\frac{\| \pmb{y} -  \pmb{X}^Tw \|^2}{2\sigma^2} \right) \exp\left( -\frac{w^T\Sigma_w^{-1}w}{2} \right) \\
+          &\propto \exp\left( 
+                 -\frac{1}{2} 
+                 (w-\bar{w})^T 
+                 \left( \frac{1}{\sigma^2}\pmb{X}\pmb{X}^T + \Sigma_w^{-1} \right)
+                 (w-\bar{w}) 
+                 \right), \\
+  \end{aligned}
+\end{equation*}
+where
+\begin{equation*}
+  \bar{w} = \frac{1}{\sigma^2} \left( \frac{1}{\sigma^2}\pmb{X}\pmb{X}^T + \Sigma_w^{-1} \right)^{-1} \pmb{X}\pmb{y}.
+\end{equation*}
+
+Thus, the posterior on $w$ is Gaussian with mean $\bar{w}$ and covariance matrix equal to the inverse of
+\begin{equation*} \label{eq_matrixA}
+  A = \frac{1}{\sigma^2}\pmb{X}\pmb{X}^T + \Sigma_w^{-1},
+\end{equation*}
+i.e.,
+\begin{equation} \label{eq_posteriorLinearModel}
+  p(w | \pmb{y}, \pmb{x}) = \mathcal{N}(\bar{w},A^{-1}).
+\end{equation}
+
+Remember that the aim is to find an approximation of the regression function in $\mathcal{H}_l$, i.e., a vector of weights $w$ which an associated linear function $f_{w}$ that approximates $f_{\rho}$.
+
+In a non-Bayesian approach, the choice of $w$ could be the maximum a posteriori (MAP), i.e., the mode of the posterior (\ref{eq_posteriorLinearModel}). Since it is a Gaussian density, note that the mode is equal to the mean. Thus, the MAP would be $\bar{w}$. 
+
+\begin{remark} \label{remark_minimizationEmpiricalErrorLinearModel}
+  If $\pmb{X}^T$ is full column rank, it is possible to find the minimizer of the empirical error $\mathcal{E}_{\pmb{z}}$ (definition \ref{def_empiricalError}) in $\mathcal{H}_l$ and it is unique. Note that,
+  \begin{equation} \label{eq_minimizationWeightsEmpiricalError}
+    \underset{w}{\textup{argmin}} \ \| \pmb{y} - \pmb{X}^T w \|^2
+  \end{equation}
+  can be solve with the ordinary least squares method with solution,
+  \begin{equation*} % \label{eq_minimizerEmpiricalErrorLinearModel}
+    w_{\mathcal{E}_{\pmb{z}}} = (\pmb{X}\pmb{X}^T)^{-1}\pmb{X}\pmb{y}.
+  \end{equation*}
+%  Notice that $w_{\mathcal{E}_{\pmb{z}}}$ corresponds to the MAP $\bar{w}$ in the limiting case of the variance of the noise $\sigma^2$ being equal to one and $\det \left( \Sigma_w \right)$ tending to infinity. Informally, although there is not uniform distribution on $\mathbb{R}^N$, this limiting case can be thought as the prior on the weights being uniform.
+  Notice that $w_{\mathcal{E}_{\pmb{z}}}$ corresponds to the MAP $\bar{w}$ in the limiting case of $\det \left( \Sigma_w \right)$ tending to infinity. Informally, although there is not uniform distribution on $\mathbb{R}^N$, this limiting case can be thought as the prior on the weights being uniform.
+%  \begin{equation*}
+%    \det \left( \Sigma_w \right) \to  \infty . 
+%  \end{equation*} 
+\end{remark}
+
+Taking the estimate $w_{\mathcal{E}_{\pmb{z}}}$ in remark \ref{remark_minimizationEmpiricalErrorLinearModel} and using $f_{w_{\mathcal{E}_{\pmb{z}}}}$ in order to make predictions may lead to overfitting problems (see sections \ref{sec_sampleApproximationErrors}, \ref{sec_BiasVariance} and \ref{sec_regularizedError}). In contrast, the posterior predictive distribution,
+\begin{equation} \label{eq_posteriorPredictiveLinearModel}
+  \begin{aligned}
+    p(y | x_*, \pmb{y}, \pmb{x}) 
+      &= \int_{\mathbb{R}^N} p(y | x_*,w)  p(w | \pmb{y}, \pmb{x}) dw \\
+      &= \mathcal{N} \left( 
+                      \frac{1}{\sigma^2}x_*^TA^{-1}\pmb{X}\pmb{y} ,
+                      x_*^T A^{-1} x_*
+                     \right) \\
+      &= \mathcal{N} \left( 
+                      x_*^T\bar{w} ,
+                      x_*^T A^{-1} x_*
+                     \right),
+  \end{aligned}
+\end{equation}
+of the Bayesian approach introduce some regularization in its solution (see remark \ref{remark_regularizingMinimizationWeightsEmpiricalError}). Given an input point $x_{*} \in \mathcal{X}$ which is not in the training set $\pmb{z}$, instead of taking the best linear model $f(x_*) = x_*^Tw_{\mathcal{E}_{\pmb{z}}}$ according to the data $\pmb{z}$ and the minimization problem (\ref{eq_minimizationWeightsEmpiricalError}), it averages all possible linear models with respect to the posterior (\ref{eq_posteriorLinearModel}), i.e., it is calculated marginalizing the weights.
+
+%Taking the MAP estimate $w_{\mathcal{E}_{\pmb{z}}}$ and using $f_{w_{\mathcal{E}_{\pmb{z}}}}$ in order to make predictions would lead to the same overfitting problem than minimizing the empirical error (see sections \ref{sec_sampleApproximationErrors}, \ref{sec_BiasVariance} and \ref{sec_regularizedError}). In contrast, the posterior predictive distribution (\ref{eq_posteriorPredictiveLinearModel}) of the Bayesian approach introduce some regularization in its solution. 
+%Instead of taking the MAP $w_{\mathcal{E}_{\pmb{z}}}$ which corresponds to 
+%Instead of taking the best linear model $p(y | x,w_{\mathcal{E}_{\pmb{z}}})$ (\ref{eq_condRhoGaussian}) according to the data $\pmb{z}$ and the posterior (\ref{eq_posteriorLinearModel}), it averages all possible linear models with respect to the posterior (\ref{eq_posteriorLinearModel}), i.e., it is calculated marginalizing the weights. Therefore, given an unknown input point $x_{*} \in \mathcal{X}$, the posterior predictive distribution of the outputs is,
+
+\begin{remark}
+  Notice that the mean of (\ref{eq_posteriorPredictiveLinearModel}) coincides with the MAP estimate $\bar{w}$ in order to make predictions. This fact is due to the Gaussian distribution symmetries in the model. Nevertheless, it can not be generalize in the Bayesian approach. In addition, the posterior predictive (\ref{eq_posteriorPredictiveLinearModel}) gives more information than just $\bar{w}$. It is not only giving an approximation of the regression function $f_{\bar{w}}(x_*) = x_*^T \bar{w}$ , but also a confidence interval in the predictions given by the variance $x_*^T A^{-1} x_*$.
+\end{remark}
+
+\begin{remark}
+  Notice that the variance in (\ref{eq_posteriorPredictiveLinearModel}) is independent of the training set outputs $\pmb{y}$. This is a particular property of GP regression.
+\end{remark}
+
+\begin{remark}[Ridge regression] \label{remark_regularizingMinimizationWeightsEmpiricalError}
+  Consider the following regularization (see definition \ref{def_regularizedEmpiricalError}) of (\ref{eq_minimizationWeightsEmpiricalError}), 
+\begin{equation*}
+  \mathcal{E}_{\pmb{z},\gamma} = \underset{w}{\textup{min}} \ \| \pmb{y} - \pmb{X}^T w \|^2 + \gamma \|w\|^2.
+\end{equation*} 
+The optimal solution in this case is,
+\begin{equation*}
+  w_{\mathcal{E}_{\pmb{z},\gamma}} = \left( \pmb{X}\pmb{X}^T + \gamma I_{N \times N} \right)^{-1}\pmb{X}\pmb{y}.
+\end{equation*}
+The study of this minimization problem is called ridge regression (see \textcite{hoerl1970}). Further information about the parameter $\gamma$ can be found in, for example, \textcite{golub1979}. Note that $\bar{w} = w_{\mathcal{E}_{\pmb{z},\gamma}}$ for the particular case of $\Sigma_w = \gamma I_{N \times N}$. Matrices of the form of $\Sigma_w$ instead of $I_{N \times N}$ can appear in ridge regression if the norm,
+\begin{equation*} 
+  \|w\|^2 = w^T \Sigma_w^{-1} w,
+\end{equation*}
+is considered instead of the Euclidean norm.
+\end{remark}
+
+\begin{remark} \label{remark_GPandOverfittingProblem}
+  The overfitting problem may not be a major issue in the limited hypothesis space of linear functions (linear on the inputs). In the next section \ref{sec_linearModelOnFeatureSpace}, however, the linear model would be applied on a feature space. The overfitting problem should be considered in the ``bigger'' spaces resulting from those proyections.
+\end{remark}
+
+%\begin{remark}
+%  The posterior on the weights $p(w | \pmb{y},\pmb{x})$ and the posterior predictive $p(y | x_*, \pmb{y}, \pmb{x})$   
+%\end{remark}
+%REMARK decir que se puede calcular porque todo es Gausiano. Lo mismo para el posterior.
+
+%-----------------------------------
+%	SUBSECTION 
+%-----------------------------------
+\subsection{The linear model on a feature space} \label{sec_linearModelOnFeatureSpace}
+
+The idea of projecting the inputs to a feature space was introduced in section \ref{sec_featureSpaceKernelTrick}. The goal of this section is to use the results of last section \ref{sec_linearModel} and the kernel trick (theorem \ref{theorem_kernelTrick}) to exploit the linear model on a feature space
+\begin{equation*}
+  \Phi(x) = (\phi_1(x), \phi_2(x), ...)^T, \ \ \forall x \in \mathcal{X}.
+\end{equation*} 
+
+For the following derivations, suppose that $\Phi(x)$ is given and $N_{\Phi}$-dimensional. However, after applying the kernel trick, it will be seen that the feature space does not need to be known (remark \ref{remark_phiNotNeedKnown}) and it can be infinite\hyp{}dimsional (remark \ref{remark_kernelTrickEvenInfinitePhi}). 
+
+Remember the linear model applied to the input space $\mathcal{X}$,
+\begin{equation} \label{eq_linearModelSummary}
+  \begin{array}{rll}
+    y | x,w & \sim \mathcal{N}(w^T x, \sigma^2) & \text{Likelihood.} \\
+    w       & \sim \mathcal{N}(0,\Sigma_w)      & \text{Prior on the weights.} \\
+             &\downarrow \\
+    w | \pmb{y}, \pmb{x} & \sim \mathcal{N}(\bar{w},A^{-1}) 
+      & \text{Posterior on the weights. See (\ref{eq_posteriorLinearModel}).} \\
+    y | x_*, \pmb{y}, \pmb{x} 
+      & \sim \mathcal{N} \left( 
+                      \frac{1}{\sigma^2}x_*^TA^{-1}\pmb{X}\pmb{y} , \right.\\
+                     & \ \ \ \ \ \ \ \ \ \ \ \ \left. \phantom{\frac{1}{\sigma^2}} x_*^T A^{-1} x_*
+                     \right) 
+        & \text{Posterior predictive. See (\ref{eq_posteriorPredictiveLinearModel}).} \\
+  \end{array}
+\end{equation}
+
+Apply the linear model to the feature space instead,
+\begin{equation} \label{eq_linarModelFeature}
+  \begin{array}{rll}
+    y | x,w & \sim \mathcal{N}(w^T \Phi(x), \sigma^2) & \text{Likelihood.} \\
+    w       & \sim \mathcal{N}(0,\Sigma_w)      & \text{Prior on the weights.} \\
+  \end{array}
+\end{equation}
+
+Notice that model (\ref{eq_linarModelFeature}) will lead to the same derivations in (\ref{eq_linearModelSummary}), with the only difference of,
+\begin{equation*}
+  x \rightarrow \Phi(x),
+\end{equation*}
+and therefore,
+\begin{equation} \label{eq_matrixAPHI}
+  \begin{aligned}
+    \pmb{X} &\rightarrow \Phi_{\pmb{X}} = [\Phi(x_1) \hdots \Phi(x_n)], \\
+%    \bar{w} &\rightarrow 
+%= \frac{1}{\sigma^2} \left( \frac{1}{\sigma^2}\pmb{X}\pmb{X}^T + \Sigma_w^{-1} \right)^{-1} \pmb{X}\pmb{y} &\rightarrow
+%       \bar{w}_{\Phi} = \frac{1}{\sigma^2} \left( \frac{1}{\sigma^2}\Phi_{\pmb{X}}\Phi_{\pmb{X}}^T + \Sigma_w^{-1} \right)^{-1} \Phi_{\pmb{X}}\pmb{y}, \\
+    A &\rightarrow
+       A_{\Phi} = \frac{1}{\sigma^2}\Phi_{\pmb{X}}\Phi_{\pmb{X}}^T + \Sigma_w^{-1}. \\ 
+  \end{aligned}   
+\end{equation}
+Thus, the posterior predictive of model (\ref{eq_linarModelFeature}) is
+\begin{equation} \label{eq_posteriorPredictiveLinearModelFeature}
+    y | x_*, \pmb{y}, \pmb{x}
+      \sim \mathcal{N} \left( 
+                      \frac{1}{\sigma^2}\Phi(x_*)^TA_{\Phi}^{-1}\Phi_{\pmb{X}}\pmb{y} \  ,  \
+                      \Phi(x_*)^T A_{\Phi}^{-1} \Phi(x_*)
+                     \right).
+\end{equation}
+
+\begin{lemma}[Woodbury matrix identity] \label{lemma_inversionMatrix}
+  Let $Z$ be a $m \times m$ matrix, $W$ a $k \times k$ matrix and $U$ and $V$ are both $m \times k$ matrices, $m,k \in \mathbb{N}$. If $(Z+UWV^T)$, $Z$ and $W$ are invertible, then
+  \begin{equation*}
+    (Z+UWV^T)^{-1} = Z^{-1} - Z^{-1}U(W^{-1} + V^T Z^{-1} U)^{-1}V^TZ^{-1}.
+  \end{equation*}
+  \begin{proof}
+    It is only necessary to expand the product,
+    \begin{equation*}
+      (Z+UWV^T)[Z^{-1} - Z^{-1}U(W^{-1} + V^T Z^{-1} U)^{-1}V^TZ^{-1}]
+    \end{equation*} 
+    and see that it is equal to the $m \times m$ identity matrix. More details can be found in \textcite{woodbury1950} or \textcite{press1992}.
+  \end{proof}
+\end{lemma}
+
+\begin{proposition}
+  The posterior predictive distribution \ref{eq_posteriorPredictiveLinearModelFeature} can be expressed as,
+  \begin{equation} \label{eq_goodPosteriorPredictiveLinearModelfeature}
+    \begin{aligned}
+      y | x_*, \pmb{y}, \pmb{x}
+        \sim \mathcal{N} %(\left( \right 
+             & \left( \Phi(x_*)^T \Sigma_w \Phi_{\pmb{X}} 
+               \left( \Phi_{\pmb{X}}^T \Sigma_w \Phi_{\pmb{X}} + \sigma^2 I_{n \times n} \right)^{-1} \pmb{y} , \right. \\
+             &\Phi(x_*)^T \Sigma_w \Phi(x_*) \\
+             &\left. - \Phi(x_*)^T \Sigma_w \Phi_{\pmb{X}}
+               \left( \Phi_{\pmb{X}}^T \Sigma_w \Phi_{\pmb{X}} + \sigma^2 I_{n \times n} \right)^{-1}
+               \Phi_{\pmb{X}}^T \Sigma_w \Phi(x_*) 
+                         \right). \\
+    \end{aligned}
+  \end{equation} 
+    \begin{proof}
+      Regarding to the mean, notice that,
+      \begin{equation*}
+        \begin{aligned}
+          A_{\Phi} \Sigma_w \Phi_{\pmb{X}} &= \left( \frac{1}{\sigma^2}\Phi_{\pmb{X}}\Phi_{\pmb{X}}^T + \Sigma_w^{-1} \right) \Sigma_w \Phi_{\pmb{X}} \\
+            &= \frac{1}{\sigma^2}\Phi_{\pmb{X}}\Phi_{\pmb{X}}^T\Sigma_w \Phi_{\pmb{X}} + \Phi_{\pmb{X}} \\
+            &= \frac{1}{\sigma^2}\Phi_{\pmb{X}} \left( \Phi_{\pmb{X}}^T\Sigma_w \Phi_{\pmb{X}} + \sigma^2 I_{n \times n} \right),
+        \end{aligned} 
+      \end{equation*}
+    and therefore,
+      \begin{equation*}
+        \begin{aligned}
+          \Sigma_w \Phi_{\pmb{X}} &\left( \Phi_{\pmb{X}}^T \Sigma_w \Phi_{\pmb{X}} + \sigma^2 I_{n \times n} \right)^{-1} = \\
+            &= A_{\Phi}^{-1} 
+            \underbrace{\left( A_{\Phi} \Sigma_w \Phi_{\pmb{X}} \right)}
+            _{\frac{1}{\sigma^2}\Phi_{\pmb{X}} \left( \Phi_{\pmb{X}}^T\Sigma_w \Phi_{\pmb{X}} + \sigma^2 I_{n \times n} \right)} 
+            \left( \Phi_{\pmb{X}}^T \Sigma_w \Phi_{\pmb{X}} + \sigma^2 I_{n \times n} \right)^{-1} \\
+            &= \frac{1}{\sigma^2} A_{\Phi}^{-1} \Phi_{\pmb{X}}.
+        \end{aligned} 
+      \end{equation*}
+    Thus,
+      \begin{equation*}
+        \frac{1}{\sigma^2}\Phi(x_*)^TA_{\Phi}^{-1}\Phi_{\pmb{X}}\pmb{y}
+        = \Phi(x_*)^T \Sigma_w \Phi_{\pmb{X}} 
+               \left( \Phi_{\pmb{X}}^T \Sigma_w \Phi_{\pmb{X}} + \sigma^2 I_{n \times n} \right)^{-1} \pmb{y}.
+      \end{equation*}
+    Regarding to the variance, apply the lemma \ref{lemma_inversionMatrix} to invert the matrix $A_{\Phi}$,
+      \begin{equation*}
+       \begin{aligned}
+        A_{\Phi}^{-1} &= \left( \underbrace{\Sigma_w^{-1}}_{Z} \ + \
+                   \underbrace{\Phi_{\pmb{X}}}_{U} \
+                   \underbrace{\frac{1}{\sigma^2} I_{n \times n}}_{W} \
+                   \underbrace{\Phi_{\pmb{X}}^T}_{V^T} \
+                   \right)^{-1} \\ 
+         &= \Sigma_w - \Sigma_w \Phi_{\pmb{X}} 
+            \left( \frac{1}{\sigma^2} I_{n \times n} 
+            + \Phi_{\pmb{X}}^T \Sigma_w \Phi_{\pmb{X}}
+            \right)^{-1} \Phi_{\pmb{X}}^T \Sigma_w. \\
+       \end{aligned}
+      \end{equation*}
+%      \begin{equation*}
+%        Z^{-1} = \Sigma_w, W^{-1} = \sigma^2 I_{n \times n} 
+%        \text{ and } V=U=\Phi_{\pmb{X}}.
+%      \end{equation*}
+    \end{proof}
+\end{proposition}
+
+\begin{remark} \label{remark_dimensionsANDinversion}
+  Computing the mean and the variance of the posterior predictive distribution from (\ref{eq_posteriorPredictiveLinearModelFeature}) involves the inversion of a $N_{\Phi} \times N_{\Phi}$ matrix. In contrast, computing them from (\ref{eq_goodPosteriorPredictiveLinearModelfeature}) involves the inversion of a $n \times n$ matrix. Remember that $n$ is the number of samples and $N_{\Phi}$ the dimension of the feature space.
+\end{remark}
+
+The higher $N_{\Phi}$, the ``bigger'' the hypothesis space is. Therefore, the error given by underfitting the regression function will be lower (see section \ref{sec_BiasVariance} and \ref{sec_featureSpaceKernelTrick}). If $N_{\Phi} \gg n$, remark \ref{remark_dimensionsANDinversion} shows the advantage of computing the posterior predictive distribution using (\ref{eq_goodPosteriorPredictiveLinearModelfeature}) instead of (\ref{eq_posteriorPredictiveLinearModelFeature}). In fact, the most interesting case, when the feature space is infinite\hyp{}dimsional ($N_{\Phi} = \infty$), will be illustrated below.
+
+%-----------------------------------
+%	SUBSUBSECTION 
+%-----------------------------------
+\subsubsection{The kernel trick in Gaussian Process regression}
+
+In (\ref{eq_goodPosteriorPredictiveLinearModelfeature}), notice that the proyections to the feature space $\Phi(x), \ x \in \mathcal{X}$ and the weights prior covariance matrix $\Sigma_w$ always appear in the form of a product,
+\begin{equation} \label{eq_innerProductKernelTrick}
+  \Phi(x) \Sigma_w \Phi(x'), \ x,x' \in \mathcal{X}.
+\end{equation}
+%Note that (\ref{eq_innerProductKernelTrick}) is an inner product with respect to the matrix $\Sigma_w$,
+%\begin{equation*}
+%  \langle \Phi(x) , \Phi(x') \rangle_{\Sigma_w} = \Phi(x) \Sigma_w \Phi(x'), \ \ \ \ x,x' \in \mathcal{X}.
+%\end{equation*}
+%Let
+
+Note that $\Sigma_w$ is positive definite since it is the covariance matrix of the weights prior (\ref{eq_linarModelFeature}). Therefore, it admits the following singular value decomposition (SVD),
+\begin{equation*}
+  \Sigma_w = UDU^T,
+\end{equation*}
+with $D$ diagonal and $U$ orthogonal. See, for instance, \textcite{golub2013}, \textcite{demmel1997} or \textcite{trefethen1997} for more details about the SVD decomposition. Define $\Sigma_w^{1/2} = UD^{1/2}U^T$. Define the following feature map,
+\begin{equation*}
+  \Psi(x) = \Sigma_w^{1/2} \Phi(x), \ \ \forall x \in \mathcal{X}.
+\end{equation*} 
+%Thus,
+%\begin{equation*}
+%  \langle \Psi(x) , \Psi(x') \rangle = \Phi(x) \Sigma_w \Phi(x'), \ \ \forall x,x' \in \mathcal{X}.
+%\end{equation*}
+
+Thus, by the kernel trick (theorem \ref{theorem_kernelTrick}) and the remark \ref{remark_viceversaRKHStheorem}, there exists a kernel $K$ such that,
+\begin{equation} \label{eq_kernelTrickGP}
+  K(x,x') = \langle \Psi(x) , \Psi(x') \rangle = \Phi(x) \Sigma_w \Phi(x').
+\end{equation}
+for all $x,x' \in \mathcal{X}$. 
+
+For $\pmb{t} = \{t_1, \dots, t_s\}$ and $\pmb{t'} = \{t'_1, \dots, t'_r\}$ where $t_1, \dots, t_s, t'_1, \dots, t'_r \in \mathcal{X}$, define,
+\begin{equation} \label{eq_Kxx'}
+  \begin{aligned}
+    K[\pmb{t},\pmb{t'}] &= \left( K(t_i,t'_j) \right)_{\substack{1 \leq i \leq s \\ 1 \leq j \leq r}} &\in \mathbb{R}^{s \times r}.
+  \end{aligned}
+\end{equation}
+Following the notation in (\ref{eq_Kxx'}) and (\ref{eq_Kx}),
+\begin{equation} \label{eq_KernelFeatureMapEqualities}
+  \begin{array}{r c c c c l}
+    K[\pmb{x}] &= &\left( K(x_i,x_j) \right)_{ij} &= &\Phi_{\pmb{X}}^T \Sigma_w \Phi_{\pmb{X}} &\in \mathbb{R}^{n \times n}, \\
+    K[\pmb{x},x_*] &= &\left( K(x_1,x_*), \dots, K(x_n,x_*) \right)^T &= & \Phi_{\pmb{X}}^T \Sigma_w \Phi(x_*) &\in \mathbb{R}^{n \times 1}, \\
+    K[x_*] &= &K(x_*,x_*) &= &\Phi(x_*)^T \Sigma_w \Phi(x_*) &\in \mathbb{R}, \\
+  \end{array} 
+\end{equation}
+where $x_i$, \ $1 \leq i \leq n$, are the inputs of the training set and $x_*$ is a test point.
+
+\begin{remark}
+  If $N_{\Phi} \gg n$, notice that computing the matrices involving the feature map $\Phi$ in (\ref{eq_goodPosteriorPredictiveLinearModelfeature}) becomes far less expensive numerically using the kernel trick and the equalities in (\ref{eq_KernelFeatureMapEqualities}). For example, the computational cost of the product $\Phi_{\pmb{X}}^T \Sigma_w \Phi_{\pmb{X}}$ is $\mathcal{O}(N_{\Phi}^2 n)$ operations. In contrast, using the kernel trick, $K[\pmb{x}]$ is computed with only $n^2$ evaluations of the kernel $K$.
+\end{remark}
+
+Eventually, the posterior predictive distribution (\ref{eq_goodPosteriorPredictiveLinearModelfeature}) can be expressed as follows,
+\begin{equation} \label{eq_goodPosteriorPredictiveWithKernel}
+  \begin{aligned}
+    y | x_*, \pmb{y}, \pmb{x}
+      \sim \mathcal{N} 
+           & \left( K[\pmb{x},x_*]^T 
+             \left( K[\pmb{x}] + \sigma^2 I_{n \times n} \right)^{-1} \pmb{y} , \right. \\
+           & \left.  K[x_*] - K[\pmb{x},x_*]^T 
+             \left(  K[\pmb{x}] + \sigma^2 I_{n \times n} \right)^{-1}
+             K[\pmb{x},x_*] 
+                       \right). \\
+  \end{aligned}
+\end{equation} 
+
+\begin{remark} \label{remark_GPalsoGivesUncertainties}
+  Note that the posterior predictive distribution given by a GP (\ref{eq_goodPosteriorPredictiveWithKernel}) is not only giving a guess of the outcome of interest provided by its mean, but it is also giving the uncertainties around this guess which are provided by its covariance matrix.
+\end{remark} 
+
+\begin{remark} \label{remark_GPandKernelTrick}
+  Making predictions according to (\ref{eq_goodPosteriorPredictiveWithKernel}) involves computing the kernel evaluations in (\ref{eq_KernelFeatureMapEqualities}) and the inversion of the $n \times n$ matrix $\left( K[\pmb{x}] + \sigma^2 I_{n \times n} \right)$. Thus, the computational complexity is $\mathcal{O}(n^3)$ given by the inversion. Reducing this complexity would be interesting to allow GP to work with large datasets. See, e.g., \textcite{hensman2013}; \textcite{liu2020} or \textcite{gal2014}.
+\end{remark} 
+
+\begin{remark} \label{remark_kernelTrickEvenInfinitePhi}
+  The kernel trick in (\ref{eq_kernelTrickGP}) can be applied even when the feature space $\Phi(\mathcal{X})$ is infinite\hyp{}dimsional (see the theory of the previous section \ref{sec_FundamentalsLearning}). Indeed, using non degenerate kernels (see definition \ref{def_degenerateKernel}) will lead to infinite\hyp{}dimsional feature spaces which would be imposible to use without the kernel trick. 
+\end{remark}
+
+\begin{remark} \label{remark_GPfollowsRepresenterTheorem}
+  If
+  \begin{equation*}
+    \alpha = (\alpha_1, \dots, \alpha_n)^T = \left( K[\pmb{x}] + \sigma^2 I_{n \times n} \right)^{-1}\pmb{y},
+  \end{equation*}
+  then the mean of the posterior predictive distribution (\ref{eq_goodPosteriorPredictiveWithKernel}) is
+  $$
+    K[\pmb{x},x_*]^T \alpha = \sum_{i=1}^n \alpha_i K_{x_i}(x_*), 
+  $$
+  which agrees with the Representer theorem (see theorem \ref{theorem_representer} and remark \ref{remark_GPconsistentWithRepresenterTheorem}).
+\end{remark}
+
+\begin{remark} \label{remark_phiNotNeedKnown}
+  Notice that the feature map $\Phi$ disappears in (\ref{eq_goodPosteriorPredictiveWithKernel}). By Mercer theorem (theorem \ref{theorem_mercer}), any Mercer kernel is associated to a feature space. Therefore, given a Mercer kernel $K$, it is possible to compute the posterior predictive distribution (\ref{eq_goodPosteriorPredictiveWithKernel}) without knowing the associated feature map $\Phi$. This fact makes kernels the main object of study and the corresponding feature spaces are hidden behind.  
+\end{remark}
+
+\begin{remark} [Kernel ridge regression]
+  Apply ridge regression (remark \ref{remark_regularizingMinimizationWeightsEmpiricalError}) to the projections to a feature space,
+$$
+ \begin{aligned}
+  w_{\mathcal{E}_{\pmb{z},\gamma}} 
+   &= \underset{w}{\textup{argmin}} \ \| \pmb{y} - \Phi_{\pmb{X}}^T w \|^2 + \gamma \|w\|^2 \\ 
+   &= \left( \Phi_{\pmb{X}}\Phi_{\pmb{X}}^T + \gamma I_{n \times n} \right)^{-1}\Phi_{\pmb{X}}\pmb{y}.
+ \end{aligned}
+$$
+Note that,
+$$
+  \left( \Phi_{\pmb{X}}\Phi_{\pmb{X}}^T + \gamma I_{n \times n} \right)\Phi_{\pmb{X}}
+  =
+  \Phi_{\pmb{X}} \left( \Phi_{\pmb{X}}^T\Phi_{\pmb{X}} + \gamma I_{n \times n} \right),
+$$
+and multiply $\left( \Phi_{\pmb{X}}\Phi_{\pmb{X}}^T + \gamma I_{n \times n} \right)^{-1}$ at the left and $\left( \Phi_{\pmb{X}}^T\Phi_{\pmb{X}} + \gamma I_{n \times n} \right)^{-1}$ at the right to both sides of the equality. Then,
+$$
+  \Phi_{\pmb{X}} \left( \Phi_{\pmb{X}}^T\Phi_{\pmb{X}} + \gamma I_{n \times n} \right)^{-1}
+  = 
+  \left( \Phi_{\pmb{X}}\Phi_{\pmb{X}}^T + \gamma I_{n \times n} \right)^{-1} \Phi_{\pmb{X}},
+$$
+and,
+$$
+  w_{\mathcal{E}_{\pmb{z},\gamma}}
+  =
+  \Phi_{\pmb{X}} \left( \Phi_{\pmb{X}}^T\Phi_{\pmb{X}} + \gamma I_{n \times n} \right)^{-1} \pmb{y}.
+$$
+Therefore, for predicting the output $y_*$ associated with the input $x_*$, it is necessary to compute,
+$$
+ \begin{aligned}
+  y_* &= x_*^T w_{\mathcal{E}_{\pmb{z},\gamma}}  \\
+      &= x_*^T \Phi_{\pmb{X}} \left( \Phi_{\pmb{X}}^T\Phi_{\pmb{X}} + \gamma I_{n \times n} \right)^{-1} \pmb{y}.
+ \end{aligned}
+$$
+Applying the kernel trick in the same fashion as (\ref{eq_KernelFeatureMapEqualities}),
+$$
+  y_* = K[\pmb{x},x_*]^T \left( K[\pmb{x}] + \gamma I_{n \times n} \right)^{-1} \pmb{y}. 
+$$
+This regression technique is called kernel ridge regression. Note that, choosing the same kernel $K$ and $\sigma^2 = \gamma$, it corresponds to the mean of the GP regression predictive distribution (\ref{eq_goodPosteriorPredictiveWithKernel}).
+\end{remark}
+
+
+%-----------------------------------
+%	SUBSECTION 
+%-----------------------------------
+\subsection{Gaussian processes}
+
+In last sections \ref{sec_linearModel} and \ref{sec_linearModelOnFeatureSpace}, Bayesian analysis in the linear model was used to derive the posterior predictive distribution (\ref{eq_goodPosteriorPredictiveWithKernel}) which is the tool given by Gaussian Process regression in order to make predictions. However, the same results can be derived from a different approach. In fact, the name ``Gaussian Process'' regression is used due to this approach. It will be explained in this section.
+
+\begin{definition}[Stochastic process] A stochastic process is a collection of random variables on a common probability space indexed by a set $T$.
+\end{definition}
+
+\begin{definition}[Gaussian Process] A GP is a stochastic process where any finite number of its random variables have a joint Gaussian distribution.
+\end{definition}
+
+Consider a GP indexed by the input space $\mathcal{X}$ whose random variables $y(x), \ x \in \mathcal{X}$ take values on the output space $\mathcal{Y}$. Thus, for any point $x$, there is random variable $y(x)$ which represents the output $y$ given the input $x$. To completely specify a GP it is necessary to give the jointly Gaussian distribution of any finite number of its random variables. It is sufficient to specify the expected value of each random variable, $\mathbb{E}[y(x)], \ x \in \mathcal{X}$, and the covariance between any pair of them, $\textup{Cov}(x,x'), \ x,x' \in \mathcal{X}$. For a finite set of $l \in \mathbb{N}$ random variables, $\{y(x_1, \dots, y(x_l)\}$, the jointly distribution would be
+%$$
+%  \mathcal{N}\left( \ \ \left( \mathbb{E}[y(x_1)], \dots, \mathbb{E}[y(x_l)] \right)^T , \ \ \left( \textup{Cov}(x_i,x_j) \right)_{\substack{1 \leq i \leq l \\ 1 \leq j \leq l}} \ \ \right).
+%$$
+\begin{equation} \label{eq_normalGP}
+  \begin{pmatrix} y(x_1) \\ \vdots \\ y(x_l) \end{pmatrix} \sim
+  \mathcal{N} \left(
+  \begin{pmatrix}
+  \mathbb{E}[y(x_1)] \\ \vdots \\ \mathbb{E}[y(x_l)] \\
+  \end{pmatrix} \ , \ 
+  \begin{pmatrix}
+    \textup{Cov}(x_1,x_1) & \dots  & \textup{Cov}(x_1,x_l) \\
+     \vdots    & \ddots & \vdots     \\
+    \textup{Cov}(x_l,x_1) & \dots  & \textup{Cov}(x_l,x_l) \\
+  \end{pmatrix}
+  \right).
+\end{equation}
+
+\begin{remark} \label{remark_GPdistributionOverFunctions}
+  Notice that if the GP index set is finite (in the case of regression, if the space of inputs $\mathcal{X}$ is finite), then the GP becomes simply a multivariate Gaussian distribution. From this perspective, a GP can be thought as a jointly distribution of an infinite set of random variables. Thus, it is possible (theoretically, without numerical limitations) to select as many points of the index set as it is wanted and get a sample of the associated random variables. If those samples are considered as evaluations of a function, the GP can be thought as a distribution over functions with domain equal to the index set.
+\end{remark}
+
+A GP is illustrated in figure \ref{fig_GPsampleFunctions} showing the idea of a distribution over functions given in remark \ref{remark_GPdistributionOverFunctions}. The interval $\mathcal{X} = (0,1) \subset \mathbb{R}$ was used as the index set. If $\pmb{x} = \{x_1, \dots, x_l\} \subset \mathcal{X}$ is a finite set, the following distribution,
+\begin{equation} \label{eq_GPsampleFunctionsFigure}
+  \begin{pmatrix} y(x_1) \\ \vdots \\ y(x_l) \end{pmatrix} \sim
+  \mathcal{N} \left( 0 \ , \ \left( \textup{Cov}(x_i,x_j) \right)_{\substack{1 \leq i \leq l \\ 1 \leq j \leq l}} \right), 
+%  \begin{pmatrix}
+%    \textup{Cov}(x_1,x_1) & \dots  & \textup{Cov}(x_1,x_l) \\
+%     \vdots    & \ddots & \vdots     \\
+%    \textup{Cov}(x_l,x_1) & \dots  & \textup{Cov}(x_l,x_l) \\
+%  \end{pmatrix}
+%  \right),
+%  \ \ \text{ with } \ \textup{Cov}(x_i,x_j) = \exp \left( 
+%                         -\left( \frac{1}{2} \right) \frac{(x_i-x_j)^2}{0.3} 
+%                          \right),
+\end{equation}
+with,
+\begin{equation} \label{eq_covGPsampleFunctionsFigure}
+  \textup{Cov}(x_i,x_j) = \exp \left( 
+                         -\left( \frac{1}{2} \right) \frac{(x_i-x_j)^2}{0.3^2} 
+                          \right),
+\end{equation} 
+was used as the joint Gaussian distribution. Notice that the expectations of each random variable are equal to zero and the covariance between two of them is given by a kernel\footnote{In this particular case a squared exponential kernel with length-scale equal to $0.3$. See (\ref{eq_SExpKernel}).}. Those choices were made because it is precisely what is done in GP regression (see remark \ref{remark_GPspecified}). The details are explained below.
+
+\begin{figure}[!htbp]
+  \centering
+    \includegraphics[width=0.99\textwidth]{codeSomeFigures/GPsamplingFunctions/samplingFunctionsNoNoise.eps}
+  \caption[Functions sampled from a GP]%
+{%Functions sampled from a GP. 
+Four functons sampled from a GP distribution over functions.
+The interval $\mathcal{X} = (0,1) \subset \mathbb{R}$ was used as a index set. $4$ samples of $100$ points were generated from the jointly Gaussian distribution specified in (\ref{eq_GPsampleFunctionsFigure}) and (\ref{eq_covGPsampleFunctionsFigure}). Different colors were used for each sample.}% Each of those samples represents a function sampled from the GP distribution over functions.} 
+  \label{fig_GPsampleFunctions}
+\end{figure}
+
+Consider a training set,
+$$
+ \begin{aligned}
+  \pmb{z} &= \{(x_i,y_i)\}_{1 \leq i \leq n} \ , \\
+  \pmb{x} &= \{x_i\}_{1 \leq i \leq n} \ , \\
+  \pmb{y} &= (y_1, \dots, y_n)^T \ , \\
+ \end{aligned}
+$$
+and the linear model on a feature space $\Phi$,
+\begin{equation*}
+  \begin{aligned}
+    w &\sim \mathcal{N}(0,\Sigma_w), \\ 
+    \epsilon_{x_i} &\sim \mathcal{N}(0,\sigma^2), \ \ 1 \leq i \leq n, \\
+    y(x_i) &= \Phi(x_i)^Tw + \epsilon_{x_i}, \ \ 1 \leq i \leq n, \\
+    y(x_*) &= \Phi(x_*)^Tw, \ \ \forall x_* \in \mathcal{X} \setminus \pmb{x}, \\
+  \end{aligned}
+\end{equation*}
+where $\epsilon_{x_i}, \ \ 1 \leq i \leq n$, are i.i.d. and independent of $w$.
+
+\begin{remark}
+  Notice that Gaussian noise $\epsilon$ is added only to the random variables associated with the inputs $\pmb{x}$ of the training set $\pmb{z}$. This is due to the uncertainties about the observations. In models where there are no uncertainties about the observations, the Gaussian noise can be removed. For example, the same results would be observed after running numerical computations with the same input.
+\end{remark}
+
+Note that,
+\begin{equation*}
+  \begin{aligned}
+    \mathbb{E}[w] &= 0, \\
+    \mathbb{E}[ww^T] &= \Sigma_w, \\
+    \mathbb{E}[\epsilon_{x_i}] &= 0, \ \ 1 \leq i \leq n, \\
+    \mathbb{E}[\epsilon_{x_i}^2] &= \textup{Var}(\epsilon_{x_i}) = \textup{Cov}(\epsilon_{x_i},\epsilon_{x_i}) =  \sigma^2, \ \ 1 \leq i \leq n, \\
+    \mathbb{E}[\epsilon_{x_i} \epsilon_{x_j}] &= \textup{Cov}(\epsilon_{x_i},\epsilon_{x_j}) = 0, \ \ \text{for $i \neq j$}, \\% && \text{($\epsilon_x$ and $\epsilon_{x'}$ independent)} \\
+    \mathbb{E}[\epsilon_{x_i}w] &= \mathbb{E}[\epsilon_x]\mathbb{E}[w] = 0, \ \ 1 \leq i \leq n, \\% && \text{($\epsilon_x$ and $w$ independent)} \\
+  \end{aligned}
+\end{equation*}
+and therefore,
+\begin{equation} \label{eq_specifyingGP}
+  \begin{aligned}
+    \mathbb{E}[y(x_i)] &= \Phi(x_i)^T \mathbb{E}[w] + \mathbb{E}[\epsilon_{x_i}] = 0, \ \ 1 \leq i \leq n, \\
+    \mathbb{E}[y(x_*)] &= \Phi(x_*)^T \mathbb{E}[w] = 0, \ \ \forall x_* \in \mathcal{X \setminus \pmb{x}}, \\ 
+    \textup{Cov}(y(x_i),y(x_j)) &= \mathbb{E}[y(x_i)y(x_j)] \\
+                 &= \mathbb{E}\left[
+                 (\Phi(x_i)^T w + \epsilon_{x_i}) 
+                 (\Phi(x_j)^T w + \epsilon_{x_j}) 
+                 \right] \\
+                 %&= \Phi(x_i)^T \mathbb{E}[ww^T] \Phi(x_j) + \Phi(x_i)^T\mathbb{E}[\epsilon_{x_j}w] + \Phi(x_j)^T\mathbb{E}[\epsilon_{x_i}w] + \textup{Cov}(\epsilon_{x_i},\epsilon_{x_j}), \\
+                 &= \Phi(x_i)^T \mathbb{E}[ww^T] \Phi(x_j) + \textup{Cov}(\epsilon_{x_i},\epsilon_{x_j}) \\
+                % &= \Phi(x_i)^T \Sigma_w \Phi(x_j) + \textup{Cov}(\epsilon_{x_i},\epsilon_{x_j}) \\ 
+                 &= \left\{
+                 \begin{array}{l l}
+                   \Phi(x_i)^T \Sigma_w \Phi(x_j) + \sigma^2, & \text{ if } i = j \\
+                   \Phi(x_i)^T \Sigma_w \Phi(x_j), & \text{ if } i \neq j \\
+                 \end{array}
+                 \right. \ \ , \\
+    \textup{Cov}(y(x_i),y(x_*)) &= \Phi(x_i)^T \Sigma_w \Phi(x_*), \ \ \forall 1 \leq i \leq n, \ \forall x_* \in \mathcal{X \setminus \pmb{x}}, \\
+    \textup{Cov}(y(x_*),y(x'_*)) &= \Phi(x_*)^T \Sigma_w \Phi(x'_*), \ \ \forall x_*, x'_* \in \mathcal{X \setminus \pmb{x}}.
+  \end{aligned}
+\end{equation}
+
+%A GP indexed by $\mathcal{X}$ is completely specified by (\ref{eq_specifyingGP}).
+
+Applying the kernel trick to (\ref{eq_specifyingGP}) in the same fashion as (\ref{eq_kernelTrickGP}),
+\begin{equation} \label{eq_specifyingGPkernels}
+  \begin{aligned}
+    \textup{Cov}(y(x_i),y(x_j)) &= K(x_i,x_j) + \sigma^2, \ \ \text{ if } i = j, \\
+    \textup{Cov}(y(x_i),y(x_j)) &= K(x_i,x_j), \ \ \text{ if } i \neq j, \\
+    \textup{Cov}(y(x_i),y(x_*)) &= K(x_i,x_*), \ \ \forall 1 \leq i \leq n, \ \forall x_* \in \mathcal{X \setminus \pmb{x}}, \\
+    \textup{Cov}(y(x_*),y(x'_*)) &= K(x_*,x'_*), \ \ \forall x_*, x'_* \in \mathcal{X \setminus \pmb{x}}.
+  \end{aligned}
+\end{equation}
+
+\begin{remark}
+  Note that the covariance between the outputs is given by the kernel $K$ evaluated in the inputs (\ref{eq_specifyingGPkernels}). In GP, kernels are usually called covariance functions or covariance kernels due to this interesting feature.
+\end{remark}
+
+\begin{remark} \label{remark_GPspecified}
+  Notice that using the joint Gaussian distribution in (\ref{eq_normalGP}) with the expectations equal to zero as shown in (\ref{eq_specifyingGP}), and the covariances given by a kernel as shown in (\ref{eq_specifyingGPkernels}), a GP indexed by $\mathcal{X}$ is completely specified. Remember from remark \ref{remark_GPdistributionOverFunctions} that this is analogous to a distribution over functions with domain $\mathcal{X}$.
+\end{remark}
+
+Let
+$$
+  \pmb{x_*} = \{ x_{*1}, \dots, x_{*n_t} \},
+$$
+be a finite number, $n_t$, of test points in $\mathcal{X} \setminus \pmb{x}$. Let
+\begin{equation} \label{eq_notationPMBy}
+ \begin{aligned}
+  \pmb{y_{x}}   &= \left( y(x_{1}), \dots, y(x_{n}) \right)^T, \\
+  \pmb{y_{x_*}} &= \left( y(x_{*1}), \dots, y(x_{*n_t}) \right)^T, \\
+ \end{aligned}
+\end{equation}
+be random vectors. From (\ref{eq_normalGP}) and (\ref{eq_specifyingGP}), applying the kernel trick (\ref{eq_specifyingGPkernels}), and using the notation in (\ref{eq_Kxx'}), (\ref{eq_Kx}) and (\ref{eq_notationPMBy}), the jointly Gaussian distribution of $\pmb{y_{x}}$ and $\pmb{y_{x_*}}$ is 
+\begin{equation} \label{eq_jointyxyxstar}
+  \begin{pmatrix}
+    \pmb{y_x} \\ \pmb{y_{x_*}} \\
+  \end{pmatrix} \sim
+  \mathcal{N} \left(
+  \ 0 \ , \
+  \begin{pmatrix}
+    K[\pmb{x}] + \sigma^2 I_{n \times n} & K[\pmb{x},\pmb{x_*}] \\
+    K[\pmb{x_*},\pmb{x}]                 & K[\pmb{x_*}] \\
+  \end{pmatrix}
+  \right).
+\end{equation}
+
+Note that the outputs in the training set $\pmb{y}$ have not been used yet. In order to make predictions, the idea is to derive the coditional distribution over $\pmb{y_{x_*}}$ given $\pmb{y_{x}} = \pmb{y}$ from (\ref{eq_jointyxyxstar}).
+
+\begin{proposition} \label{prop_conditionalGaussian}
+  If $Y_1$ and $Y_2$ are random vectors with a joint Gaussian distribution equal to
+  $$
+    \begin{pmatrix} Y_1 \\ Y_2 \\ \end{pmatrix} \sim
+    \mathcal{N} \left(
+           \begin{pmatrix} \mu_1 \\ \mu_2 \end{pmatrix} \ , \ 
+           \begin{pmatrix}
+             \Sigma_{11}   & \Sigma_{12} \\ 
+             \Sigma_{21} & \Sigma_{22} \\
+           \end{pmatrix}
+           \right),
+  $$
+  with
+  $$
+   \begin{aligned}
+    \mathbb{E}[Y_1] &= \mu_1 \in \mathbb{R}^r, \\
+    \mathbb{E}[Y_2] &= \mu_2 \in \mathbb{R}^s, \\
+    \Sigma_{11} \in \mathbb{R}^{r \times r}, \ \Sigma_{22} \in \mathbb{R}^{s \times s}&, \ \Sigma_{12} \in \mathbb{R}^{r \times s}, \Sigma_{21} = \Sigma_{12}^T, %\in \mathbb{R}^{s \times r}\\
+   \end{aligned}
+  $$ 
+  then the conditional probability of $Y_2$ given $Y_1 = y$ is,
+  $$
+    \left( Y_2 \ \ | \ \ Y_1 = y \right) \sim
+    \mathcal{N} \left(
+           \mu_2 + \Sigma_{21} \Sigma_{11}^{-1} (y-\mu_1) \ , \
+           \Sigma_{22} - \Sigma_{21} \Sigma_{11}^{-1} \Sigma_{12} 
+           \right)
+  $$
+\end{proposition}
+
+More details about proposition \ref{prop_conditionalGaussian} and its proof can be found in \textcite{anderson2003}, \textcite{mises1964} or \textcite{rasmussen2006}.
+
+From (\ref{eq_jointyxyxstar}) and applying proposition \ref{prop_conditionalGaussian}, the coditional distribution over $\pmb{y_{x_*}}$ given the outputs of the training data $\pmb{y_{x}} = \pmb{y}$ is,
+\begin{equation} \label{eq_GPconditionalForRegression}
+  \begin{aligned}
+    \left( \pmb{y_{x_*}} \ \ | \ \ \pmb{y_{x}} = \pmb{y} \right) \sim
+    \mathcal{N} &\left(
+           K[\pmb{x_*},\pmb{x}] 
+           \left( 
+             K[\pmb{x}] + \sigma^2 I_{n \times n} 
+           \right)^{-1} 
+           \pmb{y} \ , \right. \\
+           &\left.
+           K[\pmb{x_*}] - K[\pmb{x_*},\pmb{x}] 
+           \left( 
+             K[\pmb{x}] + \sigma^2 I_{n \times n} 
+           \right)^{-1} 
+           K[\pmb{x},\pmb{x_*}]
+           \right).
+  \end{aligned} 
+\end{equation} 
+
+\begin{remark}
+  Note that the distribution (\ref{eq_goodPosteriorPredictiveWithKernel}) is equivalent to (\ref{eq_GPconditionalForRegression}), i.e., the same result was got using Bayesian analysis in last section \ref{sec_linearModelOnFeatureSpace} and using the Gaussian Procces approach of this section. However, there is an important difference. Distribution (\ref{eq_goodPosteriorPredictiveWithKernel}) is only defined over one single test point. In other words, if more than one test point is wanted to be predicted, then it is necessary to give different posterior predictive distributions for each of them. Thus, no correlation between them is given. Distribution (\ref{eq_GPconditionalForRegression}) is equal to (\ref{eq_goodPosteriorPredictiveWithKernel}) for a single test point. However, the former can be defined over multiple test points and it will give you a joint distribution taking into account correlations between them.
+\end{remark}
+
+  Notice that (\ref{eq_GPconditionalForRegression}) gives a Gaussian distribution over any finite set of random variables $\{y(x_{*k})\}_k$. Therefore, it defines a Gaussian process indexed by $\mathcal{X} \setminus \pmb{x}$. The GP given by (\ref{eq_jointyxyxstar}) is called the Gaussian prior\footnote{Before using the outputs in the training data.} over functions. The GP given by (\ref{eq_GPconditionalForRegression}) is called the Gaussian posterior\footnote{After taking into account the outputs in the training data.} over functions.
+
+
+%From (\ref{eq_specifyingGP}), given a finite number, $n_t$, of test points in $\mathcal{X} \setminus \pmb{x}$, 
+%$$
+%  \pmb{x_*} = \{ x_{*1}, \dots, x_{*n_t} \},
+%$$
+%and using the notation in (\ref{eq_Kxx'}), (\ref{eq_Kx}) and, 
+%$$
+%  \pmb{y} = 
+%$$
+%the jointly Gaussian distribution of $\pmb{x} \cup \pmb{x_*}$ is 
+%$$
+%  \begin{pmatrix}
+%    \pmb{x} \\ \pmb{x_*}
+%  \end{pmatrix} \sim
+%  \mathcal{N} \left(
+%  \ 0 \ , \
+%  \begin{pmatrix}
+%    K[\pmb{x}] + \sigma^2 I_{n \times n} & K[\pmb{x},\pmb{x_*}] \\
+%    K[\pmb{x_*},\pmb{x}]                 & K[x_*] \\
+%  \end{pmatrix}
+%  \right).
+%$$
+
+%The jointly multivariate normal distribution of any finite number of random variables $\{y(x)\}_{x \in S \subset \mathcal{X}}$ is completely specified by (\ref{eq_specifyingGP}). 
+
+
+%-----------------------------------
+%	SUBSUBSECTION 
+%-----------------------------------
+\subsubsection{GP example}
+
+Given
+\begin{itemize}
+  \item training data $\pmb{z} = \{ x_i,y_i \}_{1 \leq i \leq n}$,
+  \item a Mercer kernel \footnote{A Kernel which is symmetric and positive definite. See definition \ref{def_mercerKernel}.} $K$,
+  \item the noise variance of the observations $\sigma^2$, and
+  \item test points $\pmb{x_*} = \{ x_{*i} \}_{1 \leq i \leq n_t}$ to be predicted,
+\end{itemize}
+GP regression is given by the distribution (\ref{eq_goodPosteriorPredictiveWithKernel}).
+
+Figure \ref{fig_exampleGP} shows an example. Consider $5$ equidistant points, 
+$$\pmb{x} = \{x_1, \dots, x_5\} \subset (0,1),$$
+and the training data $\{(x_1,y_1), \dots, (x_5,y_5)\}$ shown as black points in the graphs. Let $K$ be an squared exponential kernel with length-scale $l=0.15$ (see \ref{eq_SExpKernel}).
+%\begin{equation} \label{eq_SEexampleGP}
+%  K(x_i,x_j)= \exp \left(
+%           -\left( \frac{1}{2} \right) \frac{(x_i-x_j)^2}{0.15^2} 
+%         \right),
+%\end{equation}
+Let $\sigma = 0.05$. Finally, consider $70$ test points $\pmb{x_*} = \{x_*i\}_{1 \leq i \leq 70}$. The figure shows $3$ graphs. The first one are $3$ samples from the Gaussian prior (\ref{eq_jointyxyxstar}). No noise is added in the GP prior. The samples are plotted in different colors. The second one are $3$ samples from the Gaussian posterior (\ref{eq_GPconditionalForRegression}) plotted in different colors. The last one are $100$ samples from the Gaussian posterior (\ref{eq_GPconditionalForRegression}). In this case, all samples are plotted in red.
+
+\begin{figure}[!htbp] 
+  \centering
+    \includegraphics[width=0.69\textwidth]{codeSomeFigures/GPsamplingFunctions/priorPosterior/3SAMPLESPrior.eps}
+    \vspace{5mm}
+
+    \includegraphics[width=0.69\textwidth]{codeSomeFigures/GPsamplingFunctions/priorPosterior/3SAMPLESPosterior.eps}
+    \vspace{5mm}
+
+    \includegraphics[width=0.69\textwidth]{codeSomeFigures/GPsamplingFunctions/priorPosterior/100SAMPLESPosterior.eps}
+  \caption[Example of GP prior and posterior]%
+{Example of GP prior and posterior. 
+  A squared exponential kernel was used with length-scale $l=0.15$ (\ref{eq_SExpKernel}), and a parameter $\sigma = 0.05$ (see \ref{eq_GPconditionalForRegression}). $5$ points were used as a training data $\{ (x_i,y_i) \}_{1 \leq i \leq 5}$ and $70$ points $\{x_{*i}\}_{1 \leq i \leq 70}$ as test points.
+  \emph{Black points}: the $5$ training points.
+  \emph{First graph}: $3$ samples from the Gaussian prior (\ref{eq_jointyxyxstar}). No noise is added in the GP prior. The samples are plotted in different colors.
+  \emph{Second graph}: $3$ samples from the Gaussian posterior (\ref{eq_GPconditionalForRegression}). The samples are plotted in different colors.
+  \emph{Last graph}: $100$ samples from the Gaussian posterior (\ref{eq_GPconditionalForRegression}). All samples are plotted in red.
+  \emph{Small points}: $70$ points $\{(x_*,y_*)\}_{1 \leq i \leq 70}$ from each sample. 
+  \emph{Black line}: Gaussian posterior mean. It is shown in last graph.
+}
+\label{fig_exampleGP}
+\end{figure}
+
+%\begin{figure}[!htbp]  
+%  \centering 
+%    \includegraphics[width=0.49\textwidth]{codeSomeFigures/GPsamplingFunctions/priorPosterior2dim/SamplePrior3.eps}
+%    \includegraphics[width=0.49\textwidth]{codeSomeFigures/GPsamplingFunctions/priorPosterior2dim/SamplePrior2.eps}
+%    \vspace{4mm}
+%     
+%    \includegraphics[width=0.49\textwidth]{codeSomeFigures/GPsamplingFunctions/priorPosterior2dim/SamplePosterior3.eps}
+%    \includegraphics[width=0.49\textwidth]{codeSomeFigures/GPsamplingFunctions/priorPosterior2dim/SamplePosterior2.eps}
+%    \vspace{4mm}
+%
+%    \includegraphics[width=0.49\textwidth]{codeSomeFigures/GPsamplingFunctions/priorPosterior2dim/MeanPosterior.eps}
+%    \includegraphics[width=0.49\textwidth]{codeSomeFigures/GPsamplingFunctions/priorPosterior2dim/Function.eps}
+%  
+%
+%  \caption[Examples of GP posteriors varying parameter $\sigma$]%
+%{Example of GP regression . 
+%}
+%\label{fig_GPvaryingSigma}
+%\end{figure}
+
+Figure \ref{fig_GP2dim} shows another example. However, in this case, a two-dimensional space $\mathcal{X} = (0,1)^2$ was considered as input space. The GP was built from:
+\begin{itemize}
+  \item \emph{Training data:} a regression function 
+    \begin{equation} \label{eq_GP2dimRegFunc}
+      f_{\rho}(x) = f_{\rho}(x^1,x^2) = \sin(2 \pi x^1) + \cos(2 \pi x^2), x = (x^1,x^2),
+    \end{equation} 
+    was used for generating the training data adding Gaussian noise: 
+    \begin{equation} \label{eq_GP2dimTrainData}
+      \{x_i,y_i\}_{1 \leq i \leq 70} \ , \ y_i = f_{\rho}(x_i) + \mathcal{N}(0,0.09).
+    \end{equation} 
+    The training input points $\pmb{x} = \{x_i\}_i$ were selected to compose a homogeneous grid covering the input space $\mathcal{X}$.
+  \item \emph{Kernel:} a squared exponential kernel was used with length-scale $l=0.3$ (\ref{eq_SExpKernel}).
+  \item \emph{Observations noise:} the variance of the observations noise used to build the GP was equal to the one used for generating the data, i.e., $\sigma^2 = 0.09$.
+  \item \emph{Test points:} finally, a grid of $2500$ points $\pmb{x_*} = \{x_{*i}\}_i$ was used as test points for the GP.
+\end{itemize}
+The figure is composed by $8$ graphs in $3$ rows. The first row are $3$ samples from the Gaussian prior (\ref{eq_jointyxyxstar}). No noise is added in the GP prior. The second row are $3$ samples from the Gaussian posterior (\ref{eq_GPconditionalForRegression}). The first graph of the third row is the mean of the Gaussian posterior. The last graph shows the regression function $f_{\rho}$ and the training points. Although the training data was generated with a significant amount of noise\footnote{
+The standard deviation of the noise is $\sigma = 0.3$ and, \\
+$\underset{(x_1,x_2) \in \mathcal{X}}{\max}(f_{\rho}(x_1,x_2)) = 2$, 
+$\underset{(x_1,x_2) \in \mathcal{X}}{\min}(f_{\rho}(x_1,x_2)) = -2$. 
+}, 
+notice the good fitting of the GP posterior mean with respect to the regression function.
+
+\begin{sidewaysfigure}[!htbp]
+  \centering 
+    \includegraphics[width=0.3\textwidth]{codeSomeFigures/GPsamplingFunctions/priorPosteriorNoise2dim/SamplePrior1.eps}
+    \includegraphics[width=0.3\textwidth]{codeSomeFigures/GPsamplingFunctions/priorPosteriorNoise2dim/SamplePrior2.eps}
+    \includegraphics[width=0.3\textwidth]{codeSomeFigures/GPsamplingFunctions/priorPosteriorNoise2dim/SamplePrior3.eps}
+    \vspace{2mm}
+     
+    \includegraphics[width=0.3\textwidth]{codeSomeFigures/GPsamplingFunctions/priorPosteriorNoise2dim/SamplePosterior1.eps}
+    \includegraphics[width=0.3\textwidth]{codeSomeFigures/GPsamplingFunctions/priorPosteriorNoise2dim/SamplePosterior2.eps}
+    \includegraphics[width=0.3\textwidth]{codeSomeFigures/GPsamplingFunctions/priorPosteriorNoise2dim/SamplePosterior3.eps}
+    \vspace{2mm}
+
+    \includegraphics[width=0.3\textwidth]{codeSomeFigures/GPsamplingFunctions/priorPosteriorNoise2dim/MeanPosterior.eps}
+    \includegraphics[width=0.3\textwidth]{codeSomeFigures/GPsamplingFunctions/priorPosteriorNoise2dim/Function.eps}
+  
+
+  \caption[Example of GP regression]%
+{
+  Example of GP regression in a two dimensional input space $\mathcal{X} = (0,1)^2$. The training data was generated from the evaluations of a regression function (\ref{eq_GP2dimRegFunc}) plus Gaussian noise (\ref{eq_GP2dimTrainData}). A squared exponenetial kernel with length-scale $l=0.3$ was used. The variance of the observations noise in the GP was equal to the variance of the noise added in the training data, i.e., $\sigma^2 = 0.09$. The graphs in the first row are $3$ samples from the Gaussian prior (\ref{eq_jointyxyxstar}). No noise is added in the GP prior. The graphs in the second row are $3$ samples from the GP posterior (\ref{eq_GPconditionalForRegression}). The first graph of the third row is the mean of the GP posterior. The regression function $f_{\rho}$ and the training points are shown in the last graph. The surfaces were generated by linear interpolation.
+}
+\label{fig_GP2dim}
+\end{sidewaysfigure}
+
+Figure \ref{fig_GPvaryingSigma} illustrates four Gaussian posteriors generated in the same conditions as figure \ref{fig_exampleGP}. However, the variance of the observations noise $\sigma^2$ varies between the four GPs. Notice that all samples from the GP with $\sigma = 0$ pass through the training points. This is because the variance of the GP tends to $0$ when $x_*$ tends to a point in the training set. Yet, incresing $\sigma$ allows the samples to be more flexible close to the training points. As expected, the far a point $x_*$ is from the training set the more the samples vary from each other. Again, this is due to a greater variance of the GP posterior at these points.
+
+\begin{sidewaysfigure}[!htbp]  
+%\begin{figure}[!htbp]
+  \centering
+    %\includegraphics[width=0.49\textwidth]{codeSomeFigures/GPsamplingFunctions/varyingNoiseFigures/4SAMPLES0_00NOISE.png}
+    \includegraphics[width=0.43\textwidth]{codeSomeFigures/GPsamplingFunctions/varyingNoiseFigures/100SAMPLES0_00NOISE.eps}
+    %\includegraphics[width=0.49\textwidth]{codeSomeFigures/GPsamplingFunctions/varyingNoiseFigures/4SAMPLES0_05NOISE.png}
+    \includegraphics[width=0.43\textwidth]{codeSomeFigures/GPsamplingFunctions/varyingNoiseFigures/100SAMPLES0_05NOISE.eps}
+    %\includegraphics[width=0.49\textwidth]{codeSomeFigures/GPsamplingFunctions/varyingNoiseFigures/4SAMPLES0_10NOISE.png}
+    \vspace{3mm}
+     
+    \includegraphics[width=0.43\textwidth]{codeSomeFigures/GPsamplingFunctions/varyingNoiseFigures/100SAMPLES0_10NOISE.eps}
+    %\includegraphics[width=0.49\textwidth]{codeSomeFigures/GPsamplingFunctions/varyingNoiseFigures/4SAMPLES0_20NOISE.png}
+    \includegraphics[width=0.43\textwidth]{codeSomeFigures/GPsamplingFunctions/varyingNoiseFigures/100SAMPLES0_20NOISE.eps}
+  \caption[Examples of GP posteriors varying parameter $\sigma$]%
+{Examples of GP posteriors varying parameter $\sigma$ (sigma). 
+  $4$ Gaussian posteriors were generated with the following conditions. A squared exponential kernel was used with length-scale $l=0.15$ (\ref{eq_SExpKernel}). $5$ points were used as a training data $\{ (x_i,y_i) \}_{1 \leq i \leq 5}$ and $70$ points $\{x_{*i}\}_{1 \leq i \leq 70}$ as test points. The parameter $\sigma$ (see \ref{eq_GPconditionalForRegression}) varies according to each graph title.
+  \emph{Black points}: the $5$ training points.
+  \emph{Blue lines}: Gaussian posterior mean.
+  \emph{red lines}: Each red line represents a sample from the Gaussian posterior. There were plotted $100$ samples from each of the $4$ Gaussian posteriors.
+  \emph{red points}: $70$ points $\{(x_*,y_*)\}_{1 \leq i \leq 70}$ from each sample.
+}
+\label{fig_GPvaryingSigma}
+\end{sidewaysfigure}
+%\end{figure}
+
+Using different kernels $K$ has also a significant impact in the Gaussian posterior. The succeed of GP regression is heavily dependent on the kernel choice. Most of the GP literature focus on this matter. Next section \ref{sec_kernels} will give a briefly summary of the most widely used kernels and the standard techniques to choose the most appropriate one.
+
+
+%-----------------------------------
+%	SUBSUBSECTION 
+%-----------------------------------
+\subsection{Some kernel functions} %and model selection} 
+\label{sec_kernels}
+
+Remember from last section \ref{sec_FundamentalsLearning} that the theory of RKHS is based on theorem \ref{theorem_mercer}, and therefore only Mercer kernels are considered. Note that this is consistent with the role of kernels in GP regression since the covariance of a multivariate normal distribution has to be a symmetric and positive-definite matrix.\footnote{
+See (\ref{eq_jointyxyxstar}) and remark \ref{remark_KxPositiveDefinite}. In addition, notice that the sum of a positive-definite matrix and a diagonal matrix with positive entries is also positive-definite. 
+}
+
+Therefore, only Mercer kernels are appropriate to build a Gaussian Process. 
+
+\begin{definition}[Stationary kernel]
+  A kernel $K(x,x')$ which is a function of $x-x'$ is called stationary kernel.
+%  A kernel $K(x,x')$ which is a function of $x-x'$ is called stationary kernel. If $\tau = x-x'$ then a stationary kernel $K$ is sometimes expressed as a function of $\tau$, $K(\tau)$.
+\end{definition}
+
+\begin{remark}
+  If $\tau = x-x'$, then a stationary kernel $K$ is sometimes used as a function of $\tau$, $K(\tau)$, instead of as a function of $x \in \mathcal{X}$ and $x' \in \mathcal{X}$, $K(x,x')$.
+\end{remark}
+
+\begin{remark}
+  Note that a stationary kernel is invariant to translations in $\mathcal{X}$.
+\end{remark}
+
+Remember from definition \ref{def_degenerateKernel} and remark \ref{remark_semidefiniteDegenerateKernel} that positive-semidefinite kernels (which are not positive-definite) can be considered although they will lead to the degenerate case. 
+
+\textcite{rasmussen2006} gives a summary of commonly-used kernels. See table \ref{table_commonlyUsedKernels}
+
+\begin{center}
+\begin{sidewaystable}[!htbp]
+\centering
+\begin{tabular}{|l|m{10em}|l|c|c|}
+  \hline
+  \multicolumn{2}{|l|}{\pmb{Kernel name}} & \pmb{Expression} & \pmb{S} & \pmb{D} \\
+  \hline
+  \multicolumn{2}{|l|}{Constant} & $\sigma_0^2$ & $\bullet$ & $\bullet$\\
+  \hline
+  \multicolumn{2}{|l|}{Linear} & $\sum_{i=1}^{N}\sigma_i^2x_ix'_i,$ \ where $x=(x_1, \dots, x_n)^T$ & & $\bullet$\\
+  \hline
+  \multicolumn{2}{|l|}{Polynomial} & $(x^Tx'+\sigma_0^2)^p$ & & $\bullet$ \\
+  \hline
+  \multirow{3}{5em}{Exponential}
+  & $\gamma$-exponential & $\exp \left(-\left(\frac{\|x-x'\|}{l}\right)^{\gamma} \right)$ 
+  & \multirow{3}{3mm}{\centering $\bullet$} & \\
+  \cline{2-3}
+  & Squared Exponential $\gamma = 2$ & $\exp \left( - \frac{\|x-x'\|^2}{2l^2} \right)$ &  & \\
+  \cline{2-3}
+  & Exponential $\gamma = 1$ & $\exp \left( - \frac{\|x-x'\|}{l} \right)$ &  & \\
+  \hline
+  \multirow{3}{5em}{Matérn}
+  & Matérn &
+  \begin{minipage}[c]{0.4\textwidth}
+  %Matérn & $\frac{1}{2^{\nu-1}\Gamma(\nu)}\left(\frac{\sqrt{2\nu}}{l}r\right)^{\nu}K_{\nu}\left(\frac{\sqrt{2\nu}}{l}r\right), \text{ where $\Gamma$ is the Gamma function and $K_{\nu}$ is a modified Bessel function of the second kind }$ & $\bullet$ & $\bullet$ \\
+  $\frac{1}{2^{\nu-1}\Gamma(\nu)}\left(\frac{\sqrt{2\nu}}{l}r\right)^{\nu}K_{\nu}\left(\frac{\sqrt{2\nu}}{l}r\right)$, where $\Gamma$ is the Gamma function, $K_{\nu}$ is a modified Bessel function of the second kind and $r = \|x-x'\|$.
+  \end{minipage} 
+  & \multirow{3}{3mm}{\centering $\bullet$} & \\
+  \cline{2-3}
+  & Matérn $\nu = \frac{3}{2}$ &
+  $\left( 1+\frac{\sqrt{3}r}{l} \right) \exp\left( - \frac{\sqrt{3}r}{l} \right)$
+  & & \\
+  \cline{2-3}
+  & Matérn $\nu = \frac{5}{2}$ &
+  $\left( 1+\frac{\sqrt{5}r}{l}+\frac{5r^2}{3l^2} \right) \exp\left( - \frac{\sqrt{5}r}{l} \right)$
+  & & \\
+  \hline
+  \multicolumn{2}{|l|}{Rational quadratic} & $\left(1+\frac{\|x-x'\|^2}{2 \alpha l^2} \right)^{\alpha}$
+  & $\bullet$ & \\
+  \hline
+  \multicolumn{2}{|l|}{Neural Network} & 
+  \begin{minipage}[c]{0.4\textwidth}
+  $\sin^{-1} \left( \frac{2\bar{x}^T\Sigma\bar{x}'}{\sqrt{(1+2\bar{x}^T\Sigma\bar{x})(1+2\bar{x}'^T\Sigma\bar{x}')}} \right)$, \ \ where \phantom{PPPPPPPPP} $x = (x_1,\dots,x_N)^T, \\bar{x} = (1,x_1,\dots,x_N)^T$
+  \end{minipage}
+  & & \\
+  \hline
+\end{tabular}
+\caption{Commonly-used Kernels}
+\label{table_commonlyUsedKernels}
+\end{sidewaystable}
+\end{center}
+
+\subsection{Kernel selection} \label{sec_kernelSelection}
+
+Table \ref{table_commonlyUsedKernels} shows that there are many families of kernel functions. 
+This table only shows the most commonly used. 
+In addition, different kernel functions are obtained varying the parameters of each parametric family.%In addition, varying the parameters of each family a different kernel is obtained. 
+This section's goal is to give a method that optimally selects the kernel according to the data in the training set.
+
+Given a kernel $K$, notice that, %from (\ref{eq_jointyxyxstar}),
+\begin{equation*}% \label{eq_pyx}
+  \pmb{y}_{\pmb{x}} \sim \mathcal{N}(0, K[\pmb{x}] + \sigma^2 I_{n \times n}),
+ \ \ \text{(see (\ref{eq_jointyxyxstar}))}
+\end{equation*}
+and therefore,
+\begin{equation} \label{eq_pyx}
+  p(\pmb{y}_{\pmb{x}}) = (2\pi)^{-\frac{n}{2}}
+       \det(K[\pmb{x}] + \sigma^2 I_{n \times n})^{-\frac{1}{2}}
+       \exp\left(
+           -\frac{1}{2}
+           \pmb{y}_{\pmb{x}}^T
+           (K[\pmb{x}] + \sigma^2 I_{n \times n})^{-1}
+           \pmb{y}_{\pmb{x}}
+           \right).
+\end{equation}
+
+Let $\pmb{x}$ and $\pmb{y}$ be the inputs and the outputs of the training set. The aim is to find the kernel $K$ that maximizes (\ref{eq_pyx}) when $\pmb{y}_{\pmb{x}}=\pmb{y}$.
+
+Applying the logarithm,
+\begin{equation} \label{eq_logarithmpyx}
+ \begin{aligned}
+  \log(p(\pmb{y})) = 
+           &-\frac{1}{2}
+           \pmb{y}^T
+           (K[\pmb{x}] + \sigma^2 I_{n \times n})^{-1}
+           \pmb{y}
+               &\text{(data-fit penalty)}
+            \\
+           &-\frac{1}{2} 
+           \log(\det(K[\pmb{x}] + \sigma^2 I_{n \times n}))%^{-\frac{1}{2}})
+               &\text{(complexity penalty)}
+            \\ 
+           &-\frac{n}{2}\log(2\pi) 
+              % &\text{(no role in the optimization process)}
+            \\
+ \end{aligned}
+\end{equation}
+
+\begin{remark} \label{remark_marginalLikelihoodGP}
+Expression \ref{eq_pyx} and \ref{eq_logarithmpyx} are called ``marginal likelihood'' and ``log marginal likelihood'' in the GP literature.
+The terminology marginal is used because $p(\pmb{y}_{\pmb{x}})$ can be seen as the marginalization of $p(\pmb{y}_{\pmb{x}} | \pmb{\hat{y}}_{\pmb{x}})$ w.r.t. $\pmb{\hat{y}}_{\pmb{x}}$ with
+$$
+ \begin{aligned}
+  \pmb{\hat{y}}_{\pmb{x}} &\sim \mathcal{N}(0,K[\pmb{x}]), \\
+  \pmb{y}_{\pmb{x}} &\sim \mathcal{N}(\pmb{\hat{y}},\sigma^2 I_{n \times n}).\\
+ \end{aligned}
+$$
+\end{remark}
+
+\begin{remark}
+  Notice that $-\frac{n}{2}\log(2\pi)$ plays no role in the optimization process.
+\end{remark}
+
+\begin{remark} \label{remark_GPandErrorsConnections}
+  Notice the connections between section \ref{sec_sampleApproximationErrors} and the data-fit and the complexity penalty terms.% the data-fit penalty and the complexity penalty with section \ref{sec_sampleApproximationErrors}.
+\end{remark}
+
+Let $\{K_{\theta}\}_{\theta\in\Theta}$ be a family of kernel functions with parameters $\theta = (\theta_1, \dots, \theta_k)$.% be the parameter of a family of kernel functions and $K_{\theta}$ . 
+Let
+$$
+  K_{\pmb{x}}(\theta) = 
+           K_{\theta}[\pmb{x}] + \sigma^2 I_{n \times n}.
+$$
+Consider the problem of optimizing the kernel in this family.
+The problem reduces to find,
+$$
+  \theta_{\textup{opt}} = \underset{\theta\in\Theta}{\textup{argmax}} \ \ F_{\pmb{x},\pmb{y}}(\theta),
+$$
+where
+$$
+  F_{\pmb{x},\pmb{y}}(\theta) =
+           \underbrace{ 
+           -\frac{1}{2}
+           \pmb{y}^T
+           K_{\pmb{x}}(\theta)^{-1}
+           \pmb{y}
+           }_{\text{data-fit penalty}}
+           \underbrace{ 
+           -\frac{1}{2} 
+           \log(\det(K_{\pmb{x}}(\theta))).%^{-\frac{1}{2}})
+           }_{\text{complexity penalty}}
+$$
+The partial derivatives of $F_{\pmb{x},\pmb{y}}(\theta)$ are
+$$
+ \begin{aligned}
+  \frac{\partial F_{\pmb{x},\pmb{y}}(\theta)}{\partial\theta_j} &=
+    \frac{1}{2}
+    \pmb{y}^T
+    K_{\pmb{x}}(\theta)^{-1}
+    \frac{\partial K_{\pmb{x}}(\theta)}{\partial\theta_j}
+    K_{\pmb{x}}(\theta)^{-1}
+    \pmb{y}
+    -\frac{1}{2}
+    \textup{tr}\left(
+      K_{\pmb{x}}(\theta)^{-1}
+      \frac{\partial K_{\pmb{x}}(\theta)}{\partial\theta_j}
+    \right) \\
+    &= \frac{1}{2}\textup{tr}\left(
+    (\alpha\alpha^T-K_{\pmb{x}}(\theta)^{-1})
+    \frac{\partial K_{\pmb{x}}(\theta)}{\partial\theta_j},
+    \right) \\ 
+ \end{aligned}
+$$
+where $\alpha = K_{\pmb{x}}(\theta)^{-1}\pmb{y}$.
+
+The parameter optimization process can be done for different families and take the highest value. 
+More details about this method and other methods (cross-validation techniques) to select the kernel and optimize its parameters can be found in \textcite{rasmussen2006}. 
+
+\vspace{10mm}
+\noindent
+This chapter was dedicated to the problem of surrogate modeling.
+Different techniques can be used to build a surrogate model.
+This thesis adopted the regression point of view in ML. 
+A summary of the mathematical concepts of learning theory was provided.
+GP regression was explained in detail.
+In addition, connections between GP and the learning theory concepts given in the first section of this chapter were emphasized (see, e.g., remarks \ref{remark_GPconsistentWithRepresenterTheorem}, \ref{remark_GPandRho}, \ref{remark_GPlearningTheoryConnections}, \ref{remark_GPandOverfittingProblem}, \ref{remark_GPandKernelTrick}, \ref{remark_GPfollowsRepresenterTheorem}, \ref{remark_phiNotNeedKnown}, and \ref{remark_GPandErrorsConnections}).
+
+It is assumed in the following chapter that a surrogate model is already given.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----------------------------------------------------------------------------------------
+%	SECTION 
+%----------------------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\section{The multi-output case (MISSING)}
+
+

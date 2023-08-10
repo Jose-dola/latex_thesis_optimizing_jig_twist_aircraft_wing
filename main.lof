@@ -1,0 +1,29 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\babel@toc {english}{}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Example of underfitting and overfitting}}{15}{figure.caption.9}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Example of a projection into a feature space $\Phi (x) = (x^2,x)$.}}{28}{figure.caption.10}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Example of a projection into a feature space $\Phi (x) = (\qopname \relax o{cos}(x),\qopname \relax o{sin}(x))$}}{29}{figure.caption.11}%
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Example of a projection into a feature space $\Phi (x) = cos(x-2.8)$}}{30}{figure.caption.12}%
+\contentsline {figure}{\numberline {2.5}{\ignorespaces Functions sampled from a GP}}{51}{figure.caption.13}%
+\contentsline {figure}{\numberline {2.6}{\ignorespaces Example of GP prior and posterior}}{56}{figure.caption.14}%
+\contentsline {figure}{\numberline {2.7}{\ignorespaces Example of GP regression}}{58}{figure.caption.15}%
+\contentsline {figure}{\numberline {2.8}{\ignorespaces Examples of GP posteriors varying parameter $\sigma $}}{59}{figure.caption.16}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Example of rejection sampling using a uniform proposal distribution.}}{78}{figure.caption.18}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Random samples on an ellipse - Naive method}}{96}{figure.caption.19}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Random samples histogram on an ellipse - Naive method}}{96}{figure.caption.20}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Uniform random samples on an ellipse}}{97}{figure.caption.21}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Uniform random samples histogram on an ellipse}}{97}{figure.caption.22}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Example \ref {ex_twoModeSurrogate} - surrogate model and target PDF}}{115}{figure.caption.25}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Example \ref {ex_twoModeSurrogate} - results}}{116}{figure.caption.26}%
+\contentsline {figure}{\numberline {3.8}{\ignorespaces Example \ref {ex_twoModeSurrogate10dim} - results}}{118}{figure.caption.27}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Parameters and its spanwise location along the wing}}{123}{figure.caption.28}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Percentage change in torsional stiffness vs spanwise locations along the wing}}{125}{figure.caption.29}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Percentage change in bending stiffness vs spanwise locations along the wing}}{125}{figure.caption.30}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Jig twist variation vs spanwise locations along the wing}}{126}{figure.caption.31}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Lift over Drag ratio vs Cofficient of Lift}}{127}{figure.caption.32}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Examples of norms $v = (v_1,v_2)$, $\|v\|_W = \sqrt {v^TWv}$, $W$ positive-definite}}{132}{figure.caption.33}%
+\addvspace {10\p@ }

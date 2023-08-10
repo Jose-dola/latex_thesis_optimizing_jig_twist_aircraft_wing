@@ -1,0 +1,374 @@
+\chapter{Perspectives on early-stage aircraft wing design} \label{chapter_AirBusData} 
+
+The work presented in this thesis is part of a project in collaboration with Airbus. 
+They provided a dataset with information about arly-stage aircraft wing design under a non-disclosure agreement between Airbus and Cardiff University for research usage.
+
+The first project's challenge is to build a surrogate model from this dataset. 
+Chapter \ref{chapter_forwardProblem} provides information about this topic.
+The GP regression presented there consider unidimensional outputs.
+It will be seen that there is more than one quantity of interest for a given choice of design parameters.
+Therefore, the learning and GP theory given in this thesis should be broadened to consider multiple outputs.
+Refer, e.g., to \textcite{micchelli2005}; \textcite{carmeli2006}; \textcite{bilionis2013}; or \textcite{alvarez2012} regarding this matter.
+%Those references follow the theory explained in this thesis.
+There were conducted some experiments training different GP for each quantity of interest
+\footnote{Note that no correlation between outputs is assumed if this methodology is adopted. However, it is known that there are strong correlations between the different quantities of interest in this dataset.}.
+For this dataset, a study of the GPs log marginal likelihoods (see section \ref{sec_kernelSelection} and remark \ref{remark_marginalLikelihoodGP}) shows that the squared exponential kernel and the Matern kernel with parameter 5/2 (both with a separate length scale per predictor) give the better results after optimizing the kernel parameters.
+
+The second challenge, when the surrogate model is already built, is to identify probability distributions in the wing design parameters (the input variables of the surrogate model) that lead to a prescribed performance (the output quantities of the surrogate model).
+
+%It was analyzed and some experiments were conducted.
+The goals of this section are:
+\begin{enumerate}
+\item Explaining the structure of this dataset and the optimization problem associated.
+\item Giving guidelines to use the theory and the novel techniques introduced in Chapter \ref{chapter_inverseProblem} for tackling the design optimization problem stated above.
+\end{enumerate}
+
+Future researchers of this project will benefit from the following analysis of the dataset and the ideas given in this section and in Chapter \ref{chapter_inverseProblem}.
+%The dataset used in this project was provided by Airbus under a non-disclosure agreement between Airbus and Cardiff University for research usage.
+ 
+%This Chapter provides information about this data and the optimization problem associated which is necessary to understand an industrial application of this work. Most of this information was extracted from two documents provided by Airbus to understand the dataset and its aim.
+
+%----------------------------------------------------------------------------------------
+%	SECTION 1
+%----------------------------------------------------------------------------------------
+
+\section{Parametrization} \label{sec_parametrization}
+
+Eight parameters are considered corresponding to epistemic uncertainty in wing stiffness. Four parameters for wing bending stiffness (EI) and four for wing torsinal stiffness (GJ) in four sections along the wing. These will be referred as ``uncertainty parameters''. 
+
+Two parameters are considered corresponding to the wing jig twist %along the MYC axis (see figure \ref{fig_AircraftAxisSystem}) 
+at two span locations of the wing. These will be referred as ``optimization'' parameters.
+
+Figure \ref{fig_parameters} illustrates the location of those parameters graphically.
+
+%\begin{figure}[!htbp]
+%  \centering
+%    \includegraphics[width=0.75\textwidth]{figuresChapterAirBusData/aircraftAxis.png}
+%  \caption[Aircraft Axis System]%
+%{Aircraft Axis System. Figure extracted from Airbus documents.}
+%  \label{fig_AircraftAxisSystem}
+%\end{figure}[!htbp]
+
+\begin{figure}[!htbp]
+  \centering
+    \includegraphics[width=0.95\textwidth]{figuresChapterAirBusData/param.png}
+  \caption[Parameters and its spanwise location along the wing]%
+{Parameters and its spanwise location along the wing. Uncertainty parameters in red. Optimisation parameters in blue.}
+  \label{fig_parameters}
+\end{figure}
+
+%-----------------------------------
+%	SUBSECTION 
+%-----------------------------------
+\subsection{Design Of Experiments} \label{sec_DOE}
+
+The ten parameters considered in this dataset form a ten dimensional space $\mathcal{X}$. For each point in this parameters space, it is possible to measure or predict the aerodynamic performance as well as the external loads, Shear, Moment and Torque (SMT) along the wing. This paradigm determines a function in which $x \in \mathcal{X}$ are the inputs and the aerodynamic performance and the loads (SMT) are the outputs. The prediction of the outputs are computationally expensive. Therefore, evaluations of this function are not available in a reasonable time to run an optimization algorithm. This dataset provides outputs for only some points in the parameters space. Those points in which the predictions were conducted are called Design Of Experiments (DOE) points. 
+
+The problem of obtaining evaluations of this function using only a finite (and usually few) number of previous computed evaluations is explained in Chapter \ref{chapter_forwardProblem}. %This Chapter explores the option of building a stochastic surrogate using a probabilistic object called Gaussian Process.
+
+It is not trivial the problem of selecting the set of DOE points. The question of what set will provide more information about the underlying function is an open field of research. Optimized Latin Hypercube Sampling (OLHS) was used to select the DOE points aiming to a good space filling of the parameters space.    
+
+%-----------------------------------
+%	SUBSUBSECTION 
+%-----------------------------------
+\subsubsection{Optimized Latin Hypercube Sampling}
+
+Different techniques can be used to determine the DOE points. \textcite{santner2003} describes the theory of this subject and explain some of these techniques. An approach that can be considered is to find the best coverage of the parameters/input space $\mathcal{X}$. The algorithms that pursue this goal are called Space Filling Designs (SFD).
+ 
+OLHS is an SFD algorithm. It was the technique used to select the DOE points of this dataset. Although the study of DOE algorithms is not the purpose of this work, information about OLHS can be found in, e.g., \textcite{santner2003}; \textcite{damblin2013}; \textcite{li2017}; or \textcite{xiong2009} 
+
+Three OLHS were conducted. One generated 50 DOE points for the aerodynamic performance simulations. Two OLHS generated 200 DOE points for the loads data, 150 the first one and 50 the second one. 
+
+The benefit of having two coverages of $\mathcal{X}$ is that one can be used for training a surrogate and the other for validation. Only one OLHS was conducted for the aero data due to the computational cost of these simulations.
+
+An additional DOE point was included in both, aero and loads data. This is the baseline, unmodified aircraft. In addition, two more DOE points were included in the aero dataset. This are the cases with zero stiffness changes and maximum twist-on and twist-off respectively. 
+
+Therefore, the loads and aero datasets include 201 DOE points and 53 DOE points respectively.
+
+%-----------------------------------
+%	SUBSECTION 
+%-----------------------------------
+\subsection{Bending and torsional stiffness} \label{sec_bendingTorsionalStiffness}
+
+The wing stiffness (both EI as well as GJ) was varied across four spanwise sections of the wing (see figure \ref{fig_parameters}) according to a certain percent change relative to the baseline. A smaller percent change is allowed at the root and a larger change is allowed at the tip (see figures \ref{fig_torsionalStiffness} and \ref{fig_bendingStiffness}).
+
+ \begin{figure}[!htbp]
+  \centering
+    \includegraphics[width=0.95\textwidth]{figuresChapterAirBusData/torsionalStiffness.eps}
+  \caption[Percentage change in torsional stiffness vs spanwise locations along the wing]%
+{Percentage change in torsional stiffness vs spanwise locations along the wing. The data has been normalized by Airbus. Each line represents one of the 53 DOE points of the aero dataset. Notice that a smaller percent change is allowed at the root and a larger change is allowed at the tip.}
+  \label{fig_torsionalStiffness}
+\end{figure}
+
+ \begin{figure}[!htbp]
+  \centering
+    \includegraphics[width=0.95\textwidth]{figuresChapterAirBusData/bendingStiffness.eps}
+  \caption[Percentage change in bending stiffness vs spanwise locations along the wing]%
+{Percentage change in bending stiffness vs spanwise locations along the wing. The data has been normalized by Airbus. Each line represents one of the 53 DOE points of the aero dataset. Notice that a smaller percent change is allowed at the root and a larger change is allowed at the tip.}
+  \label{fig_bendingStiffness}
+\end{figure}
+
+This percent change has been normalized by Airbus for external usage to give a relative variation of $\pm 1$ at the wing tip and the relative reductions at the other spanwise positions (see figures \ref{fig_torsionalStiffness} and \ref{fig_bendingStiffness}). The wing spanwise locations have also been normalized being 0 the root and 1 the tip. The innermost section of stiffness change is from 0 to 0.2419, the middle from 0.2649 to 0.7075, the outer from 0.7282 to 0.8956, and the winglet from 0.9217 to 1 (see figures \ref{fig_parameters}, \ref{fig_torsionalStiffness} and \ref{fig_bendingStiffness}).
+
+%-----------------------------------
+%	SUBSECTION 
+%-----------------------------------
+\subsection{Wing twist} \label{sec_wingTwist}
+
+The wing jig twist describes the shape of the wing while it is being made in its jig (i.e. with no loads applied). The wing has some bending and twisting along its span induced by the jig in this form. During the flight, the aerodynamic forces deform the wing. The aim of the jig bending and twisting is to have the desired shape after this deformation in flight. 
+
+The main purpose of this dataset is to investigate variations on the wing’s jig twist, or the local angles of incidence of the unloaded wing. The wing jig twist was varied at two stations on the wing. The locations along the wing and the twist variations have been normalized by Airbus for external usage. These two stations are located at 0.5830 (approximately mid-span) and 1 (tip) (see figure \ref{fig_twist}). The twist at this two points are the two optimization parameters (see figure \ref{fig_parameters}). The twist variations take values between $-1$ and $+1$. $-1$ represents the maximum negative variation on the twist with respect to unloaded shape of the wing. $+1$ represents the maximum positive variation.
+
+\begin{figure}[!htbp]
+  \centering
+    \includegraphics[width=0.95\textwidth]{figuresChapterAirBusData/twist.eps}
+  \caption[Jig twist variation vs spanwise locations along the wing]%
+{Jig twist variation vs spanwise locations along the wing. The data has been normalized by Airbus. Each line represents one of the 53 DOE points of the aero dataset.}
+  \label{fig_twist}
+\end{figure}
+
+
+%-----------------------------------
+%	SECTION 
+%-----------------------------------
+\section{Simulations} \label{sec_simulations}
+
+%-----------------------------------
+%	SUBSECTION 
+%-----------------------------------
+\subsection{Aerodynamic performance data} \label{sec_aero}
+
+The aero performance data was generated using coupled Computational Fluid Dynamics (CFD) and Computational Structural Mechanics (CSM) to capture the impact of stiffness changes on the efficiency of the aircraft in cruise. First, CFD calculates aerodynamic loads and then CSM estimates the resulting deformation by iteration, changing the shape until convergence is reached.
+
+The data consists of a polar trimmed at a variety of different Coefficient of lift (Cl) values. Cl 1 is the design cruise point and all other Cl values are relative to that design point. The Lift over Drag ratios (L/D) are relative to the baseline aircraft and normalized. The figure \ref{fig_LD} shows L/D as a function of Cl for each DOE point in the aero data.
+
+\begin{figure}[!htbp]
+  \centering
+    \includegraphics[width=0.95\textwidth]{figuresChapterAirBusData/LD.eps}
+  \caption[Lift over Drag ratio vs Cofficient of Lift]%
+{Lift over Drag ratio vs Cofficient of Lift. The data has been normalized by Airbus. Each line represents one of the 53 DOE points of the aero dataset. Cl 1 is the design cruise point and all other Cl values are relative to that design point. The Lift over Drag ratios (L/D) are relative to the baseline aircraft.}
+  \label{fig_LD}
+\end{figure}
+
+%-----------------------------------
+%	SUBSECTION 
+%-----------------------------------
+\subsection{Loads data} \label{sec_loads}
+
+The loads dataset was generated using Airbus’ certification standard simulation tools for a range of typical gust and manoeuver cases. They are a variety of aircraft mass cases as well as different Mach and altitude points. They include discrete gust, continuous turbulence, as well as a number of different manoeuvers.
+
+For each of these cases the dataset provides the envelope shear, moment and torque values at different locations on the wing. Although these may not be the highest stresses in the wing, they are sufficient for the robust optimization purpose.
+
+\subsubsection{Gust cases}
+
+The loads simulations contain 23 gust cases with 4 different gust types, 17 mass cases, 6 Mach numbers, 2 thrust settings, and 8 altitudes. This includes both continuous turbulence as well as discrete gusts.
+
+\subsubsection{Manoeuver cases}
+
+The loads simulations contain 21 different steady manoeuver cases across the flight envelope in a range of different Mach and altitudes.
+
+%-----------------------------------
+%	SUBSECTION 
+%-----------------------------------
+\subsection{Description of Interesting Quantities (IQ)} \label{sec_IQ}
+
+A brief description of the IQ values provided in this dataset.
+
+\subsubsection{Load types (IQ type)}
+\begin{itemize}
+  \item \textbf{Shear}: Vertical shear force.%, positive upwards (see TZC in figure \ref{fig_AircraftAxisSystem}).
+  \item \textbf{Moment}: Bending moment along the aircraft longitudinal (fuselage) axis.%, positive bending upwards (see MXC in figure in figure \ref{fig_AircraftAxisSystem}). 
+  \item \textbf{Torque}: Torque along the lateral (spanwise) axis.%, positive pitch up (see MYC in figure \ref{fig_AircraftAxisSystem}).
+  \item \textbf{Cl}: Coefficient of lift value.%, positive upwards (see TZC in figure \ref{fig_AircraftAxisSystem}).
+\end{itemize}
+
+\subsubsection{Locations (IQ component)}
+\begin{itemize}
+  \item Spanwise stations along the \textbf{right wing}, starting at the root and moving towards the tip.
+  \item Spanwise stations along the \textbf{right winglet}, starting at the tip of the wing and moving further outboard to the tip of the winglet.
+  \item Spanwise stations along the right \textbf{horizontal tail}, starting at the root and moving towards the tip.
+\end{itemize}
+
+%-----------------------------------
+%	SUBSECTION 
+%-----------------------------------
+%\subsection{MATLAB structure}
+%
+%Airbus provided the data in MATLAB structures within a .mat file. It is divided in two main datasets, the aero and the loads datasets (see section \ref{sec_simulations}). 
+%
+%The loads dataset consists in 460 matrices. Each matrix contain values of one type of force (shear, moment or torque) for an especific IQ component (see section \ref{sec_IQ}), and load case (see section \ref{sec_loads}). The columns of these matrices correspond to the different DOE points (see section \ref{sec_DOE}). The rows correspond to different spanwise locations from the root to the tip of the wing.
+%
+%The aero dataset consists in one matrix whose elements are L/D values (see section \ref{sec_aero}).The rows correspond to different Cl values across the polar, while the columns correspond to the different DOE points.
+%
+%The required information to interpret these matrices is provided separately in other matrices/vectors. This includes information about the DOE points, spanwise locations and Cl values.
+%
+%The figures \ref{fig_aeroMatrix} and \ref{fig_loadsMatrices} show graphically how the matrices in the dataset are presented.
+%
+%\begin{figure}[!htbp]
+%  \centering
+%    \includegraphics[width=0.95\textwidth]{figuresChapterAirBusData/aeroMatrix.png}
+%  \caption[MATLAB structure: Aerodynamic performance dataset]%
+%{MATLAB structure: Aerodynamic performance dataset. The figure shows graphically how the aero dataset is provided by Airbus consisting in one single matrix.}
+%  \label{fig_aeroMatrix}
+%\end{figure}
+%
+%\begin{figure}[!htbp]
+%  \centering
+%    \includegraphics[width=0.95\textwidth]{figuresChapterAirBusData/loadsMatrices.png}
+%  \caption[MATLAB structure: Loads dataset]%
+%{MATLAB structure: Loads dataset. The figure shows graphically how the loads dataset is provided by Airbus consisting in 460 matrices indexed by IQ component, IQ type and different loads cases.}
+%  \label{fig_loadsMatrices}
+%\end{figure}
+%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-----------------------------------
+%	SECTION 
+%-----------------------------------
+\section{Design optimization guidelines} \label{sec_designOptimizationGuidelines}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+This section will assume that a surrogate model $y(x)$ has been built from the dataset
+\footnote{See the introduction of this Chapter.}.
+Consider the parameters explained in sections \ref{sec_parametrization}, \ref{sec_bendingTorsionalStiffness} and \ref{sec_wingTwist} to be the variables in the input space of the surrogate model $x\in\mathcal{X}\subset\mathbb{R}^n$.
+Consider the quantities of interest in the different cases (see sections \ref{sec_simulations}), or a function of them, to be the variables of the output space $y\in\mathcal{Y}\subset\mathbb{R}^m$. 
+
+The aim is to use the theory explained in Chapter \ref{chapter_inverseProblem} to find a probability distribution in the input space of the surrogate model such that the distribution observed in the output satisfies a prescribed performance.
+
+There are three fundamental choices that must be made to apply the theory introduced in section \ref{sec_inverseDesign}: 
+\begin{enumerate}
+\item The parametric family $\mathcal{F}$.
+\item The objective function 
+\begin{equation} \label{eq_objectiveFuntionAirbus}
+  H(\pmb{y},\lambda) = H_{\pmb{y}}(\pmb{y}) + \gamma H_{\lambda}(\lambda).
+\end{equation}
+\item The algorithm to optimize the parameters of $\mathcal{F}$.
+\end{enumerate}
+
+It is proposed to use multivariate normal distributions as the parametric family $\mathcal{F}$ due to the reasons that are given in section \ref{sec_parametricFamilies}. In addition, a normal distribution provides information easy to interpret by the designers.
+\footnote{A normal distribution gives a target (the mean) and the degree of accuracy needed, given by the covariance matrix, which provides with information about the variances and correlations between variables.}
+
+The optimization algorithm proposed in this thesis is SA (section \ref{sec_SimulatedAnnealing}) and it is also the recommendation for this project. 
+However, other possibilities can be explored (see section \ref{sec_StochasticOptimization}).
+
+The major challenge is to design the objective function $H$.
+It must be designed according to the desired performance.
+Functions $H_{\lambda}$, $H_{\pmb{y}}$ and constant $\gamma$ that well define the target performance must be selected.
+Future researchers in this project can consider the following suggestions:
+\begin{enumerate}
+  \item Flexibility is desired in early-stage design. 
+Therefore, the function $H_{\lambda}$ should be designed according to this regard.
+For example, extracting information from $\lambda$ about the variances and covariances of the distributions $f_{\lambda}$.
+Although jig twist and bending and torsional stiffness are considered all input variables, Airbus makes an important distinction between them. Jig twist parameters are considered the ``true'' design parameters while bending and torsional stiffness are considered ``uncertainty parameters''.
+An approach could be to set a fixed uniform distribution on the uncertainty parameters.
+However, this approach is too extreme. 
+It will represent no control at all in those parameters.
+Let $\mathcal{F}$ be a family of multivariate normal distribution and $\lambda = (\mu, \Sigma)$.
+Let $\Sigma_d$ be the submatrix of the covariance matrix $\Sigma$ corresponding to the design parameters.
+Let $\Sigma_u$ be the submatrix corresponding to the uncertainty parameters.
+A more reasonble approach is to consider $H_{\lambda} = \frac{b_d}{v_d} + \frac{b_u}{v_u}$ where $v_d$ is the lowest eigenvalue of $\Sigma_d$, $v_u$ is the lowest eigenvalue of $\Sigma_u$ and $b_u \gg b_d$.
+This will push the algorithm to give distributions with more flexibility in the uncertainty parameters.
+Variations with the determinant or other values extracted from the covariance matrix could be used.
+  \item Airbus already has functions $q(y)$ that measure the performance of a given output. 
+They use the terminology penalty functions.
+The higher the value, the worse the performance.
+It is suggested to use the expectation of these functions,
+$$\mathcal{H}_{\pmb{y}} = \frac{1}{n} \sum_{i=1}^n q(y_i).$$
+  \item If the target performance is given by a target PDF, see section \ref{sec_targetPDFapproximation}.
+  \item If the target performance is given by a desired region of the outputs, consider
+$$\mathcal{H}_{\pmb{y}} = \frac{1}{n} \sum_{i=1}^n \mathbb{1}_{A}(y_i),$$
+where $A$ is the desired region, or
+$$\mathcal{H}_{\pmb{y}} = \frac{1}{n} \sum_{i=1}^n d_{A}(y_i),$$
+where $d(y) = 0$ for $y \in A$ and a distance o penalty if $y\notin A$.
+  \item If the target performance is given by a target value $y_t$, consider
+$$\mathcal{H}_{\pmb{y}} = \frac{1}{n} \sum_{i=1}^n \|y_i-y_t\|_W, \ \|v\|_W = \sqrt{v^TWv}, \ W \text{ positive-definite}.$$
+For example, consider the data normalized and two quantities of interest: $y\in\mathbb{R}^2$. If it is wanted to have similar errors in both quantities
+\footnote{Optimizing one quantity more than the other is penalized.}, 
+then the eigenvectors of $W$ could be $v_1=\frac{1}{\sqrt{2}}(1,1)$ with eigenvalue $c_1$ and the orthogonal $v_2=\frac{1}{\sqrt{2}}(-1,1)$ with eigenvalue $c_2$, with $0<c_1<c_2$,
+$$
+  W = \frac{1}{2} 
+  \begin{pmatrix}
+    1 & -1 \\
+    1 & 1  \\
+  \end{pmatrix}
+  \begin{pmatrix}
+    c_1 & 0 \\
+    0   & c_2  \\
+  \end{pmatrix}
+  \begin{pmatrix}
+    1 & -1 \\
+    1 & 1  \\
+  \end{pmatrix}^T.
+$$
+The same strategy could be used for other purposes. 
+For instance, in the same situation but considering the first quantity more important than the second one,
+$$
+ \begin{array}{c}
+  v_1 = (a,1), \\
+  v_2 = (-1,a), \\
+  a > 1, \\
+  0<c_1 < c_2, \\
+  W = \frac{1}{1+a^2}
+  \begin{pmatrix}
+    a & -1 \\
+    1 & a  \\
+  \end{pmatrix}
+  \begin{pmatrix}
+    c_1 & 0 \\
+    0   & c_2  \\
+  \end{pmatrix}
+  \begin{pmatrix}
+    a & -1 \\
+    1 & a  \\
+  \end{pmatrix}^T.
+ \end{array} 
+$$
+Figure \ref{fig_normsW} illustrates examples for some choices of parameters $a$, $c_1$ and $c_2$.
+\end{enumerate}
+
+\begin{figure}[!htbp]
+  \centering
+    \includegraphics[width=0.95\textwidth]{figuresNorms/norms__a_2__c1_10__c2_1.eps}
+    \includegraphics[width=0.95\textwidth]{figuresNorms/norms__a_2__c1_3__c2_1.eps}
+    \includegraphics[width=0.95\textwidth]{figuresNorms/norms__a_10__c1_10__c2_1.eps}
+  \caption[Examples of norms $v = (v_1,v_2)$, $\|v\|_W = \sqrt{v^TWv}$, $W$ positive-definite]%
+{Examples of norms $v = (v_1,v_2)$,  $\|v\|_W = \sqrt{v^TWv}$, $W$ positive-definite,
+where,
+$
+  v_1 = (a,1), \
+  v_2 = (-1,a), \
+  a > 1, \
+  0<c_1 < c_2, \
+  W = \frac{1}{1+a^2}
+  \begin{pmatrix}
+    a & -1 \\
+    1 & a  \\
+  \end{pmatrix}
+  \begin{pmatrix}
+    c_1 & 0 \\
+    0   & c_2  \\
+  \end{pmatrix}
+  \begin{pmatrix}
+    a & -1 \\
+    1 & a  \\
+  \end{pmatrix}^T.
+$
+}
+  \label{fig_normsW}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
